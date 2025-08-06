@@ -19110,6 +19110,8 @@ self: super: with self; {
 
   unify = callPackage ../development/python-modules/unify { };
 
+  uniproxy = callPackage ../development/python-modules/uniproxy { };
+
   unique-log-filter = callPackage ../development/python-modules/unique-log-filter { };
 
   units-llnl = callPackage ../development/python-modules/units-llnl {

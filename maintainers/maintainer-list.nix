@@ -21324,6 +21324,13 @@
     matrix = "@zitrone:utwente.io";
     name = "quantenzitrone";
   };
+  quarterstar = {
+    email = "quarterstar+nix@proton.me";
+    github = "quarterstar";
+    githubId = 201157222;
+    name = "Quarterstar";
+    keys = [ { fingerprint = ""; } ];
+  };
   qubasa = {
     email = "consulting@qube.email";
     github = "Qubasa";

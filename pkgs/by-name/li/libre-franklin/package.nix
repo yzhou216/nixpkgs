@@ -5,7 +5,7 @@
   installFonts,
 }:
 
-stdenvNoCC.mkDerivation rec {
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "libre-franklin";
   version = "1.014";
 
@@ -21,7 +21,8 @@ stdenvNoCC.mkDerivation rec {
   installPhase = ''
     runHook preInstall
 
-    install -m444 -Dt $out/share/doc/${pname}-${version} README.md FONTLOG.txt
+    install -Dm644 {README.md,FONTLOG.txt} \
+      --target-directory=$out/share/doc/${finalAttrs.pname}-${finalAttrs.version}
 
     runHook postInstall
   '';
@@ -33,4 +34,4 @@ stdenvNoCC.mkDerivation rec {
     maintainers = [ ];
     platforms = lib.platforms.all;
   };
-}
+})

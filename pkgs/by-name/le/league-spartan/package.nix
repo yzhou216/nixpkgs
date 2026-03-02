@@ -1,8 +1,8 @@
 {
-  lib,
   fetchzip,
-  stdenvNoCC,
   installFonts,
+  lib,
+  stdenvNoCC,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -17,19 +17,21 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   nativeBuildInputs = [ installFonts ];
 
   meta = {
-    description = "Fantastic new revival of ATF's classic Spartan, a geometric sans-serif that has no problem kicking its enemies in the chest";
+    description = "League Spartan Variable";
     longDescription = ''
-      A new classic, this is a bold, modern, geometric sans-serif that has no
-      problem kicking its enemies in the chest.
+      A new classic, this is a bold, modern, geometric sans-serif that
+      has no problem kicking its enemies in the chest.
 
-      Taking a strong influence from ATF's classic Spartan family, we're
-      starting our own family out with a single strong weight. We've put a few
-      unique touches into a beautiful, historical typeface, and made sure to
-      include an extensive characterset – currently totaling over 300 glyphs.
+      Taking a strong influence from ATF's classic Spartan family,
+      we're starting our own family out with a single strong
+      weight.  We've put a few unique touches into a beautiful,
+      historical typeface, and made sure to include an extensive
+      characterset – currently totaling over 300 glyphs.
 
-      Over time, the open-source license will allow us expand League Spartan
-      into a full family, with multiple weights and styles, and we're starting
-      by releasing our first Bold style for this exciting, modern classic now.
+      Over time, the open-source license will allow us expand League
+      Spartan into a full family, with multiple weights and styles,
+      and we're starting by releasing our first Bold style for this
+      exciting, modern classic now.
     '';
     homepage = "https://www.theleagueofmoveabletype.com/league-spartan";
     license = lib.licenses.ofl;

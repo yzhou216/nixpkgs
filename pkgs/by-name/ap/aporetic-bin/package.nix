@@ -1,8 +1,9 @@
 {
-  stdenvNoCC,
-  lib,
   fetchFromGitHub,
   installFonts,
+  lib,
+  nix-update-script,
+  stdenvNoCC,
 }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
@@ -18,15 +19,20 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [ installFonts ];
 
+  passthru.updateScript = nix-update-script { };
+
   meta = {
     homepage = "https://github.com/protesilaos/aporetic";
-    description = ''
-      Custom build of Iosevka with different style and metrics than the default. This is the successor to my "Iosevka Comfy" fonts.
+    description = "Aporetic fonts";
+    longDescription = ''
+      Aporetic is the successor to Iosevka Comfy, customised build of
+      the [Iosevka typeface](https://github.com/be5invis/Iosevka),
+      with a consistent rounded style and overrides for almost all
+      individual glyphs in both upright (roman) and slanted (italic)
+      variants.
     '';
     license = lib.licenses.ofl;
     platforms = lib.platforms.all;
-    maintainers = with lib.maintainers; [
-      DamienCassou
-    ];
+    maintainers = with lib.maintainers; [ DamienCassou ];
   };
 })

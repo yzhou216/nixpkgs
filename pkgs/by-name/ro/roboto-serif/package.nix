@@ -3,6 +3,7 @@
   stdenvNoCC,
   fetchurl,
   unzip,
+  installFonts,
 }:
 
 stdenvNoCC.mkDerivation rec {
@@ -17,16 +18,9 @@ stdenvNoCC.mkDerivation rec {
   sourceRoot = ".";
 
   nativeBuildInputs = [
+    installFonts
     unzip
   ];
-
-  installPhase = ''
-    runHook preInstall
-
-    install -Dm644 variable/*.ttf -t $out/share/fonts/truetype
-
-    runHook postInstall
-  '';
 
   meta = {
     description = "Roboto family of fonts";

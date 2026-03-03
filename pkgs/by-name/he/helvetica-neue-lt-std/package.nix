@@ -1,8 +1,8 @@
 {
-  lib,
-  stdenvNoCC,
   fetchzip,
   installFonts,
+  lib,
+  stdenvNoCC,
 }:
 
 stdenvNoCC.mkDerivation {
@@ -18,21 +18,22 @@ stdenvNoCC.mkDerivation {
   nativeBuildInputs = [ installFonts ];
 
   meta = {
-    homepage = "https://web.archive.org/web/20190926040940/http://www.ephifonts.com/free-helvetica-font-helvetica-neue-lt-std.html";
     description = "Helvetica Neue LT Std font";
     longDescription = ''
-      Helvetica Neue Lt Std is one of the most highly rated and complete
-      fonts of all time. Developed in early 1983, this font has well
-      camouflaged heights and weights. The structure of the word is uniform
-      throughout all the characters.
+      Helvetica Neue Lt Std is one of the most highly rated and
+      complete fonts of all time.  Developed in early 1983, this font
+      has well camouflaged heights and weights.  The structure of the
+      word is uniform throughout all the characters.
 
-      The legibility with Helvetica Neue LT Std is said to have improved as
-      opposed to other fonts. The tail of it is much longer in this
-      font. The numbers are well spaced and defined with high accuracy. The
-      punctuation marks are heavily detailed as well.
+      The legibility with Helvetica Neue LT Std is said to have
+      improved as opposed to other fonts.  The tail of it is much
+      longer in this font.  The numbers are well spaced and defined
+      with high accuracy.  The punctuation marks are heavily detailed
+      as well.
     '';
+    homepage = "https://web.archive.org/web/20190926040940/http://www.ephifonts.com/free-helvetica-font-helvetica-neue-lt-std.html";
     license = lib.licenses.unfree;
-    platforms = lib.platforms.all;
     maintainers = with lib.maintainers; [ romildo ];
+    platforms = lib.platforms.all;
   };
 }

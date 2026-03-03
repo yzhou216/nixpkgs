@@ -1,15 +1,15 @@
 {
-  lib,
-  stdenvNoCC,
   fetchFromGitHub,
   installFonts,
+  lib,
+  stdenvNoCC,
 }:
 let
   font-awesome =
     {
-      version,
       hash,
-      rev ? version,
+      tag ? version,
+      version,
     }:
     stdenvNoCC.mkDerivation {
       pname = "font-awesome";
@@ -18,7 +18,7 @@ let
       src = fetchFromGitHub {
         owner = "FortAwesome";
         repo = "Font-Awesome";
-        inherit rev hash;
+        inherit hash tag;
       };
 
       nativeBuildInputs = [ installFonts ];
@@ -26,10 +26,11 @@ let
       meta = {
         description = "Font Awesome - OTF font";
         longDescription = ''
-          Font Awesome gives you scalable vector icons that can instantly be customized.
-          This package includes only the OTF font. For full CSS etc. see the project website.
+          Font Awesome gives you scalable vector icons that can
+          instantly be customized.  This package includes only the OTF
+          font. For full CSS etc. see the project website.
         '';
-        homepage = "https://fontawesome.com/";
+        homepage = "https://fontawesome.com";
         license = lib.licenses.ofl;
         platforms = lib.platforms.all;
         maintainers = with lib.maintainers; [
@@ -40,17 +41,19 @@ let
     };
 in
 {
-  # Keeping version 4 and 5 because version 6 is incompatible for some icons. That
-  # means that projects which depend on it need to actively convert the
-  # symbols. See:
-  # https://github.com/greshake/i3status-rust/issues/130
-  # https://fontawesome.com/how-to-use/on-the-web/setup/upgrading-from-version-4
-  # https://fontawesome.com/v6/docs/web/setup/upgrade/
-  v4 = font-awesome {
+  /*
+    Keeping version 4 and 5 because version 6 is incompatible for some
+    icons.  That means that projects which depend on it need to
+    actively convert the symbols.  See:
+    https://github.com/greshake/i3status-rust/issues/130
+    https://fontawesome.com/how-to-use/on-the-web/setup/upgrading-from-version-4
+    https://fontawesome.com/v6/docs/web/setup/upgrade
+  */
+  v4 = font-awesome (finalAttrs: {
     version = "4.7.0";
-    rev = "v4.7.0";
+    tag = "v${finalAttrs.version}";
     hash = "sha256-LL9zWFC+76wH74nqKszPQf2ZDfXq8BiH6tuiK43wYHA=";
-  };
+  });
   v5 = font-awesome {
     version = "5.15.4";
     hash = "sha256-gd23ZplNY56sm1lfkU3kPXUOmNmY5SRnT0qlQZRNuBo=";

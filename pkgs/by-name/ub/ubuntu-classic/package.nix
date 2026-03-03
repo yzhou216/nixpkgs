@@ -1,35 +1,40 @@
 {
-  lib,
-  stdenvNoCC,
   fetchgit,
   gitUpdater,
   installFonts,
+  lib,
+  stdenvNoCC,
 }:
 
+let
+  rev-prefix = "import/";
+in
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "ubuntu-classic";
   version = "0.83-6ubuntu2";
 
   src = fetchgit {
     url = "https://git.launchpad.net/ubuntu/+source/fonts-ubuntu-classic";
-    rev = "import/${finalAttrs.version}";
+    tag = "${rev-prefix}${finalAttrs.version}";
     hash = "sha256-GrpBVgisVu7NklFYqkEqYi0hui/pCHlsM3Ky4mEUq90=";
   };
 
   nativeBuildInputs = [ installFonts ];
 
-  passthru.updateScript = gitUpdater { rev-prefix = "import/"; };
+  passthru.updateScript = gitUpdater { inherit rev-prefix; };
 
   meta = {
     description = "Ubuntu Classic font";
-    longDescription = "The Ubuntu typeface has been specially
-    created to complement the Ubuntu tone of voice. It has a
-    contemporary style and contains characteristics unique to
-    the Ubuntu brand that convey a precise, reliable and free attitude.";
+    longDescription = ''
+      The Ubuntu typeface has been specially created to complement the
+      Ubuntu tone of voice.  It has a contemporary style and contains
+      characteristics unique to the Ubuntu brand that convey a
+      precise, reliable and free attitude.
+    '';
+    changelog = "https://git.launchpad.net/ubuntu/+source/fonts-ubuntu-classic/tree/FONTLOG.txt?h=${finalAttrs.src.tag}";
     homepage = "https://design.ubuntu.com/font";
-    changelog = "https://git.launchpad.net/ubuntu/+source/fonts-ubuntu-classic/tree/FONTLOG.txt?h=${finalAttrs.src.rev}";
     license = lib.licenses.ufl;
-    platforms = lib.platforms.all;
     maintainers = with lib.maintainers; [ bobby285271 ];
+    platforms = lib.platforms.all;
   };
 })

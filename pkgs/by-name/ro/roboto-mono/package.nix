@@ -2,6 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
+  installFonts,
   nix-update-script,
 }:
 
@@ -16,11 +17,7 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-i0r8x4VgaOYW/pYXK+AXw7jMwhA8Hs9VQ1lq5f/xTe0=";
   };
 
-  installPhase = ''
-    runHook preInstall
-    install -Dm644 fonts/ttf/*.ttf -t $out/share/fonts/truetype/RobotoMono
-    runHook postInstall
-  '';
+  nativeBuildInputs = [ installFonts ];
 
   passthru.updateScript = nix-update-script { };
 

@@ -16,14 +16,14 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "meson";
-  version = "1.10.2";
+  version = "1.12.0";
   format = "setuptools";
 
   src = fetchFromGitHub {
     owner = "mesonbuild";
     repo = "meson";
     tag = version;
-    hash = "sha256-3Zeavn6aW6920gM7yE73Ms1RPCP2GjX9IUL9YGmISfY=";
+    hash = "sha256-lnuySM7aCojPU9bQI7LPKgod8otFa+Spo9yIDFbOJVs=";
   };
 
   patches = [
@@ -129,6 +129,11 @@ python3.pkgs.buildPythonApplication rec {
         "test cases/linuxlike/14 static dynamic linkage"
         # Nixpkgs cctools does not have bitcode support.
         "test cases/osx/7 bitcode"
+        # This test tries to compile with flags `-D_FORTIFY_SOURCE=2 -U_FORTIFY_SOURCE -O0`.
+        # It fails because cc-wrapper adds `-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3`
+        # after the provided args (to ensure that fortify cannot be disabled without
+        # being allowed by the package definition)
+        "test cases/common/282 -D_FORTIFY_SOURCE=2 and -O0"
       ]
       ++ lib.optionals stdenv.hostPlatform.isDarwin [
         # requires llvmPackages.openmp, creating cyclic dependency

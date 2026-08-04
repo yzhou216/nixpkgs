@@ -162,8 +162,9 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
   );
 
   postInstall = ''
-    installShellCompletion --zsh data/shell-completions/zsh/_meson
-    installShellCompletion --bash data/shell-completions/bash/meson
+    installShellCompletion \
+      --bash data/shell-completions/bash/meson \
+      --zsh data/shell-completions/zsh/_meson
   '';
 
   postFixup = ''

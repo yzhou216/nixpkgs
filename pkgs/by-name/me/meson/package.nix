@@ -14,7 +14,7 @@
   zlib,
 }:
 
-python3.pkgs.buildPythonApplication rec {
+python3.pkgs.buildPythonApplication (finalAttrs: {
   pname = "meson";
   version = "1.12.0";
   format = "setuptools";
@@ -22,7 +22,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "mesonbuild";
     repo = "meson";
-    tag = version;
+    tag = finalAttrs.version;
     hash = "sha256-lnuySM7aCojPU9bQI7LPKgod8otFa+Spo9yIDFbOJVs=";
   };
 
@@ -198,5 +198,5 @@ python3.pkgs.buildPythonApplication rec {
     maintainers = with lib.maintainers; [ qyliss ];
     inherit (python3.meta) platforms;
   };
-}
+})
 # TODO: a more Nixpkgs-tailoired test suite

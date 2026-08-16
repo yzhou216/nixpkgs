@@ -1,0 +1,23 @@
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  sync_upstream:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        branch: [master, staging, nixpkgs-sync-fork]
+
+    steps:
+      - uses: actions/checkout@main
+        with:
+          ref: ${{ matrix.branch }}
+          persist-credentials: false
+
+      - uses: aormsby/Fork-Sync-With-Upstream-action@main
+        with:
+          target_sync_branch: ${{ matrix.branch }}
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_branch: ${{ matrix.branch }}
+          upstream_sync_repo: nixos/nixpkgs

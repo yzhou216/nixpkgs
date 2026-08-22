@@ -4623,6 +4623,10 @@ self: super: with self; {
 
   django-error-report-2 = callPackage ../development/python-modules/django-error-report-2 { };
 
+  django-extended-makemessages =
+    callPackage ../development/python-modules/django-extended-makemessages
+      { };
+
   django-extensions = callPackage ../development/python-modules/django-extensions { };
 
   django-filer = callPackage ../development/python-modules/django-filer { };
@@ -5945,9 +5949,13 @@ self: super: with self; {
 
   fastrlock = callPackage ../development/python-modules/fastrlock { };
 
+  fastspec = callPackage ../development/python-modules/fastspec { };
+
   fasttext = callPackage ../development/python-modules/fasttext { };
 
   fasttransform = callPackage ../development/python-modules/fasttransform { };
+
+  fasttransport = callPackage ../development/python-modules/fasttransport { };
 
   fastuuid = callPackage ../development/python-modules/fastuuid { };
 

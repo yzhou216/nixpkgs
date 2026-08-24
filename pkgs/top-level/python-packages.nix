@@ -5739,6 +5739,8 @@ self: super: with self; {
 
   explorerscript = callPackage ../development/python-modules/explorerscript { };
 
+  expression = callPackage ../development/python-modules/expression { };
+
   exrex = callPackage ../development/python-modules/exrex { };
 
   extension-helpers = callPackage ../development/python-modules/extension-helpers { };
@@ -13716,7 +13718,7 @@ self: super: with self; {
   };
 
   plover_5 = callPackage ../development/python-modules/plover/5.nix {
-    inherit (pkgs.qt6) qtbase wrapQtAppsHook;
+    inherit (pkgs.qt6) qtbase wrapQtAppsHook qtsvg;
   };
 
   pluggy = callPackage ../development/python-modules/pluggy { };

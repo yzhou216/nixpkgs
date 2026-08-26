@@ -1,4 +1,8 @@
-{ callPackage, fetchurl, ... }@args:
+{
+  callPackage,
+  fetchurl,
+  ...
+}@args:
 
 callPackage ./generic.nix (
   args
@@ -12,5 +16,10 @@ callPackage ./generic.nix (
       url = "mirror://sourceforge/tcl/tcl${version}-src.tar.gz";
       hash = "sha256-kcuPphdxxjwmLvtVMFm3x61nV6+lhXr2Jl5LC9wqFKU=";
     };
+
+    # Backport of upstream check-in `fd06472ef41e1d73`; see the patch.
+    patches = [
+      ./8.6-windows-disable-tzdata.patch
+    ];
   }
 )

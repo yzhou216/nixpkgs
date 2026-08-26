@@ -516,9 +516,9 @@
   };
 
   diff = {
-    version = "0.1.0";
+    version = "0.2.0";
     url = "github:the-mikedavis/tree-sitter-diff";
-    hash = "sha256-8rYLNGgoZSvvfqO2++nAgFKmvbkKJ3m+9B8bTXp6Us4=";
+    hash = "sha256-5HCBFE/99DJ9AYWSk18WRF3RGQpgpYAYA37bT54F0DI=";
     meta = {
       license = lib.licenses.mit;
       maintainers = with lib.maintainers; [
@@ -625,7 +625,7 @@
   };
 
   ebnf = {
-    version = "0-unstable-2023-02-06";
+    version = "0.1.1-unstable-2023-02-06";
     url = "github:RubixDev/ebnf";
     rev = "8e635b0b723c620774dfb8abf382a7f531894b40";
     hash = "sha256-Cch6WCYq9bsWGypzDGapxBLJ0ZB432uAl6YjEjBJ5yg=";
@@ -2713,9 +2713,9 @@
   };
 
   scala = {
-    version = "0.26.0";
+    version = "0.26.2";
     url = "github:tree-sitter/tree-sitter-scala";
-    hash = "sha256-CnTcQFqYp60rGkLVLRHokUwBenqtWV4hw8boFYNRkbw=";
+    hash = "sha256-PRyNcsiGeGfKtHvbLaGtiog/P8QEs117rqoBZZOXbeE=";
     meta = {
       license = lib.licenses.mit;
     };
@@ -2910,9 +2910,9 @@
   };
 
   ssh-client-config = rec {
-    version = "2026.7.9";
+    version = "2026.8.20";
     url = "github:metio/tree-sitter-ssh-client-config?ref=${version}";
-    hash = "sha256-La1h6uJC5gUA84OAr3zBbQiR+AnrhcUhNf6r4HUpwhg=";
+    hash = "sha256-uwiDL2Rc2kW7TiRqtjmAocceLJOFT/9yDtR4c1IU7PI=";
     meta.license = lib.licenses.cc0;
   };
 
@@ -3006,9 +3006,9 @@
   };
 
   systemverilog = {
-    version = "0.3.1";
+    version = "0.4.0";
     url = "github:gmlarumbe/tree-sitter-systemverilog";
-    hash = "sha256-wzsjHDn6ZdGfOlufARurxCTwT8HqMvyfsnIIpXzRUYs=";
+    hash = "sha256-ig4mpzN/bvnD5e5MN11a7YkONDeJ3R8kz/AbS0GDreI=";
     meta.license = lib.licenses.mit;
   };
 
@@ -3200,9 +3200,9 @@
   };
 
   tql = {
-    version = "1.1.0";
+    version = "1.2.0";
     url = "github:tenzir/tree-sitter-tql";
-    hash = "sha256-2XbSwUKSNcODT2GIQ/k4w+4DSbV8dH689DrYBnWhPfU=";
+    hash = "sha256-lfrEKZSHFA4JYjDQ98bVTORPlgSV2veGcGwYbspaYaA=";
     meta.license = lib.licenses.mit;
   };
 

@@ -2847,6 +2847,8 @@ with pkgs;
     inherit (llvmPackages) openmp;
   };
 
+  spice-gtk = callPackage ../by-name/sp/spice-glib/package.nix { withGtk = true; };
+
   # to match naming of other package repositories
   spire-agent = spire.agent;
   spire-server = spire.server;
@@ -5997,10 +5999,15 @@ with pkgs;
       inherit (libc) pname version;
       libcDev = lib.getDev libc;
     in
-    runCommand "${pname}-iconv-${version}" { strictDeps = true; } ''
-      mkdir -p $out/include
-      ln -sv ${libcDev}/include/iconv.h $out/include
-    '';
+    runCommand "${pname}-iconv-${version}"
+      {
+        strictDeps = true;
+        __structuredAttrs = true;
+      }
+      ''
+        mkdir -p $out/include
+        ln -sv ${libcDev}/include/iconv.h $out/include
+      '';
 
   libiconvReal = callPackage ../development/libraries/libiconv { };
 

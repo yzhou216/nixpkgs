@@ -235,10 +235,10 @@
   };
 
   cairo = {
-    version = "0-unstable-2026-06-14";
+    version = "0-unstable-2026-07-23";
     url = "github:starkware-libs/tree-sitter-cairo";
-    rev = "b04ffb8c10a1a9faaea71a6757753fed4e1fcbfb";
-    hash = "sha256-XMv3E/QVL3JroaHUc+ao7bfINB+q1J78hfttXk3GtS4=";
+    rev = "638b096f276196e0e201970f39f665c2e4613b0d";
+    hash = "sha256-96ez0mUvbnKqs/ciI4sg7FryXd7w+FXxTI07fmPpZwo=";
     meta = {
       license = lib.licenses.asl20;
       maintainers = with lib.maintainers; [
@@ -2619,9 +2619,9 @@
   };
 
   robot = {
-    version = "1.4.0";
+    version = "1.5.0";
     url = "github:Hubro/tree-sitter-robot";
-    hash = "sha256-U89K9S7zkUZ0CoT2FgvKIvQ3ApjRe59YoWrks/iQ0FM=";
+    hash = "sha256-LRVkqtEAYO3jHQTGTgO6I4ZNlYRrMRK8+FCd0expFK0=";
     meta = {
       license = lib.licenses.isc;
       maintainers = with lib.maintainers; [
@@ -3384,10 +3384,10 @@
   };
 
   vhdl = {
-    version = "1.5.0-unstable-2026-06-06";
+    version = "1.5.0-unstable-2026-08-10";
     url = "github:jpt13653903/tree-sitter-vhdl";
-    rev = "e97406d6ddfbed73dd8cdfcc3cf4c7b200b4211d";
-    hash = "sha256-2vSkL8DetMtTRpvujg4tzxW2AbAhz56qBWRmgA8u3qk=";
+    rev = "68dc07f69d9571c2ebea6b32f995925905d09741";
+    hash = "sha256-TWn6KXkn+FTIATpATrMTCWk8HknZCUEK0dllkljP/z4=";
     meta = {
       license = lib.licenses.mit;
       maintainers = with lib.maintainers; [
@@ -3410,10 +3410,10 @@
   };
 
   vim = {
-    version = "0.8.1-unstable-2026-02-26";
+    version = "0.8.1-unstable-2026-07-12";
     url = "github:tree-sitter-grammars/tree-sitter-vim";
-    rev = "3092fcd99eb87bbd0fc434aa03650ba58bd5b43b";
-    hash = "sha256-MnLBFuJCJbetcS07fG5fkCwHtf/EcNP+Syf0Gn0K39c=";
+    rev = "039c8d0aa1deae00ddeb0374dd70bcc0ec56938d";
+    hash = "sha256-i+CfSWLRXhR2g98cGlfW4iRhNb3nt8O+WJ1Bjf2tnEM=";
     meta = {
       license = lib.licenses.mit;
     };

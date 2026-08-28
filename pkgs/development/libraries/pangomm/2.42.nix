@@ -7,7 +7,7 @@
   ninja,
   python3,
   pango,
-  glibmm,
+  glibmm_2_4,
   cairomm_1_0,
   gnome,
 }:
@@ -43,7 +43,7 @@ stdenv.mkDerivation rec {
   ];
   propagatedBuildInputs = [
     pango
-    glibmm
+    glibmm_2_4
     cairomm_1_0
   ];
 

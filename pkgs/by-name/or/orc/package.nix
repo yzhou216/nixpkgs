@@ -1,6 +1,7 @@
 {
   lib,
   stdenv,
+  nix-update-script,
   fetchFromGitLab,
   meson,
   ninja,
@@ -64,10 +65,14 @@ stdenv.mkDerivation (finalAttrs: {
       && lib.versionAtLeast stdenv.cc.version "12"
     );
 
-  passthru.tests = {
-    inherit (gst_all_1) gst-plugins-good gst-plugins-bad gst-plugins-ugly;
-    inherit gnuradio vips;
-    qt6-qtmultimedia = qt6.qtmultimedia;
+  passthru = {
+    tests = {
+      inherit (gst_all_1) gst-plugins-good gst-plugins-bad gst-plugins-ugly;
+      inherit gnuradio vips;
+      qt6-qtmultimedia = qt6.qtmultimedia;
+    };
+
+    updateScript = nix-update-script { };
   };
 
   meta = {

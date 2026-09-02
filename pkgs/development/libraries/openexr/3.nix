@@ -9,17 +9,18 @@
   pkg-config,
   libjxl,
   pkgsCross,
+  python3Packages,
 }:
 
 stdenv.mkDerivation rec {
   pname = "openexr";
-  version = "3.4.13";
+  version = "3.4.15";
 
   src = fetchFromGitHub {
     owner = "AcademySoftwareFoundation";
     repo = "openexr";
     rev = "v${version}";
-    hash = "sha256-uzeppRB8vpTjAuqlpvoTehdGL/ng1rTm7kbYdaQHKUw=";
+    hash = "sha256-Z2o2ooDqAof5rnR5lX3RfWnklyD/c98HuwWF6uZA+78=";
   };
 
   outputs = [
@@ -91,11 +92,13 @@ stdenv.mkDerivation rec {
   passthru.tests = {
     inherit libjxl;
     musl = pkgsCross.musl64.openexr;
+    python = python3Packages.openexr;
   };
 
   meta = {
     description = "High dynamic-range (HDR) image file format";
     homepage = "https://www.openexr.com";
+    changelog = "https://github.com/AcademySoftwareFoundation/OpenEXR/blob/v${version}/CHANGES.md";
     license = lib.licenses.bsd3;
     maintainers = with lib.maintainers; [ paperdigits ];
     platforms = lib.platforms.all;

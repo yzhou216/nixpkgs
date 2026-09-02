@@ -58,7 +58,9 @@ let
 
         ao = callPackage ../development/ocaml-modules/ao { };
 
-        apron = callPackage ../development/ocaml-modules/apron { };
+        apron = callPackage ../development/ocaml-modules/apron {
+          inherit (pkgs) flint;
+        };
 
         apronext = callPackage ../development/ocaml-modules/apronext { };
 
@@ -110,6 +112,8 @@ let
           cmdliner = cmdliner_1;
           inherit (pkgs.llvmPackages) llvm;
         };
+
+        base32 = callPackage ../development/ocaml-modules/base32 { };
 
         base64 = callPackage ../development/ocaml-modules/base64 { };
 
@@ -246,6 +250,8 @@ let
         cascade = callPackage ../development/ocaml-modules/cascade { };
 
         cbor = callPackage ../development/ocaml-modules/cbor { };
+
+        cborl = callPackage ../development/ocaml-modules/cborl { };
 
         cfstream = callPackage ../development/ocaml-modules/cfstream { };
 
@@ -600,6 +606,8 @@ let
 
         eqaf-cstruct = callPackage ../development/ocaml-modules/eqaf/cstruct.nix { };
 
+        eris = callPackage ../development/ocaml-modules/eris { };
+
         erm_xml = callPackage ../development/ocaml-modules/erm_xml { };
 
         erm_xmpp = callPackage ../development/ocaml-modules/erm_xmpp { };
@@ -688,6 +696,10 @@ let
         };
 
         flex = callPackage ../development/ocaml-modules/flex { };
+
+        flint = callPackage ../development/ocaml-modules/flint {
+          flint-c = pkgs.flint;
+        };
 
         fmt = callPackage ../development/ocaml-modules/fmt { };
 
@@ -1051,6 +1063,8 @@ let
           cmdliner = cmdliner_1;
         };
 
+        kapla = callPackage ../development/ocaml-modules/kapla { };
+
         kcas = callPackage ../development/ocaml-modules/kcas { };
 
         kdf = callPackage ../development/ocaml-modules/kdf { };
@@ -1367,6 +1381,8 @@ let
 
         mlbdd = callPackage ../development/ocaml-modules/mlbdd { };
 
+        mlcuddidl = callPackage ../development/ocaml-modules/mlcuddidl { };
+
         mldoc = callPackage ../development/ocaml-modules/mldoc { };
 
         mlgmpidl = callPackage ../development/ocaml-modules/mlgmpidl { };
@@ -1377,10 +1393,13 @@ let
 
         mmap = callPackage ../development/ocaml-modules/mmap { };
 
+        monocypher = callPackage ../development/ocaml-modules/monocypher { };
+
         monolith = callPackage ../development/ocaml-modules/monolith { };
 
         mopsa = callPackage ../development/ocaml-modules/mopsa {
           inherit (pkgs.llvmPackages_19) clang libclang libllvm;
+          inherit (pkgs) flint;
         };
 
         morbig = callPackage ../development/ocaml-modules/morbig {

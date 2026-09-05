@@ -8,6 +8,7 @@
   bzip2,
   curlMinimal,
   expat,
+  iconv,
   libarchive,
   libuv,
   ncurses,
@@ -51,11 +52,11 @@ stdenv.mkDerivation (finalAttrs: {
     + lib.optionalString isMinimalBuild "-minimal"
     + lib.optionalString cursesUI "-cursesUI"
     + lib.optionalString qt5UI "-qt5UI";
-  version = "4.3.4";
+  version = "4.4.2";
 
   src = fetchurl {
     url = "https://cmake.org/files/v${lib.versions.majorMinor finalAttrs.version}/cmake-${finalAttrs.version}.tar.gz";
-    hash = "sha256-/e/4l7nrSddkU58rHtxut+FEDfMlZ4qXwZeEmekxrdo=";
+    hash = "sha256-HbnmHmC24IdMhjhjQLkQOC88XnW5+/tE0SIGMSmieJ0=";
   };
 
   patches = [
@@ -125,7 +126,11 @@ stdenv.mkDerivation (finalAttrs: {
   ]
   ++ lib.optional useOpenSSL openssl
   ++ lib.optional cursesUI ncurses
-  ++ lib.optional qt5UI qtbase;
+  ++ lib.optional qt5UI qtbase
+  ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    iconv
+    iconv.dev
+  ];
 
   strictDeps = true;
 

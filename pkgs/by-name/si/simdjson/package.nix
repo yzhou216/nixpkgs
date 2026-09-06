@@ -3,6 +3,8 @@
   stdenv,
   fetchFromGitHub,
   cmake,
+  nix-update-script,
+  testers,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -19,6 +21,7 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [ cmake ];
 
   strictDeps = true;
+  __structuredAttrs = true;
 
   cmakeFlags = [
     (lib.cmakeBool "SIMDJSON_DEVELOPER_MODE" false)
@@ -30,7 +33,13 @@ stdenv.mkDerivation (finalAttrs: {
     (lib.cmakeFeature "CMAKE_CXX_FLAGS" "-mpower8-vector")
   ];
 
-  __structuredAttrs = true;
+  passthru = {
+    updateScript = nix-update-script { };
+
+    tests.pkg-config = testers.hasPkgConfigModules {
+      package = finalAttrs.finalPackage;
+    };
+  };
 
   meta = {
     homepage = "https://simdjson.org/";
@@ -39,5 +48,6 @@ stdenv.mkDerivation (finalAttrs: {
     license = lib.licenses.asl20;
     platforms = lib.platforms.all;
     maintainers = with lib.maintainers; [ chessai ];
+    pkgConfigModules = [ "simdjson" ];
   };
 })

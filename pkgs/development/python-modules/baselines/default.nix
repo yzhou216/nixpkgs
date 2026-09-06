@@ -4,7 +4,7 @@
   fetchFromGitHub,
 
   # build-system
-  setuptools,
+  setuptools_80,
 
   # dependencies
   click,
@@ -34,7 +34,11 @@ buildPythonPackage {
     hash = "sha256-lK1HRBdKR92E2hHZF5cFZ0P3N1aJ57pw8tazrPOZTEg=";
   };
 
-  build-system = [ setuptools ];
+  build-system = [
+    # `pkg_resources` was removed from more recent versions
+    #   ModuleNotFoundError: No module named 'pkg_resources'
+    setuptools_80
+  ];
 
   dependencies = [
     click

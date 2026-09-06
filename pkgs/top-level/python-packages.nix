@@ -4318,8 +4318,6 @@ self: super: with self; {
 
   detect-secrets = callPackage ../development/python-modules/detect-secrets { };
 
-  detectron2 = callPackage ../development/python-modules/detectron2 { };
-
   developer-disk-image = callPackage ../development/python-modules/developer-disk-image { };
 
   devgoldyutils = callPackage ../development/python-modules/devgoldyutils { };

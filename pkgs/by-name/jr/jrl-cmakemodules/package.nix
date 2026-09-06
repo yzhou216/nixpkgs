@@ -38,6 +38,9 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "jrl-cmakemodules";
   version = "2.3.0";
 
+  __structuredAttrs = true;
+  srictDeps = true;
+
   src = fetchFromGitHub {
     owner = "jrl-umi3218";
     repo = "jrl-cmakemodules";

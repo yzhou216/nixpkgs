@@ -18,6 +18,7 @@
   catch2_3,
   cppad,
   gmp,
+  llvmPackages,
   matio,
   mpfr,
   python3Packages,
@@ -65,6 +66,11 @@ stdenv.mkDerivation (finalAttrs: {
     python3Packages.pytest
     simde
     suitesparse
+  ]
+  ++ lib.optionals stdenv.cc.isClang [
+    # Otherwise `FindCHOLMOD` fails
+    # Could NOT find OpenMP_C (missing: OpenMP_C_FLAGS OpenMP_C_LIB_NAMES)
+    llvmPackages.openmp
   ];
 
   passthru = {

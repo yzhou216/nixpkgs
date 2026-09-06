@@ -2,26 +2,28 @@
   lib,
   buildPythonPackage,
   fetchFromGitHub,
+
+  # build-system
   setuptools,
-  pytest,
-  gym,
-  scipy,
-  tqdm,
-  joblib,
-  dill,
-  progressbar2,
-  cloudpickle,
+
+  # dependencies
   click,
-  pyzmq,
-  tensorflow,
+  cloudpickle,
+  dill,
+  gym,
+  joblib,
   mpi4py,
+  progressbar2,
+  pyzmq,
+  scipy,
+  tensorflow,
+  tqdm,
 }:
 
 buildPythonPackage {
   pname = "baselines";
   version = "0.1.6"; # remember to manually adjust the rev
   pyproject = true;
-
   __structuredAttrs = true;
 
   src = fetchFromGitHub {
@@ -35,17 +37,17 @@ buildPythonPackage {
   build-system = [ setuptools ];
 
   dependencies = [
-    gym
-    scipy
-    tqdm
-    joblib
-    pyzmq
-    dill
-    progressbar2
-    mpi4py
-    cloudpickle
-    tensorflow
     click
+    cloudpickle
+    dill
+    gym
+    joblib
+    mpi4py
+    progressbar2
+    pyzmq
+    scipy
+    tensorflow
+    tqdm
   ];
 
   postPatch = ''
@@ -57,8 +59,6 @@ buildPythonPackage {
 
   # fails to create a daemon, probably because of sandboxing
   doCheck = false;
-
-  nativeCheckInputs = [ pytest ];
 
   pythonImportsCheck = [ "baselines" ];
 

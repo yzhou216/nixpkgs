@@ -37,6 +37,12 @@ stdenv.mkDerivation (finalAttrs: {
     inherit hash;
   };
 
+  outputs = [
+    "out"
+    "lib"
+    "dev"
+  ];
+
   patches =
     lib.optionals (lib.versionOlder version "22") [
       # fix protobuf-targets.cmake installation paths, and allow for CMAKE_INSTALL_LIBDIR to be absolute

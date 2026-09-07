@@ -70,6 +70,8 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [ autoconf ];
 
+  strictDeps = true;
+
   preConfigure = "autoconf";
 
   passthru.tests = {

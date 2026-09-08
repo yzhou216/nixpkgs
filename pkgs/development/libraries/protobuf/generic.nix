@@ -37,6 +37,12 @@ stdenv.mkDerivation (finalAttrs: {
     inherit hash;
   };
 
+  outputs = [
+    "out"
+    "lib"
+    "dev"
+  ];
+
   patches =
     lib.optionals (lib.versionOlder version "22") [
       # fix protobuf-targets.cmake installation paths, and allow for CMAKE_INSTALL_LIBDIR to be absolute
@@ -180,6 +186,10 @@ stdenv.mkDerivation (finalAttrs: {
       inherit (python3.pkgs) celery;
 
       version = testers.testVersion { package = protobuf; };
+
+      pkg-config = testers.hasPkgConfigModules {
+        package = protobuf;
+      };
     };
 
     inherit abseil-cpp;
@@ -197,5 +207,15 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://protobuf.dev/";
     maintainers = with lib.maintainers; [ GaetanLepage ];
     mainProgram = "protoc";
+    pkgConfigModules = [
+      "protobuf"
+      "protobuf_lite"
+    ]
+    ++ lib.optionals (lib.versionAtLeast version "22") [
+      "utf8_range"
+    ]
+    ++ lib.optionals (lib.versionAtLeast version "27") [
+      "upb"
+    ];
   };
 })

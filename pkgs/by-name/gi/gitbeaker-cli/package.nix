@@ -110,5 +110,6 @@ stdenv.mkDerivation (finalAttrs: {
     homepage = "https://github.com/jdalrymple/gitbeaker";
     maintainers = [ ];
     mainProgram = "gitbeaker";
+    license = lib.licenses.mit;
   };
 })

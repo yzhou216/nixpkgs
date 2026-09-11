@@ -209,7 +209,7 @@ stdenv.mkDerivation (finalAttrs: {
     mainProgram = "protoc";
     pkgConfigModules = [
       "protobuf"
-      "protobuf_lite"
+      "protobuf-lite"
     ]
     ++ lib.optionals (lib.versionAtLeast version "22") [
       "utf8_range"

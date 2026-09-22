@@ -16,7 +16,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "joplin-cli";
-  version = "3.6.2";
+  version = "3.7.1";
 
   src = fetchFromGitHub {
     owner = "laurent22";
@@ -25,9 +25,6 @@ stdenv.mkDerivation (finalAttrs: {
     postFetch = ''
       # there's a file with a weird name that causes a hash mismatch on darwin
       rm $out/packages/app-cli/tests/support/photo*
-
-      # Remove when updating since upstream has updated Yarn
-      # https://github.com/laurent22/joplin/commit/071f205c44da8e2979dcf53a4105648bfa0e7f83
       cd $out
       patch -p1 < ${
         (substitute {
@@ -40,7 +37,7 @@ stdenv.mkDerivation (finalAttrs: {
         })
       }
     '';
-    hash = "sha256-LSkiW3Kwtjsk2LLM/MXo6ErR+G8b7IX3LkEtDJlc7ok=";
+    hash = "sha256-g5b1DwSG0JgzGeL17q50CaTU0mG6u/v5IUwoVBcoMsM=";
   };
 
   missingHashes = ./missing-hashes.json;
@@ -51,7 +48,7 @@ stdenv.mkDerivation (finalAttrs: {
       missingHashes
       postPatch
       ;
-    hash = "sha256-EHHAB20syDakpN4TGuLCc1v2AGEJPc3y7uCpS+PVzzQ=";
+    hash = "sha256-IyOnSB21bOYiPnYUorne8/11zxUItIqMtT88ExCoEmU=";
   };
 
   nativeBuildInputs = [
@@ -116,11 +113,11 @@ stdenv.mkDerivation (finalAttrs: {
     rm -rf $out/lib/packages/lib/node_modules/canvas
 
     # Remove extra files
-    rm -rf $out/lib/packages/app-cli/{app/*.test.ts,*.md,.*ignore,tests/,tools/,*.js,*.json,*.sh}
+    rm -rf $out/lib/packages/app-cli/{app/,*.md,.*ignore,tests/,tools/,*.js,tsconfig.json,*.sh}
 
     # Link final binary
-    chmod +x $out/lib/packages/app-cli/app/main.js
-    ln -s $out/lib/packages/app-cli/app/main.js $out/bin/joplin
+    chmod +x $out/lib/packages/app-cli/build/main.js
+    ln -s $out/lib/packages/app-cli/build/main.js $out/bin/joplin
     patchShebangs $out/bin/joplin
 
     runHook postInstall

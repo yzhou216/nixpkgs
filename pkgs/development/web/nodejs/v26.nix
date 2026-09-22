@@ -23,8 +23,8 @@ let
       [ ];
 in
 buildNodejs {
-  version = "26.8.1";
-  sha256 = "d1698832a1a10f050cdda044a3e3d6a748246811e2e7bc89ba9a8bd693dc45f2";
+  version = "26.10.0";
+  sha256 = "7b3a546d33cb7e15a43bdd7a57e0be5d5fd5ffc553e6e4c120033e66f0ba20c5";
   patches =
     (lib.optional (!(stdenv.hostPlatform.emulatorAvailable buildPackages)) (fetchpatch2 {
       url = "https://raw.githubusercontent.com/buildroot/buildroot/2f0c31bffdb59fb224387e35134a6d5e09a81d57/package/nodejs/nodejs-src/0003-include-obj-name-in-shared-intermediate.patch";
@@ -49,12 +49,6 @@ buildNodejs {
       ./use-nix-codesign.patch
 
       ./fix-temporal-integration-with-shared-icu.patch
-
-      # TODO: remove when support for OpenSSL 3.6.4 has landed upstream
-      (fetchpatch2 {
-        url = "https://github.com/nodejs/node/commit/28b571c38af5631b95e993258764caa3604c3fca.patch?full_index=1";
-        hash = "sha256-fyQICYO3xwTJQKGWUqEcmsflhDy+uQtEFuC5KlZnsus=";
-      })
     ]
     ++ gypPatches;
 }

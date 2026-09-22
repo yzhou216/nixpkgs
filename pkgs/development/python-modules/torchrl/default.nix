@@ -81,14 +81,11 @@ buildPythonPackage (finalAttrs: {
   pyproject = true;
   __structuredAttrs = true;
 
-  # No tags have been made for 0.14.0
-  # https://github.com/pytorch/rl/pull/4108#issuecomment-5558175190
   src = fetchFromGitHub {
     owner = "pytorch";
     repo = "rl";
-    # tag = "v${finalAttrs.version}";
-    rev = "6e18e35b2c68be1a56afebfb0676d217925114cd";
-    hash = "sha256-a1Ehbr6N5w9sVH1ygFhlPEm8J51zIrXB37N18OQqiDM=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-ATfvAobn9MjY+PHY7xY+iPztyKBZ5YpGXL1ZCzgvQXc=";
   };
 
   postPatch = ''
@@ -207,6 +204,7 @@ buildPythonPackage (finalAttrs: {
   nativeCheckInputs = [
     gymnasium
     h5py
+    hydra-core
     imageio
     pytest-rerunfailures
     pytest-xdist
@@ -320,15 +318,35 @@ buildPythonPackage (finalAttrs: {
     #   /build/source/test/smoke_test.py
     "test/llm"
 
-    # Hang indefinitely
+    # Hang indefinitely on some CPUs
     "test/services/test_services.py"
+    "test/envs/test_special.py::TestAsyncEnvPool::test_recv_timeout_bounds_whole_call"
+
+    # AssertionError: Test timed out (most tests in this class)
+    "test/test_configs.py::TestHydraParsing"
+
+    # AssertionError: Traceback (most recent call last)
+    "test/objectives/test_dreamer_v3.py::test_dreamer_v3_checkpoint_resume_processes"
+
+    # AssertionError: Tensor-likes are not equal!
+    "test/modules/test_dreamer_components.py::TestDreamerV3Components::test_discrete_actor[cpu-autocast]"
+
+    # OSError: We couldn't connect to 'https://huggingface.co' to load the files,...
+    "test/transforms/test_key_transforms.py::TestTokenizer::test_single_string_attention_mask_padding"
+    "test/transforms/test_key_transforms.py::TestTokenizer::test_single_string_without_attention_mask"
+
+    # ray.exceptions.GetTimeoutError: Get timed out: some object(s) not ready
+    # (in other words, a sandbox issue)
+    "test/services/test_python_executor_service.py::TestPythonExecutorService::test_service_execution"
+
+    # Very slow, timing out under load
+    "test/test_distributed.py::TestSyncCollector"
   ];
 
   meta = {
     description = "Modular, primitive-first, python-first PyTorch library for Reinforcement Learning";
     homepage = "https://github.com/pytorch/rl";
-    # TODO: uncomment when src is using a git tag again
-    # changelog = "https://github.com/pytorch/rl/releases/tag/${finalAttrs.src.tag}";
+    changelog = "https://github.com/pytorch/rl/releases/tag/${finalAttrs.src.tag}";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ GaetanLepage ];
   };

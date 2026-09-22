@@ -31,7 +31,7 @@
   libpulseaudio,
   librdf_rasqal,
   libsamplerate,
-  libsigcxx,
+  libsigcxx_2_0,
   libsndfile,
   libusb1,
   libuv,
@@ -43,7 +43,7 @@
   lv2,
   makeWrapper,
   pango,
-  pangomm,
+  pangomm_1_4,
   perl,
   pkg-config,
   python3,
@@ -141,7 +141,7 @@ stdenv.mkDerivation (
       libpulseaudio
       librdf_rasqal
       libsamplerate
-      libsigcxx
+      libsigcxx_2_0
       libsndfile
       libusb1
       libuv
@@ -152,7 +152,7 @@ stdenv.mkDerivation (
       lrdf
       lv2
       pango
-      pangomm
+      pangomm_1_4
       perl
       python3
       qm-dsp

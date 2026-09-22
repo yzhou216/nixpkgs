@@ -16,8 +16,8 @@
   glibcLocales,
   ensureNewerSourcesForZipFilesHook,
   darwin,
+  swift,
   xcbuild,
-  swiftPackages,
   openssl,
   getconf,
   python3,
@@ -47,7 +47,6 @@ let
     targetPlatform
     ;
   inherit (stdenv.hostPlatform) isLinux isDarwin;
-  inherit (swiftPackages) swift;
 
   releaseManifest = lib.importJSON releaseManifestFile;
   inherit (releaseManifest) sourceRepository tag;
@@ -67,6 +66,9 @@ stdenv.mkDerivation {
   pname = "${baseName}-vmr";
   inherit version;
 
+  strictDeps = true;
+  __structuredAttrs = true;
+
   # TODO: fix this in the binary sdk packages
   preHook = lib.optionalString stdenv.hostPlatform.isDarwin ''
     addToSearchPath DYLD_LIBRARY_PATH "${_icu}/lib"
@@ -79,6 +81,10 @@ stdenv.mkDerivation {
   };
 
   nativeBuildInputs = [
+    # this gets copied into the tree, but we still need the sandbox profile
+    bootstrapSdk
+    # the propagated build inputs in llvm.dev break swift compilation
+    llvmPackages.llvm.out
     ensureNewerSourcesForZipFilesHook
     jq
     curl.bin
@@ -102,13 +108,12 @@ stdenv.mkDerivation {
   ]
   ++ lib.optionals isDarwin [
     getconf
+    xcbuild
+    swift
+    sigtool
   ];
 
   buildInputs = [
-    # this gets copied into the tree, but we still need the sandbox profile
-    bootstrapSdk
-    # the propagated build inputs in llvm.dev break swift compilation
-    llvmPackages.llvm.out
     zlib
     _icu
     openssl
@@ -118,10 +123,7 @@ stdenv.mkDerivation {
     lttng-ust_2_12
   ]
   ++ lib.optionals isDarwin [
-    xcbuild
-    swift
     krb5
-    sigtool
   ];
 
   # This is required to fix the error:
@@ -154,12 +156,6 @@ stdenv.mkDerivation {
     ) ./Prefer-DOTNET_ROOT-over-directory-traversal-when-fin.patch
     ++ lib.optionals (lib.versionAtLeast version "11") [
       ./Prefer-DOTNET_ROOT-over-directory-traversal-when-fin.2.patch
-      (fetchpatch2 {
-        url = "https://github.com/dotnet/runtime/pull/132408/commits/76be9c11bc50bcfa7a13e027fb1cee486bca25a1.patch";
-        hash = "sha256-aJT4QVBaB96mc5m1xX8J5+Uh6h/XtKWV8m5gLOnFc+k=";
-        extraPrefix = "src/runtime/";
-        stripLen = 1;
-      })
     ]
     ++ lib.optional (lib.versionAtLeast version "11" && isDarwin) ./fix-cmake-darwin.patch;
 
@@ -363,13 +359,7 @@ stdenv.mkDerivation {
         src/runtime/src/mono/CMakeLists.txt \
         --replace-fail '/usr/lib/libicucore.dylib' '${darwin.ICU}/lib/libicucore.dylib'
     ''
-  )
-  + lib.optionalString (lib.versionAtLeast version "11") ''
-    # matching the trailing space here to avoid breaking the shebang
-    substituteInPlace \
-      src/msbuild/eng/build.sh \
-      --replace-fail '/bin/bash ' 'bash '
-  '';
+  );
 
   prepFlags = [
     "--no-artifacts"
@@ -396,7 +386,7 @@ stdenv.mkDerivation {
       dotnet nuget add source "${bootstrapSdk.artifacts}"
     ''
     + ''
-      ${prepScript} $prepFlags
+      ${prepScript} "''${prepFlags[@]}"
     ''
     + lib.optionalString (!hasRuntime) ''
       mkdir .shared-components
@@ -404,7 +394,7 @@ stdenv.mkDerivation {
       chmod +w -R .shared-components/
       # zip dependencies unzipped in bootstrap installPhase, so they can be found
       find .shared-components/assets . -name \*.tar -exec gzip -f --fast {} \;
-      buildFlags+=\ --with-shared-components\ "$PWD"/.shared-components
+      buildFlags+=(--with-shared-components "$PWD"/.shared-components)
     ''
     + ''
 
@@ -469,7 +459,7 @@ stdenv.mkDerivation {
     version= \
     CLR_CC=$(command -v clang) \
     CLR_CXX=$(command -v clang++) \
-      ./build.sh $buildFlags
+      ./build.sh "''${buildFlags[@]}"
 
     runHook postBuild
   '';

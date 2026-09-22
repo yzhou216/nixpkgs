@@ -563,7 +563,7 @@ with pkgs;
       buildPackages.fetchurl # No need to do special overrides twice,
     else
       makeOverridable (import ../build-support/fetchurl) {
-        inherit lib stdenvNoCC buildPackages;
+        inherit lib stdenvNoCC;
         inherit cacert;
         inherit (config) hashedMirrors rewriteURL;
         curl = buildPackages.curlMinimal.override (old: rec {
@@ -1632,8 +1632,6 @@ with pkgs;
 
   lexicon = with python3Packages; toPythonApplication dns-lexicon;
 
-  lgogdownloader-gui = callPackage ../by-name/lg/lgogdownloader/package.nix { enableGui = true; };
-
   # Less secure variant of lowdown for use inside Nix builds.
   lowdown-unsandboxed = lowdown.override {
     enableDarwinSandbox = false;
@@ -1884,16 +1882,14 @@ with pkgs;
     cudaPackages_13_1
     cudaPackages_13_2
     cudaPackages_13_3
+    cudaPackages_13_4
     ;
 
   cudaPackages_12 = cudaPackages_12_9;
 
-  cudaPackages_13 = cudaPackages_13_2;
+  cudaPackages_13 = cudaPackages_13_3;
 
   cudaPackages = recurseIntoAttrs cudaPackages_12;
-
-  # TODO: move to alias
-  cudatoolkit = cudaPackages.cudatoolkit;
 
   dconf2nix = callPackage ../development/tools/haskell/dconf2nix { };
 
@@ -1986,17 +1982,9 @@ with pkgs;
     binutils = binutils-unwrapped;
   };
 
-  file = callPackage ../tools/misc/file {
-    inherit (windows) libgnurx;
-  };
-
-  findutils = callPackage ../tools/misc/findutils { };
-
   bsd-fingerd = bsd-finger.override {
     buildProduct = "daemon";
   };
-
-  fpm = callPackage ../tools/package-management/fpm { };
 
   ferdium = callPackage ../applications/networking/instant-messengers/ferdium {
     mkFranzDerivation = callPackage ../applications/networking/instant-messengers/franz/generic.nix { };
@@ -2007,8 +1995,6 @@ with pkgs;
   };
 
   frostwire-bin = callPackage ../applications/networking/p2p/frostwire/frostwire-bin.nix { };
-
-  uniscribe = callPackage ../tools/text/uniscribe { };
 
   inherit (callPackages ../tools/filesystems/garage { })
     garage
@@ -2122,10 +2108,6 @@ with pkgs;
 
   gdown = with python3Packages; toPythonApplication gdown;
 
-  gpt4all-cuda = gpt4all.override {
-    cudaSupport = true;
-  };
-
   gprof2dot = with python3Packages; toPythonApplication gprof2dot;
 
   grails = callPackage ../development/web/grails { jdk = null; };
@@ -2160,8 +2142,6 @@ with pkgs;
       { };
 
   hassil = with python3Packages; toPythonApplication hassil;
-
-  haste-client = callPackage ../tools/misc/haste-client { };
 
   hareThirdParty = recurseIntoAttrs (callPackage ./hare-third-party.nix { });
 
@@ -2530,14 +2510,14 @@ with pkgs;
   libnma-gtk4 = libnma.override { withGtk4 = true; };
 
   inherit (callPackages ../servers/nextcloud { })
-    nextcloud32
     nextcloud33
     nextcloud34
+    nextcloud35
     ;
 
-  nextcloud32Packages = callPackage ../servers/nextcloud/packages { ncVersion = "32"; };
   nextcloud33Packages = callPackage ../servers/nextcloud/packages { ncVersion = "33"; };
   nextcloud34Packages = callPackage ../servers/nextcloud/packages { ncVersion = "34"; };
+  nextcloud35Packages = callPackage ../servers/nextcloud/packages { ncVersion = "35"; };
 
   nextcloud-notify_push = callPackage ../servers/nextcloud/notify_push.nix { };
 
@@ -2563,10 +2543,6 @@ with pkgs;
   nvfetcher = haskell.lib.compose.justStaticExecutables haskellPackages.nvfetcher;
 
   pgbadger = perlPackages.callPackage ../tools/misc/pgbadger { };
-
-  nsjail = callPackage ../tools/security/nsjail {
-    protobuf = protobuf_21;
-  };
 
   # ntfsprogs are merged into ntfs-3g
   ntfsprogs = pkgs.ntfs3g;
@@ -2694,8 +2670,6 @@ with pkgs;
     ssh = openssh;
   };
 
-  phosh = callPackage ../applications/window-managers/phosh { };
-
   phosh-mobile-settings =
     callPackage ../applications/window-managers/phosh/phosh-mobile-settings.nix
       { };
@@ -2733,8 +2707,9 @@ with pkgs;
     pnpm_10_34_0
     pnpm_10
     pnpm_11
+    pnpm_12
     ;
-  pnpm = pnpm_11;
+  pnpm = pnpm_12;
 
   inherit (callPackages ../build-support/node/fetch-pnpm-deps { })
     fetchPnpmDeps
@@ -2762,8 +2737,6 @@ with pkgs;
   mpi = openmpi; # this attribute should used to build MPI applications
 
   quota = if stdenv.hostPlatform.isLinux then linuxquota else unixtools.quota;
-
-  rainbowstream = with python3.pkgs; toPythonApplication rainbowstream;
 
   rapidgzip = with python3Packages; toPythonApplication rapidgzip;
 
@@ -2956,8 +2929,6 @@ with pkgs;
     callPackage ../development/tools/continuous-integration/woodpecker/server.nix
       { };
 
-  testdisk = libsForQt5.callPackage ../tools/system/testdisk { };
-
   testdisk-qt = testdisk.override { enableQt = true; };
 
   tweet-hs = haskell.lib.compose.justStaticExecutables haskellPackages.tweet-hs;
@@ -3007,10 +2978,6 @@ with pkgs;
   # https://github.com/NixOS/nixpkgs/issues/211340
   # https://github.com/NixOS/nixpkgs/issues/227327
   wafHook = waf.hook;
-
-  wyrd = callPackage ../tools/misc/wyrd {
-    ocamlPackages = ocaml-ng.ocamlPackages_4_14;
-  };
 
   # A minimal xar is needed to break an infinite recursion between macfuse-stubs and xar.
   # It is also needed to reduce the amount of unnecessary stuff in the Darwin bootstrap.
@@ -3131,6 +3098,7 @@ with pkgs;
 
   chickenPackages_4 = recurseIntoAttrs (callPackage ../development/compilers/chicken/4 { });
   chickenPackages_5 = recurseIntoAttrs (callPackage ../development/compilers/chicken/5 { });
+  chickenPackages_6 = recurseIntoAttrs (callPackage ../development/compilers/chicken/6 { });
   chickenPackages = dontRecurseIntoAttrs chickenPackages_5;
 
   inherit (chickenPackages_5)
@@ -3215,7 +3183,7 @@ with pkgs;
   gerbilPackages-unstable = pkgs.gerbil-support.gerbilPackages-unstable; # NB: don't recurseIntoAttrs for (unstable!) libraries
   glow-lang = pkgs.gerbilPackages-unstable.glow-lang;
 
-  default-gcc-version = 15;
+  default-gcc-version = 16;
   gcc = pkgs.${"gcc${toString default-gcc-version}"};
   gccFun = callPackage ../development/compilers/gcc;
   gcc-unwrapped = gcc.cc;
@@ -4101,12 +4069,14 @@ with pkgs;
     ];
   };
 
-  swiftPackages = recurseIntoAttrs (callPackage ../development/compilers/swift { });
+  swiftPackages = recurseIntoAttrs (callPackage ./swift-packages.nix { });
   inherit (swiftPackages)
-    swift
-    swiftpm
+    fetchSwiftPMDeps
     sourcekit-lsp
+    swift
+    swift-corelibs-libdispatch
     swift-format
+    swiftpm
     swiftpm2nix
     ;
 
@@ -4749,6 +4719,7 @@ with pkgs;
     electron_41-bin
     electron_42-bin
     electron_43-bin
+    electron_44-bin
     ;
 
   inherit (callPackages ../development/tools/electron/chromedriver { })
@@ -4757,6 +4728,7 @@ with pkgs;
     electron-chromedriver_41
     electron-chromedriver_42
     electron-chromedriver_43
+    electron-chromedriver_44
     ;
 
   inherit
@@ -4778,10 +4750,7 @@ with pkgs;
       {
         electron_39 = electron_39-bin;
         electron_40 = electron_40-bin;
-        electron_41 = getElectronPkg {
-          src = electron-source.electron_41;
-          bin = electron_41-bin;
-        };
+        electron_41 = electron_41-bin;
         electron_42 = getElectronPkg {
           src = electron-source.electron_42;
           bin = electron_42-bin;
@@ -4790,6 +4759,10 @@ with pkgs;
           src = electron-source.electron_43;
           bin = electron_43-bin;
         };
+        electron_44 = getElectronPkg {
+          src = electron-source.electron_44;
+          bin = electron_44-bin;
+        };
       }
     )
     electron_39
@@ -4797,6 +4770,7 @@ with pkgs;
     electron_41
     electron_42
     electron_43
+    electron_44
     ;
   electron = electron_43;
   electron-bin = electron_43-bin;
@@ -5122,8 +5096,6 @@ with pkgs;
 
   libtool = libtool_2;
 
-  libtool_1_5 = callPackage ../development/tools/misc/libtool { };
-
   libtool_2 = callPackage ../development/tools/misc/libtool/libtool2.nix { };
 
   linuxkit = callPackage ../development/tools/misc/linuxkit {
@@ -5430,8 +5402,6 @@ with pkgs;
   niv = lib.getBin (haskell.lib.compose.justStaticExecutables haskellPackages.niv);
 
   ormolu = lib.getBin (haskell.lib.compose.justStaticExecutables haskellPackages.ormolu);
-
-  ceedling = callPackage ../development/tools/ceedling { };
 
   celt = callPackage ../development/libraries/celt { };
   celt_0_7 = callPackage ../development/libraries/celt/0.7.nix { };
@@ -5764,11 +5734,7 @@ with pkgs;
   # Not moved to aliases while we decide if we should split the package again.
   atk = at-spi2-core;
 
-  pangomm = callPackage ../development/libraries/pangomm { };
-
-  pangomm_2_48 = callPackage ../development/libraries/pangomm/2.48.nix { };
-
-  pangomm_2_42 = callPackage ../development/libraries/pangomm/2.42.nix { };
+  pangomm_1_4 = callPackage ../by-name/pa/pangomm_2_48/1.4.nix { };
 
   gtk2-x11 = gtk2.override {
     cairo = cairo.override { x11Support = true; };
@@ -5794,8 +5760,6 @@ with pkgs;
   };
 
   gtk-mac-integration-gtk3 = gtk-mac-integration;
-
-  gtksourceview = gtksourceview3;
 
   gtksourceview3 = callPackage ../development/libraries/gtksourceview/3.x.nix { };
 
@@ -6047,9 +6011,7 @@ with pkgs;
     libprom
     ;
 
-  libsigcxx = callPackage ../development/libraries/libsigcxx { };
-
-  libsigcxx30 = callPackage ../development/libraries/libsigcxx/3.0.nix { };
+  libsigcxx_2_0 = callPackage ../by-name/li/libsigcxx_3_0/2.0.nix { };
 
   libtorrent-rasterbar = libtorrent-rasterbar-2_0_x;
 
@@ -6332,7 +6294,7 @@ with pkgs;
     libressl_4_3
     ;
 
-  openssl = openssl_3_6;
+  openssl = openssl_3_5;
 
   openssl_oqs = openssl.override {
     providers = [
@@ -6776,9 +6738,10 @@ with pkgs;
 
   ### DEVELOPMENT / LIBRARIES / DARWIN SDKS
 
-  apple-sdk_14 = callPackage ../by-name/ap/apple-sdk/package.nix { darwinSdkMajorVersion = "14"; };
-  apple-sdk_15 = callPackage ../by-name/ap/apple-sdk/package.nix { darwinSdkMajorVersion = "15"; };
-  apple-sdk_26 = callPackage ../by-name/ap/apple-sdk/package.nix { darwinSdkMajorVersion = "26"; };
+  apple-sdk_14 = apple-sdk.override { darwinSdkMajorVersion = "14"; };
+  apple-sdk_15 = apple-sdk.override { darwinSdkMajorVersion = "15"; };
+  apple-sdk_26 = apple-sdk.override { darwinSdkMajorVersion = "26"; };
+  apple-sdk_27 = apple-sdk.override { darwinSdkMajorVersion = "27"; };
 
   darwinMinVersionHook =
     deploymentTarget:
@@ -6828,11 +6791,6 @@ with pkgs;
 
   go_latest = go_1_27;
   buildGoLatestModule = buildGo127Module;
-
-  go_1_25 = callPackage ../development/compilers/go/1.25.nix { };
-  buildGo125Module = callPackage ../build-support/go/module.nix {
-    go = buildPackages.go_1_25;
-  };
 
   go_1_26 = callPackage ../development/compilers/go/1.26.nix { };
   buildGo126Module = callPackage ../build-support/go/module.nix {
@@ -7562,7 +7520,7 @@ with pkgs;
   zabbix70 = recurseIntoAttrs (zabbixFor "v70");
   zabbix60 = recurseIntoAttrs (zabbixFor "v60");
 
-  zabbix = zabbix60;
+  zabbix = zabbix74;
 
   ### OS-SPECIFIC
 
@@ -7674,6 +7632,10 @@ with pkgs;
 
   ipu6epmtl-camera-hal = ipu6-camera-hal.override {
     ipuVersion = "ipu6epmtl";
+  };
+
+  ipu75xa-camera-hal = ipu7x-camera-hal.override {
+    ipuVersion = "ipu75xa";
   };
 
   iputils = hiPrio (callPackage ../os-specific/linux/iputils { });
@@ -8172,6 +8134,28 @@ with pkgs;
     '';
   };
 
+  notonoto-35 = notonoto.override {
+    width35 = true;
+  };
+
+  notonoto-console = notonoto.override {
+    console = true;
+  };
+
+  notonoto-hs = notonoto.override {
+    hideZenkakuSpace = true;
+  };
+
+  notonoto-hs-35 = notonoto.override {
+    width35 = true;
+    hideZenkakuSpace = true;
+  };
+
+  notonoto-hs-console = notonoto.override {
+    console = true;
+    hideZenkakuSpace = true;
+  };
+
   openmoji-color = callPackage ../data/fonts/openmoji { fontFormats = [ "glyf_colr_0" ]; };
 
   openmoji-black = callPackage ../data/fonts/openmoji { fontFormats = [ "glyf" ]; };
@@ -8373,11 +8357,6 @@ with pkgs;
 
   docker = docker_29;
   docker-client = docker.override { clientOnly = true; };
-
-  docker-gc = callPackage ../applications/virtualization/docker/gc.nix { };
-  docker-buildx = callPackage ../applications/virtualization/docker/buildx.nix { };
-  docker-compose = callPackage ../applications/virtualization/docker/compose.nix { };
-  docker-sbom = callPackage ../applications/virtualization/docker/sbom.nix { };
 
   drawpile-server-headless = drawpile.override {
     buildClient = false;
@@ -8770,18 +8749,15 @@ with pkgs;
     k3s_1_34
     k3s_1_35
     k3s_1_36
+    k3s_1_37
     ;
-  k3s = k3s_1_35;
+  k3s = k3s_1_36;
 
   kotatogram-desktop =
     callPackage ../applications/networking/instant-messengers/telegram/kotatogram-desktop
       { };
 
   kubectl-convert = kubectl.convert;
-
-  kubectl-view-allocations =
-    callPackage ../applications/networking/cluster/kubectl-view-allocations
-      { };
 
   linkerd = callPackage ../applications/networking/cluster/linkerd { };
   linkerd_edge = callPackage ../applications/networking/cluster/linkerd/edge.nix { };
@@ -9057,7 +9033,7 @@ with pkgs;
   };
 
   quodlibet-full = quodlibet.override {
-    inherit gtksourceview;
+    inherit gtksourceview3;
     kakasi = kakasi;
     keybinder3 = keybinder3;
     libappindicator = libappindicator;
@@ -9079,7 +9055,6 @@ with pkgs;
   ringboard-wayland = callPackage ../by-name/ri/ringboard/package.nix { displayServer = "wayland"; };
 
   inherit (callPackage ../applications/networking/cluster/rke2 { })
-    rke2_1_33
     rke2_1_34
     rke2_1_35
     rke2_1_36
@@ -9357,7 +9332,7 @@ with pkgs;
     ocamlPackages = ocaml-ng.ocamlPackages_4_14;
   };
 
-  virtualbox = libsForQt5.callPackage ../applications/virtualization/virtualbox {
+  virtualbox = callPackage ../applications/virtualization/virtualbox {
     stdenv = stdenv_32bit;
 
     # VirtualBox uses wsimport, which was removed after JDK 8.
@@ -10030,6 +10005,8 @@ with pkgs;
 
   blas-ilp64 = blas.override { isILP64 = true; };
 
+  globalarrays-ilp64 = globalarrays.override { blas = blas-ilp64; };
+
   lapack-ilp64 = lapack.override { isILP64 = true; };
 
   liblapack = lapack-reference;
@@ -10283,12 +10260,6 @@ with pkgs;
     withMPI = true;
     trilinos = trilinos-mpi;
   };
-
-  ### SCIENCE / MATH
-
-  gap-minimal = lowPrio (gap.override { packageSet = "minimal"; });
-
-  gap-full = lowPrio (gap.override { packageSet = "full"; });
 
   ### SCIENCE / MISC
 
@@ -10652,9 +10623,9 @@ with pkgs;
 
   inherit (callPackage ../servers/web-apps/wordpress { })
     wordpress
-    wordpress_6_8
     wordpress_6_9
     wordpress_7_0
+    wordpress_7_1
     ;
 
   wordpressPackages = recurseIntoAttrs (
@@ -10794,8 +10765,6 @@ with pkgs;
   wfuzz = with python3Packages; toPythonApplication wfuzz;
 
   sieveshell = with python3.pkgs; toPythonApplication managesieve;
-
-  swift-corelibs-libdispatch = swiftPackages.Dispatch;
 
   duden = python3Packages.toPythonApplication python3Packages.duden;
 

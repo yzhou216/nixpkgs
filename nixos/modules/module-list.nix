@@ -130,6 +130,7 @@
   ./hardware/video/virtualbox.nix
   ./hardware/video/webcam/facetimehd.nix
   ./hardware/video/webcam/ipu6.nix
+  ./hardware/video/webcam/ipu7.nix
   ./hardware/wooting.nix
   ./hardware/xone.nix
   ./hardware/xpad-noone.nix
@@ -854,6 +855,7 @@
   ./services/misc/anki-sync-server.nix
   ./services/misc/apache-kafka.nix
   ./services/misc/atuin.nix
+  ./services/misc/aurral.nix
   ./services/misc/autobrr.nix
   ./services/misc/autofs.nix
   ./services/misc/autorandr.nix
@@ -871,6 +873,7 @@
   ./services/misc/cgminer.nix
   ./services/misc/clipcat.nix
   ./services/misc/clipmenu.nix
+  ./services/misc/cliproxyapi.nix
   ./services/misc/comfyui.nix
   ./services/misc/confd.nix
   ./services/misc/conman.nix
@@ -964,7 +967,6 @@
   ./services/misc/paisa.nix
   ./services/misc/paperless.nix
   ./services/misc/persistent-evdev.nix
-  ./services/misc/pghero.nix
   ./services/misc/pinchflat.nix
   ./services/misc/pinnwand.nix
   ./services/misc/plex.nix
@@ -999,7 +1001,6 @@
   ./services/misc/serviio.nix
   ./services/misc/shelfmark.nix
   ./services/misc/shoko.nix
-  ./services/misc/sickbeard.nix
   ./services/misc/snapper.nix
   ./services/misc/soft-serve.nix
   ./services/misc/spice-autorandr.nix
@@ -1243,7 +1244,6 @@
   ./services/networking/firezone/relay.nix
   ./services/networking/firezone/server.nix
   ./services/networking/flannel.nix
-  ./services/networking/freenet.nix
   ./services/networking/freeradius.nix
   ./services/networking/frp.nix
   ./services/networking/frr.nix
@@ -1272,6 +1272,7 @@
   ./services/networking/htpdate.nix
   ./services/networking/https-dns-proxy.nix
   ./services/networking/hylafax/default.nix
+  ./services/networking/hyphanet.nix
   ./services/networking/i2p.nix
   ./services/networking/i2pd.nix
   ./services/networking/icecream/daemon.nix
@@ -1280,6 +1281,7 @@
   ./services/networking/imaginary.nix
   ./services/networking/inadyn.nix
   ./services/networking/inspircd.nix
+  ./services/networking/iocaine.nix
   ./services/networking/iodine.nix
   ./services/networking/iperf3.nix
   ./services/networking/ircd-hybrid/default.nix
@@ -1350,6 +1352,7 @@
   ./services/networking/nebula-lighthouse-service.nix
   ./services/networking/nebula.nix
   ./services/networking/netbird.nix
+  ./services/networking/netbird/netbird-relay.nix
   ./services/networking/netbird/server.nix
   ./services/networking/netclient.nix
   ./services/networking/netfoil.nix
@@ -1383,6 +1386,7 @@
   ./services/networking/ofono.nix
   ./services/networking/oidentd.nix
   ./services/networking/oink.nix
+  ./services/networking/omada.nix
   ./services/networking/onedrive.nix
   ./services/networking/openconnect.nix
   ./services/networking/openvpn.nix
@@ -1541,6 +1545,7 @@
   ./services/search/manticore.nix
   ./services/search/meilisearch.nix
   ./services/search/nominatim.nix
+  ./services/search/opensearch-dashboards.nix
   ./services/search/opensearch.nix
   ./services/search/qdrant.nix
   ./services/search/quickwit.nix
@@ -1707,6 +1712,7 @@
   ./services/web-apps/filebrowser.nix
   ./services/web-apps/firefly-iii-data-importer.nix
   ./services/web-apps/firefly-iii.nix
+  ./services/web-apps/flame.nix
   ./services/web-apps/flarum.nix
   ./services/web-apps/fluidd.nix
   ./services/web-apps/freescout.nix
@@ -1724,6 +1730,7 @@
   ./services/web-apps/gotosocial.nix
   ./services/web-apps/goupile.nix
   ./services/web-apps/grav.nix
+  ./services/web-apps/greenlight.nix
   ./services/web-apps/grocy.nix
   ./services/web-apps/guacamole-client.nix
   ./services/web-apps/guacamole-server.nix
@@ -1735,7 +1742,6 @@
   ./services/web-apps/hledger-web.nix
   ./services/web-apps/homebox.nix
   ./services/web-apps/homer.nix
-  ./services/web-apps/honk.nix
   ./services/web-apps/icingaweb2/icingaweb2.nix
   ./services/web-apps/icingaweb2/module-monitoring.nix
   ./services/web-apps/ifm.nix
@@ -1824,7 +1830,6 @@
   ./services/web-apps/pretalx.nix
   ./services/web-apps/pretix.nix
   ./services/web-apps/privatebin.nix
-  ./services/web-apps/prosody-filer.nix
   ./services/web-apps/readeck.nix
   ./services/web-apps/remark42.nix
   ./services/web-apps/reposilite.nix
@@ -1876,6 +1881,7 @@
   ./services/web-apps/your_spotify.nix
   ./services/web-apps/youtrack.nix
   ./services/web-apps/zabbix.nix
+  ./services/web-apps/zerobyte.nix
   ./services/web-apps/zipline.nix
   ./services/web-apps/zitadel.nix
   ./services/web-servers/agate.nix

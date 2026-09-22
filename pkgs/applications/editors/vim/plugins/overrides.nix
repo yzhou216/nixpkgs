@@ -21,10 +21,13 @@
   dailies,
   dasht,
   deno,
+  distant,
   direnv,
   fzf,
+  fzy,
   gawk,
   git,
+  glow,
   helm-ls,
   himalaya,
   htop,
@@ -32,7 +35,9 @@
   khard,
   kulala-core,
   languagetool,
+  llm-ls,
   libgit2,
+  manix,
   llvmPackages,
   neovim-unwrapped,
   nix,
@@ -45,6 +50,7 @@
   slang-server,
   sqlite,
   sshfs,
+  sops,
   stylish-haskell,
   tabnine,
   tmux,
@@ -58,6 +64,7 @@
   xwininfo,
   xxd,
   ycmd,
+  yq,
   zenity,
   zoxide,
   zsh,
@@ -1027,18 +1034,11 @@ assertNoAdditions {
   };
 
   copilot-lua = super.copilot-lua.overrideAttrs {
-    # Avoid copying the bundled 500MB language server into the plugin output.
-    preInstall = ''
-      rm -rf copilot/js
-    '';
-
-    postInstall = ''
-      mkdir -p $target/copilot
-      ln -s ${copilot-language-server}/share/copilot-language-server $target/copilot/js
-
-      substituteInPlace $target/lua/copilot/lsp/nodejs.lua \
-        --replace-fail "copilot/js/language-server.js" "copilot/js/main.js"
-      sed -i 's/version = "[^"]*"/version = "${copilot-language-server.version}"/' $target/lua/copilot/util.lua
+    # Use the packaged language server instead of the runtime installer.
+    postPatch = ''
+      substituteInPlace lua/copilot/config/server.lua \
+        --replace-fail 'custom_server_filepath = nil,' \
+        'custom_server_filepath = "${lib.getExe copilot-language-server}",'
     '';
 
     runtimeDeps = [
@@ -1378,6 +1378,10 @@ assertNoAdditions {
     '';
   });
 
+  distant-nvim = super.distant-nvim.overrideAttrs {
+    runtimeDeps = [ distant ];
+  };
+
   dotnet-nvim = super.dotnet-nvim.overrideAttrs {
     dependencies = with self; [
       telescope-nvim
@@ -1684,6 +1688,10 @@ assertNoAdditions {
       license = lib.licenses.vim;
     };
   });
+
+  glow-nvim = super.glow-nvim.overrideAttrs {
+    runtimeDeps = [ glow ];
+  };
 
   go-nvim = super.go-nvim.overrideAttrs {
     dependencies = with self; [
@@ -2371,6 +2379,10 @@ assertNoAdditions {
         '"crypto",' \
         '"${lib.getLib openssl}/lib/libcrypto${stdenv.hostPlatform.extensions.sharedLibrary}",'
     '';
+  };
+
+  llm-nvim = super.llm-nvim.overrideAttrs {
+    runtimeDeps = [ llm-ls ];
   };
 
   lsp-format-modifications-nvim = super.lsp-format-modifications-nvim.overrideAttrs {
@@ -3077,6 +3089,13 @@ assertNoAdditions {
     ];
   };
 
+  neovim-fuzzy = super.neovim-fuzzy.overrideAttrs {
+    runtimeDeps = [
+      fzy
+      ripgrep
+    ];
+  };
+
   neovim-project = super.neovim-project.overrideAttrs {
     dependencies = with self; [
       plenary-nvim
@@ -3404,6 +3423,13 @@ assertNoAdditions {
     };
   });
 
+  nvim-jqx = super.nvim-jqx.overrideAttrs {
+    runtimeDeps = [
+      jq
+      yq
+    ];
+  };
+
   nvim-julia-autotest = super.nvim-julia-autotest.overrideAttrs (old: {
     meta = old.meta // {
       license = lib.licenses.agpl3Only;
@@ -3529,6 +3555,10 @@ assertNoAdditions {
       # Optional cmp integration
       self.nvim-cmp
     ];
+  };
+
+  nvim-sops = super.nvim-sops.overrideAttrs {
+    runtimeDeps = [ sops ];
   };
 
   nvim-teal-maker = super.nvim-teal-maker.overrideAttrs {
@@ -4569,6 +4599,10 @@ assertNoAdditions {
     ];
   };
 
+  telescope-manix = super.telescope-manix.overrideAttrs {
+    runtimeDeps = [ manix ];
+  };
+
   telescope-media-files-nvim = super.telescope-media-files-nvim.overrideAttrs {
     dependencies = with self; [
       telescope-nvim
@@ -4661,6 +4695,13 @@ assertNoAdditions {
       license = lib.licenses.mit;
     };
   });
+
+  tiny-code-action-nvim = super.tiny-code-action-nvim.overrideAttrs {
+    nvimSkipModules = [
+      # test for optional previewer
+      "tiny-code-action.previewers.snacks"
+    ];
+  };
 
   tmux-complete-vim = super.tmux-complete-vim.overrideAttrs {
     # Vim plugin with optional nvim-compe lua module

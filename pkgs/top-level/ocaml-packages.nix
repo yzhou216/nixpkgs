@@ -1053,6 +1053,8 @@ let
         junit_alcotest = callPackage ../development/ocaml-modules/junit/alcotest.nix { };
         junit_ounit = callPackage ../development/ocaml-modules/junit/ounit.nix { };
 
+        jws = callPackage ../development/ocaml-modules/jws { };
+
         jwto = callPackage ../development/ocaml-modules/jwto { };
 
         ### K ###
@@ -1700,7 +1702,11 @@ let
 
         owl-base = callPackage ../development/ocaml-modules/owl-base { };
 
-        oxenstored = callPackage ../development/ocaml-modules/oxenstored { };
+        oxenstored = callPackage ../development/ocaml-modules/oxenstored {
+          xen = pkgs.xen.override {
+            ocamlPackages = self;
+          };
+        };
 
         ### P ###
 
@@ -1818,6 +1824,8 @@ let
         };
 
         ppx_deriving_encoding = callPackage ../development/ocaml-modules/ppx_deriving_encoding { };
+
+        ppx_deriving_hash = callPackage ../development/ocaml-modules/ppx_deriving_hash { };
 
         ppx_deriving_protobuf = callPackage ../development/ocaml-modules/ppx_deriving_protobuf { };
 
@@ -2199,6 +2207,8 @@ let
         tw = callPackage ../development/ocaml-modules/tw { };
 
         twt = callPackage ../development/ocaml-modules/twt { };
+
+        typegist = callPackage ../development/ocaml-modules/typegist { };
 
         type_eq = callPackage ../development/ocaml-modules/type_eq { };
 

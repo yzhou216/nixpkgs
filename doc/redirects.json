@@ -140,6 +140,9 @@
   "ex-testEqualArrayOrMap-test-function-add-cowbell": [
     "index.html#ex-testEqualArrayOrMap-test-function-add-cowbell"
   ],
+  "ex-trivial-builder-finalAttrs": [
+    "index.html#ex-trivial-builder-finalAttrs"
+  ],
   "ex-writeShellApplication": [
     "index.html#ex-writeShellApplication"
   ],
@@ -166,6 +169,15 @@
   ],
   "inkscape-plugins": [
     "index.html#inkscape-plugins"
+  ],
+  "installAgentSkills": [
+    "index.html#installAgentSkills"
+  ],
+  "installAgentSkills-installSkill": [
+    "index.html#installAgentSkills-installSkill"
+  ],
+  "installAgentSkills-installSkill-exampleusage": [
+    "index.html#installAgentSkills-installSkill-exampleusage"
   ],
   "installfonts": [
     "index.html#installfonts"
@@ -460,6 +472,9 @@
   ],
   "sec-building-packages-with-llvm-using-clang-stdenv": [
     "index.html#sec-building-packages-with-llvm-using-clang-stdenv"
+  ],
+  "sec-chicken-package-sets": [
+    "index.html#sec-chicken-package-sets"
   ],
   "sec-darwin-availability-checks": [
     "index.html#sec-darwin-availability-checks"
@@ -998,6 +1013,9 @@
   ],
   "treefmt": [
     "index.html#treefmt"
+  ],
+  "trivial-builder-finalAttrs": [
+    "index.html#trivial-builder-finalAttrs"
   ],
   "typst": [
     "index.html#typst",
@@ -1962,6 +1980,9 @@
   ],
   "sec-darwin-troubleshooting-xcodebuild-absolute-paths": [
     "index.html#sec-darwin-troubleshooting-xcodebuild-absolute-paths"
+  ],
+  "sec-darwin-missing-macros": [
+    "index.html#sec-darwin-missing-macros"
   ],
   "sec-darwin-troubleshooting-libiconv": [
     "index.html#sec-darwin-troubleshooting-libiconv"
@@ -3888,6 +3909,9 @@
   "javascript-yarn-v3-v4": [
     "index.html#javascript-yarn-v3-v4"
   ],
+  "javascript-fetchyarndeps": [
+    "index.html#javascript-fetchyarndeps"
+  ],
   "javascript-yarnconfighook": [
     "index.html#javascript-yarnconfighook"
   ],
@@ -4572,20 +4596,35 @@
   "ssec-swift-packaging-with-swiftpm": [
     "index.html#ssec-swift-packaging-with-swiftpm"
   ],
+  "ssec-swift-packaging-with-fetch-swiftpm-deps": [
+    "index.html#ssec-swift-packaging-with-fetch-swiftpm-deps"
+  ],
+  "ssec-swift-packaging-with-swiftpm2nix": [
+    "index.html#ssec-swift-packaging-with-swiftpm2nix"
+  ],
+  "ssec-swiftpm-patching-dependencies": [
+    "index.html#ssec-swiftpm-patching-dependencies"
+  ],
   "ssec-swiftpm-custom-build-flags": [
     "index.html#ssec-swiftpm-custom-build-flags"
   ],
   "ssec-swiftpm-running-tests": [
     "index.html#ssec-swiftpm-running-tests"
   ],
-  "ssec-swiftpm-patching-dependencies": [
-    "index.html#ssec-swiftpm-patching-dependencies"
+  "ssec-swiftpm-install-phase": [
+    "index.html#ssec-swiftpm-install-phase"
+  ],
+  "ssec-swift-hooks": [
+    "index.html#ssec-swift-hooks"
   ],
   "ssec-swift-considerations-for-custom-build-tools": [
     "index.html#ssec-swift-considerations-for-custom-build-tools"
   ],
   "ssec-swift-linking-the-standard-library": [
     "index.html#ssec-swift-linking-the-standard-library"
+  ],
+  "ssec-swift-platform-properties": [
+    "index.html#ssec-swift-platform-properties"
   ],
   "sec-language-tcl": [
     "index.html#sec-language-tcl"

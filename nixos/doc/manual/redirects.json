@@ -1,4 +1,13 @@
 {
+  "module-services-netbird-relay": [
+    "index.html#module-services-netbird-relay"
+  ],
+  "module-services-netbird-relay-quickstart": [
+    "index.html#module-services-netbird-relay-quickstart"
+  ],
+  "module-services-netbird-relay-tls": [
+    "index.html#module-services-netbird-relay-tls"
+  ],
   "module-services-portmaster": [
     "index.html#module-services-portmaster"
   ],
@@ -67,6 +76,18 @@
   ],
   "module-boot-plymouth-tpm2-totp-quick-start-enable": [
     "index.html#module-boot-plymouth-tpm2-totp-quick-start-enable"
+  ],
+  "module-services-cliproxyapi": [
+    "index.html#module-services-cliproxyapi"
+  ],
+  "module-services-cliproxyapi-authentication": [
+    "index.html#module-services-cliproxyapi-authentication"
+  ],
+  "module-services-cliproxyapi-authentication-cli": [
+    "index.html#module-services-cliproxyapi-authentication-cli"
+  ],
+  "module-services-cliproxyapi-authentication-management-api": [
+    "index.html#module-services-cliproxyapi-authentication-management-api"
   ],
   "module-services-keycloak-unix-socket": [
     "index.html#module-services-keycloak-unix-socket"
@@ -1065,12 +1086,6 @@
   ],
   "module-services-jitsi-configuration": [
     "index.html#module-services-jitsi-configuration"
-  ],
-  "module-services-honk": [
-    "index.html#module-services-honk"
-  ],
-  "module-services-honk-basic-usage": [
-    "index.html#module-services-honk-basic-usage"
   ],
   "module-services-hatsu": [
     "index.html#module-services-hatsu"
@@ -2925,5 +2940,16 @@
   ],
   "sec-release-13.10": [
     "release-notes.html#sec-release-13.10"
+  ],
+  "ch-services": [
+    "index.html#ch-services"
+  ],
+  "ch-reference": [
+    "index.html#ch-reference"
+  ],
+  "sec-release-26.05-incompatibilities-services-honk-removed": [
+    "release-notes.html#sec-release-26.05-incompatibilities-services-honk-removed",
+    "index.html#module-services-honk",
+    "index.html#module-services-honk-basic-usage"
   ]
 }

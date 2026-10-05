@@ -1587,6 +1587,11 @@
     githubId = 94751172;
     name = "AGawas";
   };
+  alorans = {
+    github = "alorans";
+    githubId = 143277280;
+    name = "Aled Lorans";
+  };
   Alper-Celik = {
     email = "alper@alper-celik.dev";
     name = "Alper Çelik";
@@ -15395,6 +15400,12 @@
     githubId = 231780064;
     name = "Klea";
   };
+  kleinbem = {
+    email = "martin.kleinberger@gmail.com";
+    github = "kleinbem";
+    githubId = 1173376;
+    name = "Martin Kleinberger";
+  };
   kleiner3 = {
     name = "kleiner3";
     email = "nixos@dasriley.de";
@@ -26983,6 +26994,12 @@
     github = "sifmelcara";
     githubId = 10496191;
     name = "Ming Chuan";
+  };
+  Sighery = {
+    name = "Sighery";
+    email = "nix@sighery.com";
+    github = "Sighery";
+    githubId = 11218602;
   };
   sigma = {
     email = "yann.hodique@gmail.com";

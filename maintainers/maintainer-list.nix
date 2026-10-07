@@ -19695,6 +19695,12 @@
     githubId = 75925945;
     name = "Andrew Semeykin";
   };
+  Mop-u = {
+    email = "moppu@pm.me";
+    github = "Mop-u";
+    githubId = 48605993;
+    name = "Quinn Unger";
+  };
   moraxyc = {
     name = "Moraxyc Xu";
     email = "i@qaq.li";
@@ -28567,6 +28573,12 @@
     github = "tahlonbrahic";
     githubId = 104690672;
     name = "Tahlon Brahic";
+  };
+  tahuffman1s = {
+    email = "inbox@travisahuffman.com";
+    github = "tahuffman1s";
+    githubId = 48491724;
+    name = "Travis Huffman";
   };
   taikx4 = {
     email = "taikx4@taikx4szlaj2rsdupcwabg35inbny4jk322ngeb7qwbbhd5i55nf5yyd.onion";

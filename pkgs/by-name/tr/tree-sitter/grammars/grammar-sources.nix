@@ -2910,9 +2910,9 @@
   };
 
   sshclientconfig = rec {
-    version = "2026.9.24";
+    version = "2026.10.8";
     url = "github:metio/tree-sitter-ssh-client-config?ref=${version}";
-    hash = "sha256-M5PwCbNxs8Ow5YZl178PLJy3Lq9vxm9PEDvsR5UVJHE=";
+    hash = "sha256-PhNHsWjqTmchRH+noVQcwCFNNyA6/RvPiwDDquBuQFo=";
     meta = {
       license = lib.licenses.cc0;
       maintainers = with lib.maintainers; [
@@ -3006,9 +3006,9 @@
   };
 
   swift = rec {
-    version = "0.7.3";
+    version = "0.7.4";
     url = "github:alex-pinkus/tree-sitter-swift/${version}-with-generated-files";
-    hash = "sha256-SnWwqk6IRpaNldsraSKwHGtS64LiCndxDksrvLMs1P8=";
+    hash = "sha256-cnC1qVvtkgHSsYsMi9sbH8VGwGckRMTZpMQsdisU3AI=";
     meta = {
       license = lib.licenses.mit;
       maintainers = with lib.maintainers; [

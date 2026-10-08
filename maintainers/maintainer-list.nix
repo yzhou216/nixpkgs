@@ -6628,12 +6628,6 @@
     githubId = 11035569;
     name = "David Sawatzke";
   };
-  david50407 = {
-    email = "me@davy.tw";
-    github = "david50407";
-    githubId = 841969;
-    name = "David Kuo";
-  };
   davidak = {
     email = "post@davidak.de";
     matrix = "@davidak:matrix.org";
@@ -6701,6 +6695,12 @@
     github = "DavSanchez";
     githubId = 11422515;
     name = "David Sánchez";
+  };
+  davy-tw = {
+    email = "nixpkgs@id.davy.tw";
+    github = "davy-tw";
+    githubId = 841969;
+    name = "Tzu-Te \"Davy\" Kuo";
   };
   dawidd6 = {
     email = "dawidd0811@gmail.com";
@@ -14814,6 +14814,12 @@
     github = "Kamillaova";
     githubId = 54859825;
     keys = [ { fingerprint = "B2D0 AA53 8DBE 60B0 0811  3FC0 2D52 5F67 791E 5834"; } ];
+  };
+  kanagawamarcos = {
+    name = "Kanagawa Marcos";
+    email = "marcos@kanagawa.io";
+    github = "KanagawaMarcos";
+    githubId = 19848508;
   };
   kanashimia = {
     email = "chad@redpilled.dev";

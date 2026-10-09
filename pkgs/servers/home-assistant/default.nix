@@ -251,7 +251,7 @@ let
   extraBuildInputs = extraPackages python3Packages;
 
   # Don't forget to run update-component-packages.py after updating
-  hassVersion = "2026.9.3";
+  hassVersion = "2026.9.4";
 
 in
 python3Packages.buildPythonApplication rec {
@@ -272,13 +272,13 @@ python3Packages.buildPythonApplication rec {
     owner = "home-assistant";
     repo = "core";
     tag = version;
-    hash = "sha256-oqgvO3mjsHsdujlGp0lwAfH6r0dGBxf0R+lILCTueeQ=";
+    hash = "sha256-DoJ0Y0v6Q+ZoXGcLWHxiPw0ZVAELCTGp/9k3FlgZbm8=";
   };
 
   # Secondary source is pypi sdist for translations
   sdist = fetchPypi {
     inherit pname version;
-    hash = "sha256-J+G3e9jJxdmn9aw4pg9G5qD5QTVKUJkVomLw1Lz/84g=";
+    hash = "sha256-MKb9e2NJnJlZvpVnxLffuMFzFGbeZ6sm5VmKutGrv/c=";
   };
 
   build-system = with python3Packages; [
@@ -305,6 +305,9 @@ python3Packages.buildPythonApplication rec {
 
     # No scaring our users about our install method
     ./patches/nixos-was-never-supported.patch
+
+    # Fix portainer hang due to missing fixture autouse
+    ./patches/portainer-fixture-autouse.patch
 
     # Patch path to ffmpeg binary
     (replaceVars ./patches/ffmpeg-path.patch {
@@ -398,7 +401,10 @@ python3Packages.buildPythonApplication rec {
     pyqrcode
   ];
 
-  makeWrapperArgs = lib.optional skipPip "--add-flags --skip-pip";
+  makeWrapperArgs = lib.optionals skipPip [
+    "--add-flags"
+    "--skip-pip"
+  ];
 
   # upstream only tests on Linux, so do we.
   doCheck = stdenv.hostPlatform.isLinux;
@@ -470,6 +476,8 @@ python3Packages.buildPythonApplication rec {
     "tests/util/test_package.py::test_check_package_fragment"
     # flaky
     "tests/test_bootstrap.py::test_setup_hass_takes_longer_than_log_slow_startup"
+    # [2026.9.4] orjson error message mismatch
+    "tests/helpers/test_storage.py::test_loading_corrupt_core_file"
   ];
 
   preCheck = ''

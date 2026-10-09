@@ -26,17 +26,6 @@
 let
   gclientDeps = gclient2nix.importGclientDeps info.deps;
   yarn-berry = yarn-berry_4;
-
-  # Only apply to old versions after upstream updates to Yarn 4.15
-  # https://github.com/electron/electron/blob/main/package.json#L152
-  yarnPatch = substitute {
-    src = ./yarn-fix.patch;
-    substitutions = [
-      "--replace-fail"
-      "YARN_LOCKFILE_VERSION_PLACEHOLDER"
-      yarn-berry_4.lockfileVersion
-    ];
-  };
 in
 
 ((chromium.override { upstream-info = info.chromium; }).mkDerivation (base: {
@@ -84,7 +73,6 @@ in
       null;
   yarnOfflineCache = yarn-berry.fetchYarnBerryDeps {
     src = gclientDeps."src/electron".path;
-    patches = [ yarnPatch ];
     hash = info.electron_yarn_data.hash;
     missingHashes =
       if (info.electron_yarn_data ? "missing_hashes") then
@@ -119,7 +107,8 @@ in
     ++
       # Restore fake libGLESv2.so which is patchelf'd by the chromium derivation
       lib.optional (lib.versionAtLeast info.version "44")
-        ./0001-Revert-build-stop-shipping-dummy-ANGLE-libs-in-Linux.patch;
+        ./0001-Revert-build-stop-shipping-dummy-ANGLE-libs-in-Linux.patch
+    ++ lib.optional (lib.versionOlder info.version "43") ./fix-electron42-glibc-2.43.patch;
 
   postPatch = ''
     mkdir -p third_party/jdk/current/bin
@@ -166,16 +155,7 @@ in
     #endif  // GPU_WEBGPU_DAWN_COMMIT_HASH_H_
     EOF
     (
-      PATH=$PATH:${
-        lib.makeBinPath (
-          with pkgsBuildHost;
-          [
-            git
-          ]
-        )
-      }
       cd electron
-      git apply ${yarnPatch}
       YARN_ENABLE_SCRIPTS=0 yarnBerryConfigHook
     )
     (

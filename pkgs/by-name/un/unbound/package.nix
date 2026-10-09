@@ -29,7 +29,7 @@
   # For the daemon use-case, that needs to notify systemd, use `unbound-with-systemd`.
   #
   withSystemd ? false,
-  systemd ? null,
+  systemdLibs ? null,
   # optionally support DNS-over-HTTPS as a server
   withDoH ? false,
   # optionally support DNS-over-QUIC as a server
@@ -99,7 +99,7 @@ stdenv.mkDerivation (finalAttrs: {
     libevent
     bashNonInteractive
   ]
-  ++ lib.optionals withSystemd [ systemd ]
+  ++ lib.optionals withSystemd [ systemdLibs ]
   ++ lib.optionals withDNSTAP [ protobufc ]
   ++ lib.optionals withDoH [ libnghttp2 ]
   ++ lib.optionals withDoQ [ ngtcp2 ]
@@ -250,5 +250,6 @@ stdenv.mkDerivation (finalAttrs: {
     maintainers = with lib.maintainers; [ Scrumplex ];
     mainProgram = "unbound";
     platforms = with lib.platforms; unix ++ windows;
+    identifiers.cpeParts = lib.meta.cpeFullVersionWithVendor "nlnetlabs" finalAttrs.version;
   };
 })

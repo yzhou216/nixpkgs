@@ -28,12 +28,12 @@
   withDiscordRPC ? true,
 }:
 let
-  version = "12.0.0";
+  version = "12.1.0";
   src = fetchFromGitHub {
     owner = "Taiko2k";
     repo = "Tauon";
     tag = "v${version}";
-    hash = "sha256-IefyP/sKdalt6HZR8SirFnVP+qZY6U843Jr2OoZW+xU=";
+    hash = "sha256-Fy7NGZOUsrqgaIXUHqoNgK3A2OxnbFwJZfJDERsP6KA=";
   };
 
   lrclib-solver = rustPlatform.buildRustPackage {
@@ -139,20 +139,29 @@ python3Packages.buildPythonApplication {
     ++ lib.optional stdenv.hostPlatform.isLinux pulsectl;
 
   makeWrapperArgs = [
-    "--prefix PATH : ${lib.makeBinPath [ ffmpeg ]}"
-    "--prefix LD_LIBRARY_PATH : ${
-      lib.makeLibraryPath (
-        [
-          game-music-emu
-          libayatana-appindicator
-          libopenmpt
-          pulseaudio
-        ]
-        ++ lib.optional stdenv.hostPlatform.isLinux libxcursor
-      )
-    }"
-    "--prefix PYTHONPATH : $out/share/tauon"
-    "--set GI_TYPELIB_PATH $GI_TYPELIB_PATH"
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath [ ffmpeg ])
+    "--prefix"
+    "LD_LIBRARY_PATH"
+    ":"
+    (lib.makeLibraryPath (
+      [
+        game-music-emu
+        libayatana-appindicator
+        libopenmpt
+        pulseaudio
+      ]
+      ++ lib.optional stdenv.hostPlatform.isLinux libxcursor
+    ))
+    "--prefix"
+    "PYTHONPATH"
+    ":"
+    "$out/share/tauon"
+    "--set"
+    "GI_TYPELIB_PATH"
+    "$GI_TYPELIB_PATH"
   ];
 
   postInstall = ''

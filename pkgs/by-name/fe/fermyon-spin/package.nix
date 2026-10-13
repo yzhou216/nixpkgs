@@ -9,23 +9,21 @@
   stdenv,
   installShellFiles,
   testers,
-  nix-update-script,
-  fermyon-spin,
   buildPackages,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "fermyon-spin";
-  version = "4.1.0";
+  version = "4.2.2";
 
   src = fetchFromGitHub {
     owner = "spinframework";
     repo = "spin";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-GeomzOM9ihGv4iPb95PEBXFre6oOsJfNKEef4MinBmg=";
+    hash = "sha256-3FskZe64sWorAm6B4Hqln43HrTDl2os5CcpQIy3FFYg=";
   };
 
-  cargoHash = "sha256-EIrbvZkWxsJTzrLDZuzmQ1UmwAbVZwTv/DhA+o0pUlY=";
+  cargoHash = "sha256-eBtHRTIDROM3r2zhyIcp1jaj2TmJ3akYeRRMwZ6B0AM=";
 
   nativeBuildInputs = [
     pkg-config
@@ -42,11 +40,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # Spin's build.rs attempts to run rustup to compile wasm test fixtures unless disabled
     BUILD_SPIN_EXAMPLES = "0";
 
-    # for new releases:
+    # The update bot handles this automatically. For doing it manually:
     # curl -s https://api.github.com/repos/spinframework/spin/commits/v${finalAttrs.version} | jq '{ sha: .sha[0:8], date: .commit.committer.date[0:10], ts: .commit.committer.date }'
-    VERGEN_GIT_SHA = "c0b3726a";
-    VERGEN_GIT_COMMIT_DATE = "2026-08-25";
-    VERGEN_GIT_COMMIT_TIMESTAMP = "2026-08-25T21:29:56Z";
+    VERGEN_GIT_SHA = "7ca44bed";
+    VERGEN_GIT_COMMIT_DATE = "2026-10-05";
+    VERGEN_GIT_COMMIT_TIMESTAMP = "2026-10-05T23:27:44Z";
     VERGEN_GIT_BRANCH = "main";
   }
   // lib.optionalAttrs (stdenv.hostPlatform.isMusl && stdenv.buildPlatform.isLinux) {
@@ -75,7 +73,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
         package = finalAttrs.finalPackage;
       };
     };
-    updateScript = nix-update-script { };
+    updateScript = ./update.sh;
   };
 
   meta = {

@@ -1171,6 +1171,8 @@ self: super: with self; {
 
   anthropic = callPackage ../development/python-modules/anthropic { };
 
+  anthropic_0 = callPackage ../development/python-modules/anthropic/0.nix { };
+
   antlr4-python3-runtime = callPackage ../development/python-modules/antlr4-python3-runtime {
     inherit (pkgs) antlr4;
   };
@@ -2851,8 +2853,6 @@ self: super: with self; {
 
   caldav = callPackage ../development/python-modules/caldav { };
 
-  caldav_2 = callPackage ../development/python-modules/caldav/2.nix { };
-
   callee = callPackage ../development/python-modules/callee { };
 
   calmjs = callPackage ../development/python-modules/calmjs { };
@@ -3905,6 +3905,8 @@ self: super: with self; {
 
   cuda-tile = callPackage ../development/python-modules/cuda-tile { };
 
+  cupti-python = callPackage ../development/python-modules/cupti-python { };
+
   cupy = callPackage ../development/python-modules/cupy { };
 
   curated-tokenizers = callPackage ../development/python-modules/curated-tokenizers { };
@@ -4004,8 +4006,6 @@ self: super: with self; {
   cython_0 = callPackage ../development/python-modules/cython/0.nix { };
 
   cython_3_2 = callPackage ../development/python-modules/cython/3_2.nix { };
-
-  cython_3_3 = callPackage ../development/python-modules/cython/3_3.nix { };
 
   cytoolz = callPackage ../development/python-modules/cytoolz { };
 
@@ -5192,6 +5192,8 @@ self: super: with self; {
 
   doubles = callPackage ../development/python-modules/doubles { };
 
+  doujinshi-dl-nhentai = callPackage ../development/python-modules/doujinshi-dl-nhentai { };
+
   dowhen = callPackage ../development/python-modules/dowhen { };
 
   downloader-cli = callPackage ../development/python-modules/downloader-cli { };
@@ -6146,6 +6148,8 @@ self: super: with self; {
   firebase-admin = callPackage ../development/python-modules/firebase-admin { };
 
   firebase-messaging = callPackage ../development/python-modules/firebase-messaging { };
+
+  firecrawl-anydoc = callPackage ../development/python-modules/firecrawl-anydoc { };
 
   firecrawl-py = callPackage ../development/python-modules/firecrawl-py { };
 
@@ -7775,8 +7779,6 @@ self: super: with self; {
 
   home-connect-async = callPackage ../development/python-modules/home-connect-async { };
 
-  homeassistant-stubs = callPackage ../servers/home-assistant/stubs.nix { };
-
   homeconnect = callPackage ../development/python-modules/homeconnect { };
 
   homekit-audio-proxy = callPackage ../development/python-modules/homekit-audio-proxy { };
@@ -7912,6 +7914,8 @@ self: super: with self; {
   httpx-ws = callPackage ../development/python-modules/httpx-ws { };
 
   httpx2 = callPackage ../development/python-modules/httpx2 { };
+
+  httpx2-pytest = callPackage ../development/python-modules/httpx2-pytest { };
 
   huawei-lte-api = callPackage ../development/python-modules/huawei-lte-api { };
 
@@ -10702,6 +10706,8 @@ self: super: with self; {
 
   mdutils = callPackage ../development/python-modules/mdutils { };
 
+  mdx-breakless-lists = callPackage ../development/python-modules/mdx-breakless-lists { };
+
   mdx-truly-sane-lists = callPackage ../development/python-modules/mdx-truly-sane-lists { };
 
   mdx-wikilink-plus = callPackage ../development/python-modules/mdx-wikilink-plus { };
@@ -12379,6 +12385,8 @@ self: super: with self; {
 
   nvidia-ml-py = callPackage ../development/python-modules/nvidia-ml-py { };
 
+  nvidia-resiliency-ext = callPackage ../development/python-modules/nvidia-resiliency-ext { };
+
   nvmath-python = callPackage ../development/python-modules/nvmath-python { };
 
   nwdiag = callPackage ../development/python-modules/nwdiag { };
@@ -13336,7 +13344,7 @@ self: super: with self; {
 
   paypalrestsdk = callPackage ../development/python-modules/paypalrestsdk { };
 
-  pbar = callPackage ../development/python-modules/pbar { };
+  pbar2 = callPackage ../development/python-modules/pbar2 { };
 
   pbkdf2 = callPackage ../development/python-modules/pbkdf2 { };
 
@@ -16876,6 +16884,8 @@ self: super: with self; {
 
   python-box = callPackage ../development/python-modules/python-box { };
 
+  python-broadlink = callPackage ../development/python-modules/python-broadlink { };
+
   python-bsblan = callPackage ../development/python-modules/python-bsblan { };
 
   python-bugzilla = callPackage ../development/python-modules/python-bugzilla { };
@@ -17554,6 +17564,8 @@ self: super: with self; {
   pyvisa-sim = callPackage ../development/python-modules/pyvisa-sim { };
 
   pyvista = callPackage ../development/python-modules/pyvista { };
+
+  pyvista-validation = callPackage ../development/python-modules/pyvista-validation { };
 
   pyviz-comms = callPackage ../development/python-modules/pyviz-comms { };
 
@@ -20065,8 +20077,6 @@ self: super: with self; {
 
   staticvectors = callPackage ../development/python-modules/staticvectors { };
 
-  statistics = callPackage ../development/python-modules/statistics { };
-
   statmake = callPackage ../development/python-modules/statmake { };
 
   statsd = callPackage ../development/python-modules/statsd { };
@@ -20260,6 +20270,8 @@ self: super: with self; {
   sumtypes = callPackage ../development/python-modules/sumtypes { };
 
   sunpy = callPackage ../development/python-modules/sunpy { };
+
+  suntime = callPackage ../development/python-modules/suntime { };
 
   sunwatcher = callPackage ../development/python-modules/sunwatcher { };
 
@@ -21064,8 +21076,6 @@ self: super: with self; {
 
   tqdm = callPackage ../development/python-modules/tqdm { };
 
-  tqdm-multiprocess = callPackage ../development/python-modules/tqdm-multiprocess { };
-
   traceback2 = callPackage ../development/python-modules/traceback2 { };
 
   tracerite = callPackage ../development/python-modules/tracerite { };
@@ -21299,6 +21309,8 @@ self: super: with self; {
   ttls = callPackage ../development/python-modules/ttls { };
 
   ttn-client = callPackage ../development/python-modules/ttn-client { };
+
+  ttnn = callPackage ../development/python-modules/ttnn { inherit (pkgs) tt-metal; };
 
   ttp = callPackage ../development/python-modules/ttp { };
 
@@ -22370,6 +22382,8 @@ self: super: with self; {
 
   vllm = callPackage ../development/python-modules/vllm { };
 
+  vllm-tt-plugin = callPackage ../development/python-modules/vllm-tt-plugin { };
+
   vmas = callPackage ../development/python-modules/vmas { };
 
   vmprof = callPackage ../development/python-modules/vmprof { };
@@ -22488,12 +22502,9 @@ self: super: with self; {
   warlock = callPackage ../development/python-modules/warlock { };
 
   warp-lang = callPackage ../development/python-modules/warp-lang {
-    # warp targets LLVM 21 in its build-from-source path (build_llvm.py clones llvmorg-21.x) and
-    # guards native/clang/clang.cpp for LLVM up to 22, so it builds against nixpkgs' from-source
-    # LLVM 21. One getHostCPUFeatures() call is missing its version guard upstream; the derivation
-    # patches that. See the postPatch in warp-lang/default.nix.
-    stdenv = if stdenv.hostPlatform.isDarwin then pkgs.llvmPackages_21.stdenv else pkgs.stdenv;
-    llvmPackages = pkgs.llvmPackages_21;
+    # warp targets LLVM 22 in its build-from-source path (build_llvm.py clones llvmorg-22.x)
+    stdenv = if stdenv.hostPlatform.isDarwin then pkgs.llvmPackages_22.stdenv else pkgs.stdenv;
+    llvmPackages = pkgs.llvmPackages_22;
   };
 
   warp-nn = callPackage ../development/python-modules/warp-nn { };
@@ -23175,6 +23186,8 @@ self: super: with self; {
   zlib-ng = callPackage ../development/python-modules/zlib-ng { inherit (pkgs) zlib-ng; };
 
   zm-py = callPackage ../development/python-modules/zm-py { };
+
+  zmqtt = callPackage ../development/python-modules/zmqtt { };
 
   zodb = callPackage ../development/python-modules/zodb { };
 

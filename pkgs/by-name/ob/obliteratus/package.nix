@@ -11,8 +11,6 @@ python3Packages.buildPythonApplication (finalAttrs: {
   version = "0.1.3";
   pyproject = true;
 
-  __structuredAttrs = true;
-
   src = fetchFromGitHub {
     owner = "elder-plinius";
     repo = "OBLITERATUS";
@@ -104,5 +102,7 @@ python3Packages.buildPythonApplication (finalAttrs: {
     license = lib.licenses.agpl3Only;
     maintainers = with lib.maintainers; [ fab ];
     mainProgram = "obliteratus";
+    # currently broken on aarch64-linux and aarch64-darwin, see https://hydra.nixos.org/build/346387789
+    broken = stdenv.hostPlatform.isAarch64;
   };
 })

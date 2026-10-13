@@ -10,7 +10,6 @@ python313Packages.buildPythonApplication (finalAttrs: {
   pname = "tt-burnin";
   version = "0.4.4";
   pyproject = true;
-  __structuredAttrs = true;
 
   src = fetchFromGitHub {
     owner = "tenstorrent";
@@ -23,6 +22,8 @@ python313Packages.buildPythonApplication (finalAttrs: {
     setuptools
     setuptools-scm
   ];
+
+  pythonRelaxDeps = [ "pyluwen" ];
 
   dependencies = with python313Packages; [
     pyluwen

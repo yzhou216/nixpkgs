@@ -1244,8 +1244,8 @@ let
         mktplcRef = {
           name = "databricks";
           publisher = "databricks";
-          version = "2.19.0";
-          hash = "sha256-hW0Q0gnAanWZ4IuF/AY5uypvHZ5YDjvFnJzGn4Hd7V8=";
+          version = "2.21.0";
+          hash = "sha256-OjwK2gh8zAWvlblgekl/tGAkvsLPeCCrzYP+y5KMVv8=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/databricks.databricks/changelog";
@@ -1602,8 +1602,8 @@ let
         mktplcRef = {
           name = "elm-ls-vscode";
           publisher = "Elmtooling";
-          version = "2.8.0";
-          hash = "sha256-81tHgNjYc0LJjsgsQfo5xyh20k/i3PKcgYp9GZTvwfs=";
+          version = "2.10.0";
+          hash = "sha256-VEjsvoMLrSK0X6w/Ojp9EjPXru5lAIymEWcCRj4/geQ=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/Elmtooling.elm-ls-vscode/changelog";
@@ -2246,8 +2246,8 @@ let
         mktplcRef = {
           name = "vscode-drawio";
           publisher = "hediet";
-          version = "1.15.0";
-          hash = "sha256-4tRtVxdDYAtkgMu0rpgDnTNqfN4j7JoIpAWYUcfJVRA=";
+          version = "1.17.0";
+          hash = "sha256-KYVxvE5/kVMcWCdEDcl3DA8sj0k/41flMi/Pro/11Kw=";
         };
         meta = {
           description = "This unofficial extension integrates Draw.io into VS Code";
@@ -2643,7 +2643,7 @@ let
         };
       };
 
-      jnoortheen.nix-ide = buildVscodeMarketplaceExtension {
+      jnoortheen.nix-ide = buildVscodeMarketplaceExtension (finalAttrs: {
         mktplcRef = {
           publisher = "jnoortheen";
           name = "nix-ide";
@@ -2651,14 +2651,14 @@ let
           hash = "sha256-0pMMnYFX+Ghs42Tvfcv9QqwhrEhCjIa7+6xJ51Fa0Dk=";
         };
         meta = {
-          changelog = "https://marketplace.visualstudio.com/items/jnoortheen.nix-ide/changelog";
+          changelog = "https://github.com/nix-community/vscode-nix-ide/blob/v${finalAttrs.version}/CHANGELOG.md";
           description = "Nix language support with formatting and error report";
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=jnoortheen.nix-ide";
           homepage = "https://github.com/nix-community/vscode-nix-ide";
           license = lib.licenses.mit;
           maintainers = [ ];
         };
-      };
+      });
 
       jock.svg = buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -2725,8 +2725,8 @@ let
         mktplcRef = {
           name = "language-julia";
           publisher = "julialang";
-          version = "1.243.2";
-          hash = "sha256-907pr/y67bDKpKs1Sxk+XV7xUL8+e3jYW0tkHNWUEUs=";
+          version = "1.249.2";
+          hash = "sha256-WpOJt4ycrE/d/lh0I+Xbp5wBNpCaEDzRGOhMy1J12io=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/julialang.language-julia/changelog";
@@ -2861,7 +2861,7 @@ let
 
       kilocode.kilo-code = callPackage ./kilocode.kilo-code { };
 
-      kravets.vscode-publint = buildVscodeMarketplaceExtension {
+      kravets.vscode-publint = buildVscodeMarketplaceExtension (finalAttrs: {
         mktplcRef = {
           name = "vscode-publint";
           publisher = "Kravets";
@@ -2869,14 +2869,18 @@ let
           hash = "sha256-GfIbQajdBpC0i8x7YlKYgpBwweWop4OBUU7dIDi9Yvk=";
         };
         meta = {
-          changelog = "https://marketplace.visualstudio.com/items/Kravets.vscode-publint/changelog";
+          changelog =
+            let
+              version' = lib.replaceString "." "" finalAttrs.version;
+            in
+            "https://github.com/kravetsone/vscode-publint/blob/master/CHANGELOG.md#${version'}";
           description = "Lint packaging errors in VS Code with publint";
           downloadPage = "https://marketplace.visualstudio.com/items?itemName=Kravets.vscode-publint";
           homepage = "https://github.com/kravetsone/vscode-publint";
           license = lib.licenses.mit;
           maintainers = [ ];
         };
-      };
+      });
 
       kubukoz.nickel-syntax = buildVscodeMarketplaceExtension {
         mktplcRef = {
@@ -4304,8 +4308,8 @@ let
         mktplcRef = {
           publisher = "shd101wyy";
           name = "markdown-preview-enhanced";
-          version = "0.8.39";
-          hash = "sha256-bRFEb6YtLFOTe9K1Y0vyfQDTgYVa6udy2CU2wz4Ht3w=";
+          version = "0.8.40";
+          hash = "sha256-HXlzzRVLm5C1Nh9+LWEa2cfakxdWtTARiMoIQFD0NAk=";
         };
         meta = {
           description = "Provides a live preview of markdown using either markdown-it or pandoc";
@@ -5296,8 +5300,8 @@ let
         mktplcRef = {
           name = "volar";
           publisher = "Vue";
-          version = "3.3.12";
-          hash = "sha256-IYQNPJFGOMHffDogLZ5VtYWw52h6zRPt3YL+fvgtXrQ=";
+          version = "3.3.13";
+          hash = "sha256-k5oXAxSreUgW4A6RfdftKaosRI3JyC0jpxJg3ZK+v6A=";
         };
         meta = {
           changelog = "https://github.com/vuejs/language-tools/blob/master/CHANGELOG.md";

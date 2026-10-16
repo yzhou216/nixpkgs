@@ -5312,7 +5312,7 @@ self: super: with self; {
 
   duckdb-engine = callPackage ../development/python-modules/duckdb-engine { };
 
-  duct-py = callPackage ../development/python-modules/duct-py { };
+  duct = callPackage ../development/python-modules/duct { };
 
   duden = callPackage ../development/python-modules/duden { };
 
@@ -6081,7 +6081,7 @@ self: super: with self; {
 
   ffpyplayer = callPackage ../development/python-modules/ffpyplayer { };
 
-  fhir-py = callPackage ../development/python-modules/fhir-py { };
+  fhirpy = callPackage ../development/python-modules/fhirpy { };
 
   fiblary3-fork = callPackage ../development/python-modules/fiblary3-fork { };
 
@@ -6396,6 +6396,8 @@ self: super: with self; {
   flexparser = callPackage ../development/python-modules/flexparser { };
 
   flickrapi = callPackage ../development/python-modules/flickrapi { };
+
+  flightradarapi = callPackage ../development/python-modules/flightradarapi { };
 
   flipr-api = callPackage ../development/python-modules/flipr-api { };
 
@@ -7546,6 +7548,8 @@ self: super: with self; {
   harbor-python = callPackage ../development/python-modules/harbor-python { };
 
   harlequin-bigquery = callPackage ../development/python-modules/harlequin-bigquery { };
+
+  harlequin-odbc = callPackage ../development/python-modules/harlequin-odbc { };
 
   harlequin-postgres = callPackage ../development/python-modules/harlequin-postgres { };
 
@@ -8719,6 +8723,8 @@ self: super: with self; {
   ixia = callPackage ../development/python-modules/ixia { };
 
   j2lint = callPackage ../development/python-modules/j2lint { };
+
+  jack-client = callPackage ../development/python-modules/jack-client { };
 
   jaconv = callPackage ../development/python-modules/jaconv { };
 
@@ -10657,6 +10663,10 @@ self: super: with self; {
   mcdreforged = callPackage ../development/python-modules/mcdreforged { };
 
   mcp = callPackage ../development/python-modules/mcp { };
+
+  mcp-types = callPackage ../development/python-modules/mcp-types { };
+
+  mcp_2 = callPackage ../development/python-modules/mcp/2.nix { };
 
   mcpadapt = callPackage ../development/python-modules/mcpadapt { };
 
@@ -14950,8 +14960,6 @@ self: super: with self; {
 
   pyelftools = callPackage ../development/python-modules/pyelftools { };
 
-  pyembroidery = callPackage ../development/python-modules/pyembroidery { };
-
   pyemby = callPackage ../development/python-modules/pyemby { };
 
   pyemd = callPackage ../development/python-modules/pyemd { };
@@ -15983,8 +15991,6 @@ self: super: with self; {
 
   pyqt-builder = callPackage ../development/python-modules/pyqt-builder { };
 
-  pyqt3d = callPackage ../development/python-modules/pyqt3d { };
-
   pyqt5 = callPackage ../development/python-modules/pyqt/5.x.nix { inherit (pkgs) mesa; };
 
   pyqt5-multimedia = self.pyqt5.override { withMultimedia = true; };
@@ -16442,6 +16448,8 @@ self: super: with self; {
   pystemmer = callPackage ../development/python-modules/pystemmer { };
 
   pystiebeleltron = callPackage ../development/python-modules/pystiebeleltron { };
+
+  pystitch = callPackage ../development/python-modules/pystitch { };
 
   pystray = callPackage ../development/python-modules/pystray { };
 
@@ -17626,6 +17634,8 @@ self: super: with self; {
   pywikibot = callPackage ../development/python-modules/pywikibot { };
 
   pywilight = callPackage ../development/python-modules/pywilight { };
+
+  pywillow = callPackage ../development/python-modules/pywillow { };
 
   pywinbox = callPackage ../development/python-modules/pywinbox { };
 
@@ -20270,6 +20280,8 @@ self: super: with self; {
   sumtypes = callPackage ../development/python-modules/sumtypes { };
 
   sunpy = callPackage ../development/python-modules/sunpy { };
+
+  sunsynk-api-client = callPackage ../development/python-modules/sunsynk-api-client { };
 
   suntime = callPackage ../development/python-modules/suntime { };
 

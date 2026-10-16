@@ -357,7 +357,6 @@
   ./programs/unifi-endpoint.nix
   ./programs/upki.nix
   ./programs/usbtop.nix
-  ./programs/vellum.nix
   ./programs/vim.nix
   ./programs/virt-manager.nix
   ./programs/vivid.nix
@@ -473,6 +472,7 @@
   ./services/audio/roon-server.nix
   ./services/audio/slimserver.nix
   ./services/audio/snapserver.nix
+  ./services/audio/soloist.nix
   ./services/audio/spotifyd.nix
   ./services/audio/squeezelite.nix
   ./services/audio/tts.nix
@@ -1670,6 +1670,7 @@
   ./services/video/wivrn.nix
   ./services/wayland/cage.nix
   ./services/wayland/hypridle.nix
+  ./services/wayland/vellum.nix
   ./services/web-apps/actual.nix
   ./services/web-apps/agorakit.nix
   ./services/web-apps/akkoma.nix

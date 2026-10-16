@@ -1184,7 +1184,7 @@ with pkgs;
     )
   );
 
-  tw = ocamlPackages.tw.bin;
+  tw = ocamlPackages.tw;
 
   wrapRetroArch = retroarch-bare.wrapper;
 
@@ -2256,10 +2256,6 @@ with pkgs;
 
   md2gemini = with python3.pkgs; toPythonApplication md2gemini;
 
-  mdcat = callPackage ../tools/text/mdcat {
-    inherit (python3Packages) ansi2html;
-  };
-
   mhonarc = perlPackages.MHonArc;
 
   nanoemoji = with python3Packages; toPythonApplication nanoemoji;
@@ -2947,10 +2943,6 @@ with pkgs;
 
   xorriso = libisoburn;
 
-  xvfb-run = callPackage ../tools/misc/xvfb-run {
-    inherit (texFunctions) fontsConf;
-  };
-
   yapf = with python3Packages; toPythonApplication yapf;
 
   yarn-berry_4 = yarn-berry.override { berryVersion = 4; };
@@ -3084,7 +3076,7 @@ with pkgs;
     ocamlPackages = ocaml-ng.ocamlPackages_4_14;
   };
 
-  inherit (coqPackages_9_2) compcert;
+  inherit (rocqPackages_9_2) compcert;
 
   corretto11 = javaPackages.compiler.corretto11;
   corretto17 = javaPackages.compiler.corretto17;
@@ -3098,6 +3090,8 @@ with pkgs;
     crystal_1_17
     crystal_1_18
     crystal_1_19
+    crystal_1_20
+    crystal_1_21
     crystal
     ;
 
@@ -3897,7 +3891,7 @@ with pkgs;
   ocamlPackages = recurseIntoAttrs ocaml-ng.ocamlPackages;
   ocamlPackages_latest = recurseIntoAttrs ocaml-ng.ocamlPackages_latest;
 
-  ocaml-crunch = ocamlPackages.crunch.bin;
+  ocaml-crunch = ocamlPackages.crunch;
 
   inherit (ocaml-ng.ocamlPackages_4_14)
     ocamlformat_0_19_0
@@ -4407,6 +4401,7 @@ with pkgs;
     php83
     php84
     php85
+    php86
     ;
 
   # PHP Extensions and Packages
@@ -4421,6 +4416,9 @@ with pkgs;
 
   php85Extensions = recurseIntoAttrs php85.extensions;
   php85Packages = recurseIntoAttrs php85.packages;
+
+  php86Extensions = recurseIntoAttrs php86.extensions;
+  php86Packages = recurseIntoAttrs php86.packages;
 
   # Python interpreters. All standard library modules are included except for tkinter, which is
   # available as `pythonPackages.tkinter` and can be used as any other Python package.
@@ -4453,6 +4451,11 @@ with pkgs;
     pythonAttr = "python315FreeThreading";
     enableGIL = false;
   };
+  python316FreeThreading = python315.override {
+    self = python316FreeThreading;
+    pythonAttr = "python316FreeThreading";
+    enableGIL = false;
+  };
 
   pythonInterpreters = callPackage ./../development/interpreters/python { };
   inherit (pythonInterpreters)
@@ -4461,6 +4464,7 @@ with pkgs;
     python313
     python314
     python315
+    python316
     python3Minimal
     pypy27
     pypy310
@@ -4476,6 +4480,7 @@ with pkgs;
   python313Packages = recurseIntoAttrs python313.pkgs;
   python314Packages = recurseIntoAttrs python314.pkgs;
   python315Packages = python315.pkgs;
+  python316Packages = python316.pkgs;
   pypyPackages = pypy.pkgs;
   pypy2Packages = pypy2.pkgs;
   pypy27Packages = pypy27.pkgs;
@@ -6769,8 +6774,8 @@ with pkgs;
   ### DEVELOPMENT / GO
 
   # the unversioned attributes should always point to the same go version
-  go = go_1_26;
-  buildGoModule = buildGo126Module;
+  go = go_1_27;
+  buildGoModule = buildGo127Module;
 
   go_latest = go_1_27;
   buildGoLatestModule = buildGo127Module;
@@ -7191,12 +7196,6 @@ with pkgs;
 
   inherit
     ({
-      kanidm_1_8 = callPackage ../servers/kanidm/1_8.nix {
-        kanidmWithSecretProvisioning = kanidmWithSecretProvisioning_1_8;
-      };
-      kanidm_1_9 = callPackage ../servers/kanidm/1_9.nix {
-        kanidmWithSecretProvisioning = kanidmWithSecretProvisioning_1_9;
-      };
       kanidm_1_10 = callPackage ../servers/kanidm/1_10.nix {
         kanidmWithSecretProvisioning = kanidmWithSecretProvisioning_1_10;
       };
@@ -7204,17 +7203,11 @@ with pkgs;
         kanidmWithSecretProvisioning = kanidmWithSecretProvisioning_1_11;
       };
 
-      kanidmWithSecretProvisioning_1_8 = kanidm_1_8.override { enableSecretProvisioning = true; };
-      kanidmWithSecretProvisioning_1_9 = kanidm_1_9.override { enableSecretProvisioning = true; };
       kanidmWithSecretProvisioning_1_10 = kanidm_1_10.override { enableSecretProvisioning = true; };
       kanidmWithSecretProvisioning_1_11 = kanidm_1_11.override { enableSecretProvisioning = true; };
     })
-    kanidm_1_8
-    kanidm_1_9
     kanidm_1_10
     kanidm_1_11
-    kanidmWithSecretProvisioning_1_8
-    kanidmWithSecretProvisioning_1_9
     kanidmWithSecretProvisioning_1_10
     kanidmWithSecretProvisioning_1_11
     ;
@@ -8819,7 +8812,7 @@ with pkgs;
   murmur =
     (callPackages ../applications/networking/mumble {
       avahi = avahi-compat;
-      pulseSupport = config.pulseaudio or false;
+      pulseSupport = false;
       iceSupport = config.murmur.iceSupport or true;
     }).murmur;
 
@@ -10079,20 +10072,6 @@ with pkgs;
     rocqPackages
     rocq-core
     ;
-
-  inherit (rocqPackages) coq;
-
-  # Deprecated aliases
-
-  coqPackages = rocqPackages;
-  coqPackages_9_0 = rocqPackages_9_0;
-  coq_9_0 = rocqPackages_9_0.coq;
-  coqPackages_9_1 = rocqPackages_9_1;
-  coq_9_1 = rocqPackages_9_1.coq;
-  coqPackages_9_2 = rocqPackages_9_2;
-  coq_9_2 = rocqPackages_9_2.coq;
-  coqPackages_9_3 = rocqPackages_9_3;
-  coq_9_3 = rocqPackages_9_3.coq;
 
   inherit
     (callPackage ./coq-packages.nix {

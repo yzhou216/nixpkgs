@@ -2,13 +2,14 @@
   cacert,
   fetchFromGitHub,
   lib,
+  nix-update-script,
   rustPlatform,
   stdenv,
   versionCheckHook,
 }:
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "kache";
-  version = "1.0.0";
+  version = "1.2.1";
   __structuredAttrs = true;
 
   outputs = [ "out" ] ++ lib.optional stdenv.hostPlatform.isUnix "shims";
@@ -17,10 +18,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "kunobi-ninja";
     repo = "kache";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-Kbww7mmdUAASh1sbjdoqoosSA76EALJata+Aa8SJUnE=";
+    hash = "sha256-j3ZfQQcWZdPy7FTObe10a8DNaC1nVy1DG5TnErGEK00=";
   };
 
-  cargoHash = "sha256-/qpQMj48/wp+Ui8OWpdCdqptv1ON/xLLdslVmumZhIY=";
+  cargoHash = "sha256-aGDfVia8sF4tvOh2gedcSar/0o9vOV6cNN531TdTQjk=";
 
   nativeCheckInputs = [ cacert ];
   nativeInstallCheckInputs = [ versionCheckHook ];
@@ -62,6 +63,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
     # Let another kache on PATH recognize and skip this shim directory.
     touch "$shims/bin/.kache-shims"
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "Zero-copy, content-addressed build cache for Rust, C/C++ and more";

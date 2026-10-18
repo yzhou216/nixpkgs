@@ -1267,6 +1267,11 @@
     name = "Emi";
     matrix = "@emi:the-apothecary.club";
   };
+  alden = {
+    github = "alden";
+    githubId = 84120;
+    name = "Alden";
+  };
   aldenparker = {
     github = "aldenparker";
     githubId = 32986873;
@@ -1925,6 +1930,18 @@
     github = "andrevmatos";
     githubId = 587021;
     name = "André V L Matos";
+  };
+  andrew15-5 = {
+    name = "Andrew Voynov";
+    github = "Andrew15-5";
+    githubId = 37143421;
+    email = "andrewvoynov.b@gmail.com";
+    matrix = "@andrew15_5:matrix.org";
+    keys = [
+      {
+        fingerprint = "CB7B 1F73 C2AC 56C4 D4D2  D690 1BE9 2DD6 8570 0329";
+      }
+    ];
   };
   andrewbastin = {
     email = "andrewbastin.k@gmail.com";
@@ -13205,6 +13222,11 @@
     githubId = 1536838;
     name = "Jean-Baptiste Gosselin";
   };
+  jbiel = {
+    name = "Jared Biel";
+    github = "jbiel";
+    githubId = 961717;
+  };
   jboy = {
     email = "jboy+nixos@bius.moe";
     githubId = 2187261;
@@ -20553,13 +20575,10 @@
   };
   nanoyaki = {
     name = "Hana Kretzer";
-    email = "hanakretzer@nanoyaki.space";
+    email = "contact@nanoyaki.space";
     github = "nanoyaki";
     githubId = 144328493;
-    keys = [
-      { fingerprint = "D89F 440C 6CD7 4753 090F  EC7A 4682 C5CB 4D9D EA3C"; }
-      { fingerprint = "5A1D C7CE 51DC 0A85 6DEA  41F7 31A8 CE0D 2E7D 30C3"; }
-    ];
+    keys = [ { fingerprint = "Y/0kozwJjkoqpQPqm8lI0zvFuikIPm7hl2JRbcQTDh0"; } ];
   };
   naomieow = {
     name = "Naomi Roberts";
@@ -29751,6 +29770,11 @@
     githubId = 41209208;
     name = "tincotema";
     keys = [ { fingerprint = "F9D5 F663 E497 5CB1 66B5  FEA2 A961 39D7 C110 556C"; } ];
+  };
+  tingerrr = {
+    name = "Erik";
+    github = "tingerrr";
+    githubId = 137803093;
   };
   tiptenbrink = {
     email = "tip@tenbrinkmeijs.com";

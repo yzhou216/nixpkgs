@@ -181,10 +181,21 @@ stdenv.mkDerivation (
       mkdir -p $python/bin $python/share/clang/
     ''
     + ''
-      mv $out/bin/{analyze-build,git-clang-format,hmaptool,intercept-build,run-clang-tidy,scan-build-py,scan-view} $python/bin
-      if [ -e $out/bin/set-xcode-analyzer ]; then
-        mv $out/bin/set-xcode-analyzer $python/bin
-      fi
+      declare -a pythonScripts=(
+        analyze-build
+        git-clang-format
+        hmaptool
+        intercept-build
+        run-clang-tidy
+        scan-build-py
+        scan-view
+        set-xcode-analyzer
+      )
+      for pythonScript in "''${pythonScripts[@]}"; do
+        if [ -e $out/bin/$pythonScript ]; then
+          mv $out/bin/$pythonScript $python/bin
+        fi
+      done
       mv $out/share/clang/*.py $python/share/clang
       # Delete the Perl implementation of scan-build. It doesn’t even work when libexec is in a separate output.
       rm -rf $out/bin/scan-build $lib/libexec

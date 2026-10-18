@@ -21,8 +21,6 @@ buildPythonPackage (finalAttrs: {
   version = "4.1.0";
   pyproject = true;
 
-  __structuredAttrs = true;
-
   src = fetchFromGitHub {
     owner = "tenstorrent";
     repo = "tt-flash";
@@ -54,6 +52,7 @@ buildPythonPackage (finalAttrs: {
     homepage = "https://tenstorrent.com";
     downloadPage = "https://github.com/tenstorrent/tt-flash";
     changelog = "https://github.com/tenstorrent/tt-flash/blob/${finalAttrs.src.tag}/CHANGELOG.md";
+    teams = [ lib.teams.tenstorrent ];
     maintainers = with lib.maintainers; [ RossComputerGuy ];
     license = lib.licenses.asl20;
   };

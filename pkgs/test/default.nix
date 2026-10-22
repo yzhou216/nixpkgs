@@ -162,6 +162,8 @@ in
   );
   fetchPypiLegacy = recurseIntoAttrs (callPackages ../build-support/fetchpypilegacy/tests.nix { });
 
+  install-icons = recurseIntoAttrs pkgs.installIcons.passthru.tests;
+
   install-shell-files = recurseIntoAttrs (callPackage ./install-shell-files { });
 
   checkpointBuildTools = callPackage ./checkpointBuild { };

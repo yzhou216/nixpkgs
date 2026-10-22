@@ -10,6 +10,7 @@
   kdePackages,
   makeDesktopItem,
   copyDesktopItems,
+  installIcons,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -37,7 +38,10 @@ stdenv.mkDerivation (finalAttrs: {
     pkg-config
     kdePackages.wrapQtAppsHook
   ]
-  ++ lib.optional stdenv.hostPlatform.isLinux copyDesktopItems;
+  ++ lib.optionals stdenv.hostPlatform.isLinux [
+    copyDesktopItems
+    installIcons
+  ];
 
   buildInputs = [
     kdePackages.qtbase
@@ -58,11 +62,7 @@ stdenv.mkDerivation (finalAttrs: {
   + lib.optionalString stdenv.hostPlatform.isLinux ''
     install -Dm755 easyaudiosync $out/bin/easyaudiosync
 
-    for RES in 48 64 128 256; do
-      install -Dm755 "$src/assets/icons/easyaudiosync''${RES}.png" "$out/share/icons/hicolor/''${RES}x''${RES}/apps/easyaudiosync.png"
-    done
-
-    install -Dm755 "$src/assets/icons/easyaudiosync.svg" "$out/share/icons/hicolor/scalable/apps/easyaudiosync.svg"
+    installIcon --name easyaudiosync "$src"/assets/icons/easyaudiosync{48,64,128,256}.png "$src"/assets/icons/easyaudiosync.svg
   ''
   + ''
     runHook postInstall

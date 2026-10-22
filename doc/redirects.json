@@ -117,6 +117,12 @@
   "ex-first-package-go": [
     "index.html#ex-first-package-go"
   ],
+  "ex-installicons-scale": [
+    "index.html#ex-installicons-scale"
+  ],
+  "ex-installicons-usage": [
+    "index.html#ex-installicons-usage"
+  ],
   "ex-modularServiceCompliance-nixos": [
     "index.html#ex-modularServiceCompliance-nixos"
   ],
@@ -187,6 +193,21 @@
   ],
   "installfonts-installfont-exampleusage": [
     "index.html#installfonts-installfont-exampleusage"
+  ],
+  "installicons": [
+    "index.html#installicons"
+  ],
+  "installicons-installicon": [
+    "index.html#installicons-installicon"
+  ],
+  "installicons-reference": [
+    "index.html#installicons-reference"
+  ],
+  "installicons-scale": [
+    "index.html#installicons-scale"
+  ],
+  "installicons-usage": [
+    "index.html#installicons-usage"
   ],
   "javascript-buildNpmPackage-npmFlags": [
     "index.html#javascript-buildNpmPackage-npmFlags"

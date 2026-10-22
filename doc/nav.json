@@ -490,6 +490,10 @@
                   "file": "hooks/installFonts.section.md"
                 },
                 {
+                  "id": "installicons",
+                  "file": "hooks/installIcons.section.md"
+                },
+                {
                   "id": "juce",
                   "file": "hooks/juce.section.md"
                 },

@@ -6,6 +6,7 @@
   makeWrapper,
   makeDesktopItem,
   copyDesktopItems,
+  installIcons,
   wrapGAppsHook3,
   gobject-introspection,
   gdk-pixbuf,
@@ -28,6 +29,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     gobject-introspection
     autoPatchelfHook
     copyDesktopItems
+    installIcons
     makeWrapper
   ];
 
@@ -38,9 +40,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     cp ./{agi,gapis,gapir,gapit,device-info} $out/bin
     cp -r lib $out
 
-    for i in 16 32 48 64 96 128 256 512 1024; do
-      install -D ${finalAttrs.src}/icon.png $out/share/icons/hicolor/''${i}x$i/apps/agi.png
-    done
+    installIcon --name agi icon.png
 
     runHook postInstall
   '';

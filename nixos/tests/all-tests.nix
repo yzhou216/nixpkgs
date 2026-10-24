@@ -198,6 +198,7 @@ in
     ssh-backdoor = runTestOn [ "x86_64-linux" ] ./nixos-test-driver/ssh-backdoor.nix;
     console-log = runTest ./nixos-test-driver/console-log.nix;
     containers = runTest ./nixos-test-driver/containers.nix;
+    nspawn-interactive = runTest ./nixos-test-driver/nspawn-interactive.nix;
     nspawn-daemon-reexec-dbus = runTest ./nspawn-daemon-reexec-dbus.nix;
     multi-arch-test = runTest ./nixos-test-driver/multi-arch-test.nix;
     skip-typecheck = runTest ./nixos-test-driver/skip-typecheck.nix;
@@ -2015,6 +2016,7 @@ in
   vsftpd = runTest ./vsftpd.nix;
   waagent = runTest ./waagent.nix;
   wakapi = runTest ./wakapi.nix;
+  wanderer = runTest ./wanderer.nix;
   warpgate = runTest ./warpgate.nix;
   warzone2100 = runTest ./warzone2100.nix;
   wastebin = runTest ./wastebin.nix;

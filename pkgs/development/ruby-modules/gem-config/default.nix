@@ -59,6 +59,7 @@
   pcre2,
   gecode_3,
   curl,
+  cacert,
   libsodium,
   snappy,
   libossp_uuid,
@@ -198,6 +199,14 @@ in
       libpthread-stubs
       libxdmcp
     ];
+  };
+
+  certified = attrs: {
+    postInstall = ''
+      installPath=$(cat $out/nix-support/gem-meta/install-path)
+      rm $installPath/certs/ca-bundle.crt
+      ln -s ${cacert}/etc/ssl/certs/ca-bundle.crt $installPath/certs/ca-bundle.crt
+    '';
   };
 
   charlock_holmes = attrs: {
@@ -1222,5 +1231,7 @@ in
 
   zookeeper = attrs: {
     buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [ cctools ];
+    # avoid failing on strchr discarding const
+    env.NIX_CFLAGS_COMPILE = lib.optionalString stdenv.cc.isGNU "-Wno-error=discarded-qualifiers";
   };
 }

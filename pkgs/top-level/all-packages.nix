@@ -7412,8 +7412,7 @@ with pkgs;
       util-linux = util-linuxMinimal;
     }
   );
-  fuse = fuse2;
-  fuse2 = lowPrio (if stdenv.hostPlatform.isDarwin then macfuse-stubs else fusePackages.fuse_2);
+  fuse = fuse3;
   fuse3 = lowPrio (
     if stdenv.hostPlatform.isDarwin then
       macfuse-stubs.override { isFuse3 = true; }
@@ -9611,9 +9610,9 @@ with pkgs;
 
   inherit (callPackage ../desktops/gnome/extensions { })
     gnomeExtensions
-    gnome48Extensions
     gnome49Extensions
     gnome50Extensions
+    gnome51Extensions
     ;
 
   lomiri = recurseIntoAttrs (callPackage ../desktops/lomiri { });

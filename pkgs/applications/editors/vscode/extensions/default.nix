@@ -1192,8 +1192,8 @@ let
         mktplcRef = {
           publisher = "DanielSanMedium";
           name = "dscodegpt";
-          version = "3.24.77";
-          hash = "sha256-JoGkp2+X3vmBY9xmWQRZ21ifsycFPaWUE4IgVinZtH8=";
+          version = "3.24.79";
+          hash = "sha256-v5o3ltdosTVPvp8j3dYcYHGoJNYtRiCk7/gadh4pkck=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/DanielSanMedium.dscodegpt/changelog";
@@ -1244,8 +1244,8 @@ let
         mktplcRef = {
           name = "databricks";
           publisher = "databricks";
-          version = "2.21.0";
-          hash = "sha256-OjwK2gh8zAWvlblgekl/tGAkvsLPeCCrzYP+y5KMVv8=";
+          version = "2.22.0";
+          hash = "sha256-Nfqu8oHcO4wgHWK77skH2sKQFWQJzaXnNJzNXV7qmyE=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/databricks.databricks/changelog";
@@ -2725,8 +2725,8 @@ let
         mktplcRef = {
           name = "language-julia";
           publisher = "julialang";
-          version = "1.249.2";
-          hash = "sha256-WpOJt4ycrE/d/lh0I+Xbp5wBNpCaEDzRGOhMy1J12io=";
+          version = "1.250.2";
+          hash = "sha256-lkzQ6DCCGNafOeabdJRXEl4RobJ7/zcIVL/DMUhfh/U=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/julialang.language-julia/changelog";
@@ -4635,8 +4635,8 @@ let
         mktplcRef = {
           name = "svelte-vscode";
           publisher = "svelte";
-          version = "110.3.1";
-          hash = "sha256-C3lJ7MO6GTJIotBa71vQN/L6A8iWZ9viYNniT6I2DMQ=";
+          version = "110.3.2";
+          hash = "sha256-l8tPeijqo7YUay2OqV6r5VPVNRPLxnyKDeVWhxsfvA8=";
         };
         meta = {
           changelog = "https://github.com/sveltejs/language-tools/releases";
@@ -5037,8 +5037,8 @@ let
         mktplcRef = {
           name = "errorlens";
           publisher = "usernamehw";
-          version = "3.29.0";
-          hash = "sha256-kK9Axp2tMUGZ/04VtL5hzg35zvnRIjHpnmCJt9OhHQ8=";
+          version = "3.30.0";
+          hash = "sha256-yGhoWUQvxo21rkdpgS85CAgihQdS193+qux28e0sZ0g=";
         };
         meta = {
           changelog = "https://marketplace.visualstudio.com/items/usernamehw.errorlens/changelog";

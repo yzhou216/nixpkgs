@@ -787,6 +787,7 @@ in
   gotosocial = runTest ./web-apps/gotosocial.nix;
   goupile = runTest ./web-apps/goupile;
   gpauth-tls = runTest ./gpauth-tls.nix;
+  gpu-screen-recorder = runTest ./gpu-screen-recorder.nix;
   grafana = import ./grafana {
     inherit runTest;
   };
@@ -962,10 +963,6 @@ in
   kernel-generic = handleTest ./kernel-generic { };
   kernel-latest-ath-user-regd = runTest ./kernel-latest-ath-user-regd.nix;
   kernel-module-verification = runTest ./kernel-module-verification.nix;
-  kernel-module-verification-latest = runTest {
-    imports = [ ./kernel-module-verification.nix ];
-    _module.args.latestKernel = true;
-  };
   kernel-rust = handleTest ./kernel-rust.nix { };
   keter = runTest ./keter.nix;
   kexec = runTest ./kexec.nix;
@@ -1004,8 +1001,16 @@ in
   lasuite-docs = runTest ./web-apps/lasuite-docs.nix;
   lasuite-drive = runTest ./web-apps/lasuite-drive.nix;
   lasuite-meet = runTest ./web-apps/lasuite-meet.nix;
+  latestKernel.kernel-module-verification = runTest {
+    imports = [ ./kernel-module-verification.nix ];
+    _module.args.latestKernel = true;
+  };
   latestKernel.login = runTest {
     imports = [ ./login.nix ];
+    _module.args.latestKernel = true;
+  };
+  latestKernel.systemd-nsresourced-mountfsd = runTest {
+    imports = [ ./systemd-nsresourced-mountfsd.nix ];
     _module.args.latestKernel = true;
   };
   lauti = runTest ./lauti.nix;

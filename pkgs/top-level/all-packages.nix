@@ -4414,12 +4414,7 @@ with pkgs;
   spark4 = spark_4_0;
   spark = spark_4_0;
 
-  inherit
-    ({
-      spidermonkey_128 = callPackage ../development/interpreters/spidermonkey/128.nix { };
-      spidermonkey_140 = callPackage ../development/interpreters/spidermonkey/140.nix { };
-    })
-    spidermonkey_128
+  inherit ({ spidermonkey_140 = callPackage ../development/interpreters/spidermonkey/140.nix { }; })
     spidermonkey_140
     ;
 
@@ -5187,7 +5182,7 @@ with pkgs;
 
   certbot-full = certbot.withPlugins (
     cp: with cp; [
-      # FIXME unbreak certbot-dns-cloudflare
+      certbot-dns-cloudflare
       certbot-dns-google
       certbot-dns-inwx
       certbot-dns-ovh

@@ -5260,7 +5260,7 @@ self: super: with self; {
 
   draftjs-exporter = callPackage ../development/python-modules/draftjs-exporter { };
 
-  dragonfly = callPackage ../development/python-modules/dragonfly { };
+  dragonfly2 = callPackage ../development/python-modules/dragonfly2 { };
 
   dragonmapper = callPackage ../development/python-modules/dragonmapper { };
 
@@ -6278,6 +6278,8 @@ self: super: with self; {
   flash-linear-attention = callPackage ../development/python-modules/flash-linear-attention { };
 
   flash-mla = callPackage ../development/python-modules/flash-mla { };
+
+  flashinfer-cubin = callPackage ../development/python-modules/flashinfer-cubin { };
 
   flashinfer-jit-cache = callPackage ../development/python-modules/flashinfer-jit-cache { };
 
@@ -13737,8 +13739,6 @@ self: super: with self; {
   pillow-jpls = callPackage ../development/python-modules/pillow-jpls { };
 
   pillow-jxl-plugin = callPackage ../development/python-modules/pillow-jxl-plugin { };
-
-  pillowfight = callPackage ../development/python-modules/pillowfight { };
 
   pims = callPackage ../development/python-modules/pims { };
 
@@ -22266,8 +22266,6 @@ self: super: with self; {
   untokenize = callPackage ../development/python-modules/untokenize { };
 
   uonet-request-signer-hebe = callPackage ../development/python-modules/uonet-request-signer-hebe { };
-
-  upass = callPackage ../development/python-modules/upass { };
 
   upb-lib = callPackage ../development/python-modules/upb-lib { };
 

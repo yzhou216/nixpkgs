@@ -606,13 +606,13 @@
     "vendorHash": "sha256-CwAhh3SsTrwuIhlPOZUSumA8uywdXzu6OjikSYgU1iQ="
   },
   "hashicorp_kubernetes": {
-    "hash": "sha256-OzXAQeKZmXOunKehNAVBMXvuPnlp1ft4OCV4mBbvOkQ=",
+    "hash": "sha256-znUSbGnYMciMwHdMNfUlcNwUKgBhN1Ki8RVJbJ1bi/E=",
     "homepage": "https://registry.terraform.io/providers/hashicorp/kubernetes",
     "owner": "hashicorp",
     "repo": "terraform-provider-kubernetes",
-    "rev": "v3.4.0",
+    "rev": "v3.5.0",
     "spdx": "MPL-2.0",
-    "vendorHash": "sha256-sYTX1tbNzKnrt2ava0bVcAJnmxi4XVxzlWtytiTEnD4="
+    "vendorHash": "sha256-tANsXJkpMJk82+PQ1gNcIdQlJMuVDSiUvUEUMprmldk="
   },
   "hashicorp_local": {
     "hash": "sha256-oq1Nc03xfoDajrj0CVAO41embDGQ5cKJ8QbUZfaJv/M=",
@@ -1390,11 +1390,11 @@
     "vendorHash": "sha256-Xro8lh5wNsAyYQrM8zIbzcPPTIGE1x99jA3ZMXZXwyk="
   },
   "turbot_turbot": {
-    "hash": "sha256-VyhK0tnYyKDrtG6ER9uwn4kvo4MrAN+NYVh7hf6bkVM=",
+    "hash": "sha256-X/+ba4BJLXL+tF4E+OPBwO3LpgwA5Hy6B4UJUUJ4tDM=",
     "homepage": "https://registry.terraform.io/providers/turbot/turbot",
     "owner": "turbot",
     "repo": "terraform-provider-turbot",
-    "rev": "v1.14.1",
+    "rev": "v1.14.2",
     "spdx": "MPL-2.0",
     "vendorHash": null
   },

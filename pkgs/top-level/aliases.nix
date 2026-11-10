@@ -2172,6 +2172,7 @@ mapAliases {
   php82Extensions = throw "php82 is EOL"; # Added 2026-10-18
   php82Packages = throw "php82 is EOL"; # Added 2026-10-18
   pianotrans = throw "'pianotrans' has been removed because its dependency 'piano-transcription-inference' was unmaintained"; # Added 2026-08-13
+  picoclaw = throw "'picoclaw' has been removed, it is depending on unmaintained and insecure library 'olm'"; # Added 2026-11-09
   picom-next = throw "'picom-next' has been renamed to/replaced by 'picom'"; # Converted to throw 2025-10-27
   pidgin = throw "'pidgin' has been removed, as it relies on gtk2 libraries"; # Added 2026-10-24
   pidgin-carbons = throw "'pidgin-carbons' has been renamed to/replaced by 'pidginPackages.pidgin-carbons'"; # Converted to throw 2025-10-27
@@ -2403,6 +2404,7 @@ mapAliases {
   rke2_1_32 = throw "'rke2_1_32' has been removed from nixpkgs as it has reached end of life"; # Added 2026-04-04
   rke2_1_33 = throw "'rke2_1_33' has been removed from nixpkgs as it has reached end of life"; # Added 2026-09-02
   rl_json = throw "'rl_json' has been renamed to/replaced by 'tclPackages.rl_json'"; # Converted to throw 2025-10-27
+  rmfuse = throw "'rmfuse' has been removed from nixpkgs because it's not working with the upstream service anymore"; # Added 2026-11-08
   roam-research = throw "'roam-research' has been removed from nixpkgs due to lack of maintenance"; # Added 2026-08-14
   robo = throw "'robo' was removed due to lack of in-tree maintenance"; # Added 2026-10-18
   rockbox_utility = throw "'rockbox_utility' has been renamed to/replaced by 'rockbox-utility'"; # Converted to throw 2025-10-27

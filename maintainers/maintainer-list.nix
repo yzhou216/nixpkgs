@@ -1198,6 +1198,12 @@
     githubId = 120214979;
     name = "aktaboot";
   };
+  al2klimov = {
+    email = "alexander.klimov@icinga.com";
+    github = "al2klimov";
+    githubId = 6053266;
+    name = "Alexander A. Klimov";
+  };
   al3xtjames = {
     email = "nix@alextjam.es";
     github = "al3xtjames";
@@ -6904,6 +6910,12 @@
     github = "DDoSolitary";
     githubId = 25856103;
     name = "DDoSolitary";
+  };
+  ddymko = {
+    email = "dymkod@gmail.com";
+    github = "ddymko";
+    githubId = 1588386;
+    name = "David Dymko";
   };
   de11n = {
     email = "nixpkgs-commits@deshaw.com";
@@ -19745,7 +19757,7 @@
     name = "Marek Mahut";
   };
   mmclinton = {
-    email = "nixpkg.concur071@simplelogin.com";
+    email = "github.mmc@pm.me";
     github = "mmclinton";
     githubId = 96266047;
     name = "Miller Clinton";
@@ -20832,6 +20844,12 @@
     github = "ndavd";
     githubId = 74260683;
     name = "Nuno David";
+  };
+  ndenissov = {
+    email = "n.denissov@proton.me";
+    github = "ndenissov";
+    githubId = 70575593;
+    name = "Nikita Denissov";
   };
   ndl = {
     email = "ndl@endl.ch";
@@ -28900,7 +28918,7 @@
     name = "TakWolf";
   };
   talal = {
-    email = "noreply@talal.ch";
+    email = "noreply@talal.dev";
     github = "talal";
     githubId = 3526562;
     name = "Muhammad Talal Anwar";

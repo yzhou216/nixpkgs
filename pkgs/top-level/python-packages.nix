@@ -5759,6 +5759,8 @@ self: super: with self; {
 
   eth-utils = callPackage ../development/python-modules/eth-utils { };
 
+  etherscan-python = callPackage ../development/python-modules/etherscan-python { };
+
   ethtool = callPackage ../development/python-modules/ethtool { };
 
   etils = callPackage ../development/python-modules/etils { };
@@ -9618,6 +9620,8 @@ self: super: with self; {
   lektricowifi = callPackage ../development/python-modules/lektricowifi { };
 
   lerobot = callPackage ../development/python-modules/lerobot { };
+
+  lesscpy = toPythonModule (pkgs.lesscpy.override { python3Packages = self; });
 
   letpot = callPackage ../development/python-modules/letpot { };
 
@@ -17091,8 +17095,6 @@ self: super: with self; {
 
   python-etcd = callPackage ../development/python-modules/python-etcd { };
 
-  python-etherscan-api = callPackage ../development/python-modules/python-etherscan-api { };
-
   python-ev3dev2 = callPackage ../development/python-modules/python-ev3dev2 { };
 
   python-family-hub-local = callPackage ../development/python-modules/python-family-hub-local { };
@@ -21179,6 +21181,8 @@ self: super: with self; {
   torchaudio-bin = callPackage ../development/python-modules/torchaudio/bin.nix { };
 
   torchbench = callPackage ../development/python-modules/torchbench { };
+
+  torchbenchmark = callPackage ../development/python-modules/torchbenchmark { };
 
   torchcodec = callPackage ../development/python-modules/torchcodec { };
 

@@ -16,6 +16,8 @@ let
     "ghc902Binary"
     "ghc966DebianBinary"
     "ghc984Binary"
+    # GHCs bootstrapped from source
+    "ghc622Bootstrap"
   ];
 
   haskellLibUncomposable = import ../development/haskell-modules/lib {
@@ -102,6 +104,12 @@ in
       ghc966DebianBinary = callPackage ../development/compilers/ghc/9.6.6-debian-binary.nix { };
 
       ghc984Binary = callPackage ../development/compilers/ghc/9.8.4-binary.nix { };
+
+      # Built from source through Hugs and MicroHs, without a GHC binary
+      ghc622Bootstrap =
+        (callPackage ../development/compilers/ghc/bootstrap {
+          inherit (bb.compiler) microhs;
+        }).ghc622;
 
       ghc948 = callPackage ../development/compilers/ghc/9.4.8.nix {
         bootPkgs =

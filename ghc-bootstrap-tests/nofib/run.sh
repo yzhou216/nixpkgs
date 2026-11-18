@@ -68,8 +68,17 @@ run_prog() {
 			if timeout 1800 "$REF/ghc" -v0 -XHaskell98 -i"$stubs/h98" -i. -outputdir ref --make $main -o "$prog-ref" > "$log.refbuild" 2>&1; then
 				# shellcheck disable=SC2086
 				timeout 600 "./$prog" $rt $args < "${stdin:-/dev/null}" > ours.txt 2> /dev/null
-				# shellcheck disable=SC2086
-				timeout 600 "./$prog-ref" $args < "${stdin:-/dev/null}" > ref.txt 2> /dev/null
+				# The same arguments without the RTS options, which the
+				# reference's programs do not take
+				local w skip=0 refargs=()
+				for w in $rt $args; do
+					case $w in
+					+RTS) skip=1 ;;
+					-RTS) skip=0 ;;
+					*) [ $skip = 1 ] || refargs+=("$w") ;;
+					esac
+				done
+				timeout 600 "./$prog-ref" "${refargs[@]}" < "${stdin:-/dev/null}" > ref.txt 2> /dev/null
 				if cmp -s ours.txt ref.txt; then
 					echo "run; the reference prints the same" > status
 				else

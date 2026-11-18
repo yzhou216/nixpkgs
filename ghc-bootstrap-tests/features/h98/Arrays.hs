@@ -51,7 +51,7 @@ main = do
   let a = listArray (0, 4) "hello" :: Array Int Char
   print (a, bounds a, a ! 1, elems (a // [(0, 'j')]))
   print (accumArray (+) 0 (0, 4) [(x `mod` 5, 1) | x <- [1 .. 23 :: Int]] :: Array Int Int)
-  print (ixmap (0, 4) (4 -) a, indices (listArray ((0, 0), (1, 2)) [1 .. 6 :: Int]))
+  print (ixmap (0, 4) (4 -) a, indices (listArray ((0, 0), (1, 2)) [1 .. 6] :: Array (Int, Int) Int))
   print (range ((0, 0), (2, 1)), index (10, 20) (15 :: Int), inRange ('a', 'z') 'q', rangeSize ((1, 1), (3, 4 :: Int)))
   let fibm = listArray ((1, 1), (2, 2)) [1, 1, 1, 0]
   print ((iterate (matMul fibm) fibm !! 99) ! (1, 2))

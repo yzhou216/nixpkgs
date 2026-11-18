@@ -63,8 +63,8 @@ h98() {
 	timeout 300 "./$p-ref" > ref.txt
 	timeout 300 "./$p-O0" > o0.txt
 	timeout 300 "./$p-O1" > o1.txt
-	cat ref.txt
-	diff -u ref.txt o0.txt
+	cat o1.txt
+	diff -u o0.txt o1.txt
 	diff -u ref.txt o1.txt
 }
 
@@ -129,21 +129,24 @@ t_separate() {
 	"$G/ghc" -c -odir obj -hidir hi A.hs
 	test -f obj/A.o
 	test -f hi/A.hi
-	"$G/ghc" --show-iface A.hi | grep 'interface A'
+	"$G/ghc" --show-iface A.hi > iface.txt 2>&1
+	cat iface.txt
+	grep -q '^interface' iface.txt
+	grep -q 'f :: ' iface.txt
 }
 
 # --make compiles only what changed
 t_recomp() {
 	two_modules
-	"$G/ghc" --make Main.hs -o m > l1.txt
-	"$G/ghc" --make Main.hs -o m > l2.txt
+	"$G/ghc" --make Main.hs -o m > l1.txt 2>&1
+	"$G/ghc" --make Main.hs -o m > l2.txt 2>&1
 	sleep 1
 	echo '-- a comment' >> A.hs
-	"$G/ghc" --make Main.hs -o m > l3.txt
+	"$G/ghc" --make Main.hs -o m > l3.txt 2>&1
 	sleep 1
 	printf 'g :: Int\ng = 1\n' >> A.hs
 	sed -i 's/^module A (f) where$/module A (f, g) where/' A.hs
-	"$G/ghc" --make Main.hs -o m > l4.txt
+	"$G/ghc" --make Main.hs -o m > l4.txt 2>&1
 	cat l1.txt l2.txt l3.txt l4.txt
 	[ "$(grep -c '^Compiling' l1.txt)" = 2 ]
 	[ "$(grep -c '^Compiling' l2.txt)" = 0 ]
@@ -330,6 +333,7 @@ for p in Integers Floats Text Arrays; do
 	check "h98-$p" h98 $p
 done
 check ghc-Exts expect ghc Exts -O
+check ghc-FloatQuirks expect ghc FloatQuirks -O
 check ghc-Conc expect ghc Conc -O
 check ghc-Exc expect ghc Exc -O
 check ghc-Deadlock t_deadlock

@@ -73,7 +73,7 @@ norm2 :: V -> Double
 norm2 (V x y) = x * x + y * y
 
 -- A rewrite rule that changes the result, so that it shows whether it fired
-mymap :: (a -> b) -> [a] -> [b]
+mymap :: (Int -> Int) -> [Int] -> [Int]
 mymap = map
 {-# NOINLINE mymap #-}
 {-# RULES "mymap/twice" forall f g xs. mymap f (mymap g xs) = mymap (\x -> f (g x) + 1000) xs #-}

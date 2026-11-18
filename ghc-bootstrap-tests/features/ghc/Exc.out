@@ -7,7 +7,7 @@ ioError: IOException
 openFile: IOException
 exit: ExitException ExitFailure 3
 dyn: MyErr 42
-array: ErrorCall Ix{Int}.index: Index (5) out of range ((0,2))
+array: ErrorCall Ix{Integer}.index: Index (5) out of range ((0,2))
 stack: AsyncException stack overflow
 ["acquire","use 5","release","body","finally"]
 (True,Just "/nonexistent/file")

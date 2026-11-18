@@ -61,8 +61,9 @@ h98() {
 	"$G/ghc" -v0 -O -odir o1 -hidir o1 --make "$p.hs" -o "$p-O1"
 	"$REF/ghc" -v0 -O -outputdir ref "$p.hs" -o "$p-ref"
 	timeout 300 "./$p-ref" > ref.txt
-	timeout 300 "./$p-O0" > o0.txt
-	timeout 300 "./$p-O1" > o1.txt
+	# GHC 6.2.2's default stack is 1 MB
+	timeout 300 "./$p-O0" +RTS -K256m -RTS > o0.txt
+	timeout 300 "./$p-O1" +RTS -K256m -RTS > o1.txt
 	cat o1.txt
 	diff -u o0.txt o1.txt
 	diff -u ref.txt o1.txt
@@ -131,7 +132,7 @@ t_separate() {
 	test -f hi/A.hi
 	"$G/ghc" --show-iface A.hi > iface.txt 2>&1
 	cat iface.txt
-	grep -q '^interface' iface.txt
+	grep -q '^__interface "Main" A ' iface.txt
 	grep -q 'f :: ' iface.txt
 }
 
@@ -318,15 +319,22 @@ t_tools() {
 	grep -q '^f' tags
 }
 
-# gcc -O2 on the generated C, which GHC 6.2.2 compiles with -O by default
+# gcc -O2 on the generated C, which GHC 6.2.2 compiles with -O by default,
+# and with strict aliasing off
 t_optc_O2() {
+	local p v rc=0
 	for p in Integers Arrays; do
 		cp "$src/h98/$p.hs" .
-		mkdir -p a b
-		"$G/ghc" -v0 -O -odir a -hidir a --make "$p.hs" -o "$p-a"
-		"$G/ghc" -v0 -O -optc-O2 -odir b -hidir b --make "$p.hs" -o "$p-b"
-		cmp <("./$p-a") <("./$p-b")
+		for v in a:-O b:-optc-O2 c:-optc-O2,-optc-fno-strict-aliasing; do
+			mkdir -p "${v%%:*}"
+			# shellcheck disable=SC2046
+			"$G/ghc" -v0 -O $(echo "${v#*:}" | tr , " ") -odir "${v%%:*}" -hidir "${v%%:*}" --make "$p.hs" -o "$p-${v%%:*}"
+			"./$p-${v%%:*}" +RTS -K256m -RTS > "$p-${v%%:*}.txt" 2>&1 || echo "exit $?" >> "$p-${v%%:*}.txt"
+		done
+		diff -u "$p-a.txt" "$p-b.txt" || rc=1
+		diff -u "$p-a.txt" "$p-c.txt" || rc=1
 	done
+	return $rc
 }
 
 for p in Integers Floats Text Arrays; do

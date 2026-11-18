@@ -22,7 +22,7 @@ check() {
 	local name=$1
 	shift
 	mkdir -p "$top/work/$name"
-	(cd "$top/work/$name" && set -e && "$@") > "$out/logs/$name.log" 2>&1
+	(cd "$top/work/$name" && set -ex && "$@") > "$out/logs/$name.log" 2>&1
 	local rc=$?
 	if [ $rc = 0 ]; then
 		echo "PASS  $name" >> "$report"
@@ -56,6 +56,7 @@ xfail() {
 h98() {
 	local p=$1
 	cp "$src/h98/$p.hs" .
+	mkdir o0 o1
 	"$G/ghc" -v0 -O0 -odir o0 -hidir o0 --make "$p.hs" -o "$p-O0"
 	"$G/ghc" -v0 -O -odir o1 -hidir o1 --make "$p.hs" -o "$p-O1"
 	"$REF/ghc" -v0 -O -outputdir ref "$p.hs" -o "$p-ref"
@@ -88,6 +89,14 @@ t_io() {
 	[ $rc = 5 ]
 }
 
+t_deadlock() {
+	cp "$src/ghc/Deadlock.hs" .
+	"$G/ghc" -v0 -O --make Deadlock.hs -o deadlock
+	local rc=0
+	timeout 60 ./deadlock || rc=$?
+	[ $rc = 3 ]
+}
+
 t_version() {
 	"$G/ghc" --version | grep 'version 6\.2\.2'
 	[ "$("$G/ghc" --numeric-version)" = 6.2.2 ]
@@ -116,6 +125,7 @@ t_separate() {
 	"$G/ghc" -c Main.hs
 	"$G/ghc" -o sep A.o Main.o
 	[ "$(./sep)" = 42 ]
+	mkdir obj hi
 	"$G/ghc" -c -odir obj -hidir hi A.hs
 	test -f obj/A.o
 	test -f hi/A.hi
@@ -201,7 +211,7 @@ t_rts() {
 	[ $rc != 0 ]
 	grep -q 'Stack space overflow' err.txt
 	[ "$(./deep +RTS -K100m -RTS)" = 500000500000 ]
-	./deep +RTS -K100m -s -RTS 2> stats.txt
+	./deep +RTS -K100m -sstderr -RTS 2> stats.txt
 	cat stats.txt
 	grep -q 'bytes allocated' stats.txt
 	printf 'main :: IO ()\nmain = let xs = [1 .. 2000000 :: Int] in print (length xs, sum xs)\n' > Heap.hs
@@ -309,6 +319,7 @@ t_tools() {
 t_optc_O2() {
 	for p in Integers Arrays; do
 		cp "$src/h98/$p.hs" .
+		mkdir -p a b
 		"$G/ghc" -v0 -O -odir a -hidir a --make "$p.hs" -o "$p-a"
 		"$G/ghc" -v0 -O -optc-O2 -odir b -hidir b --make "$p.hs" -o "$p-b"
 		cmp <("./$p-a") <("./$p-b")
@@ -321,6 +332,7 @@ done
 check ghc-Exts expect ghc Exts -O
 check ghc-Conc expect ghc Conc -O
 check ghc-Exc expect ghc Exc -O
+check ghc-Deadlock t_deadlock
 check ghc-IO t_io
 check lib-Parsec expect lib Parsec -package parsec
 check lib-QC expect lib QC -package QuickCheck
@@ -345,8 +357,8 @@ check driver-optc-O2 t_optc_O2
 xfail ffi-wrapper 'adjustor creation not supported' t_wrapper
 xfail no-ghci 'not built for interactive use' "$G/ghci"
 xfail no-eval 'not built for interactive use' "$G/ghc" -e 'print 1'
-xfail no-prof '' hello -prof
-xfail no-threaded '' hello -threaded
+xfail no-prof 'Could not find interface file' hello -prof
+xfail no-threaded 'cannot find -lHSrts_thr' hello -threaded
 
 echo "$npass passed, $nfail failed, $nxfail expected failures" >> "$report"
 cat "$report"

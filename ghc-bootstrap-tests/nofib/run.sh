@@ -1,9 +1,11 @@
 # Runs a nofib suite (imaginary, spectral or real) with GHC 6.2.2 the way
 # nofib's own Makefiles do: each program's compiler flags, arguments, stdin
 # and expected output come from its Makefile, read through the stub mk files
-# here, and GHC 6.2.2's runstdtest checks the run.
+# here, and GHC 6.2.2's runstdtest checks the run.  A program whose output
+# differs is also compiled by the reference compiler REF, with the Haskell 98
+# modules from h98/ here, and the two outputs compared.
 #
-# Usage: run.sh NOFIB STUBS RUNSTDTEST GHC SUITE OPT OUT
+# Usage: run.sh NOFIB STUBS RUNSTDTEST GHC SUITE OPT OUT REF
 nofib=$1
 stubs=$2
 runstdtest=$3
@@ -11,6 +13,7 @@ G=$4
 suite=$5
 opt=$6
 out=$7
+REF=$8
 
 cp -r "$nofib" nofib
 chmod -R u+w nofib
@@ -62,6 +65,20 @@ run_prog() {
 			echo pass > status
 		else
 			echo run > status
+			if timeout 1800 "$REF/ghc" -v0 -XHaskell98 -i"$stubs/h98" -i. -outputdir ref --make $main -o "$prog-ref" > "$log.refbuild" 2>&1; then
+				# shellcheck disable=SC2086
+				timeout 600 "./$prog" $rt $args < "${stdin:-/dev/null}" > ours.txt 2> /dev/null
+				# shellcheck disable=SC2086
+				timeout 600 "./$prog-ref" $args < "${stdin:-/dev/null}" > ref.txt 2> /dev/null
+				if cmp -s ours.txt ref.txt; then
+					echo "run; the reference prints the same" > status
+				else
+					echo "run; the reference prints otherwise" > status
+					diff ours.txt ref.txt | head -n 20 > "$log.refdiff"
+				fi
+			else
+				echo "run; the reference cannot build it" > status
+			fi
 		fi
 	)
 	local st
@@ -71,7 +88,8 @@ run_prog() {
 		npass=$((npass + 1))
 	else
 		echo "FAIL  $name ($st)" >> "$report"
-		for f in "$log.build" "$log.run"; do
+		case $st in *"cannot build"*) tail -n 10 "$log.refbuild" | sed "s/^/      /" >> "$report" ;; esac
+		for f in "$log.build" "$log.run" "$log.refdiff"; do
 			[ -f "$f" ] && tail -n 25 "$f" | sed 's/^/      /' >> "$report"
 		done
 		nfail=$((nfail + 1))

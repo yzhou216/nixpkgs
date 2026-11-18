@@ -55,8 +55,8 @@ simplify = everywhere (mkT step)
     step e = e
 
 -- Nodes in a value, Int leaves included
-gcount :: GenericQ Int
-gcount t = 1 + sum (gmapQ gcount t)
+nodeCount :: GenericQ Int
+nodeCount t = 1 + sum (gmapQ nodeCount t)
 
 isBig :: Expr -> Bool
 isBig (Num n) = n > 1
@@ -97,7 +97,7 @@ main = do
   print (map (classify [("a", 1), ("b", 0)]) ["a", "b", "c"])
   print (simplify (Add (Mul (Num 1) (Num 5)) (Add (Num 2) (Num 0))))
   print (typeOf (Just 'x'), typeOf [1 :: Int], typeOf (undefined :: Int -> Bool))
-  print (gcount (Add (Num 1) (Num 2)), listify isBig (Add (Num 1) (Mul (Num 2) (Num 3))))
+  print (nodeCount (Add (Num 1) (Num 2)), listify isBig (Add (Num 1) (Mul (Num 2) (Num 3))))
   print (runState labels 10)
   print (norm2 (V 3 4))
   print (mymap (* 2) (mymap (+ 1) [1, 2, 3 :: Int]))

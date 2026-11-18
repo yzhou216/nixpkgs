@@ -1,3 +1,4 @@
+{-# OPTIONS -fglasgow-exts #-}
 module Exports where
 
 import Foreign.C

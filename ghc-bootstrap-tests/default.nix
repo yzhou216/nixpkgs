@@ -17,6 +17,7 @@ let
   inherit (pkgs) lib runCommand runCommandCC;
 
   ghc = pkgs.haskell.compiler.ghc622Bootstrap;
+  ref = pkgs.haskell.compiler.ghc984Binary;
 
   upstreamSrc = pkgs.fetchFromGitHub {
     owner = "andreabedini";
@@ -81,7 +82,7 @@ let
 in
 {
   features = runCommandCC "ghc-6.2.2-features" { } ''
-    bash ${./features/run.sh} ${./features} ${ghc}/bin ${pkgs.haskell.compiler.ghc984Binary}/bin $out
+    bash ${./features/run.sh} ${./features} ${ghc}/bin ${ref}/bin $out
   '';
 
   nofib = lib.genAttrs [ "imaginary" "spectral" "real" ] (
@@ -90,7 +91,7 @@ in
       (
         opt: flag:
         runCommandCC "ghc-6.2.2-nofib-${suite}-${opt}" { nativeBuildInputs = [ pkgs.perl ]; } ''
-          bash ${./nofib/run.sh} ${nofibSrc} ${./nofib} ${runstdtest} ${ghc}/bin ${suite} ${flag} $out
+          bash ${./nofib/run.sh} ${nofibSrc} ${./nofib} ${runstdtest} ${ghc}/bin ${suite} ${flag} $out ${ref}/bin
         ''
       )
       {

@@ -7,7 +7,7 @@ import Data.Array
 import Data.Dynamic
 import Data.IORef
 import System.Exit
-import System.IO
+import System.IO hiding (catch, try)
 import System.IO.Error (ioeGetFileName, isDoesNotExistError)
 
 data MyErr = MyErr Int deriving (Show, Typeable)

@@ -11,7 +11,7 @@ import System.Cmd (system)
 import System.Directory
 import System.Environment (getArgs, getProgName)
 import System.Exit
-import System.IO
+import System.IO hiding (catch, try)
 import System.IO.Error (isEOFError)
 import System.Info (arch, os)
 import System.Mem (performGC)

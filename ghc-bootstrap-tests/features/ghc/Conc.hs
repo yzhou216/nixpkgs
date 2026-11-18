@@ -44,15 +44,6 @@ main = do
   throwTo t2 (ErrorCall "custom")
   takeMVar res2 >>= putStrLn
 
-  -- Blocked on an MVar that no other thread can fill
-  r <- try (newEmptyMVar >>= \m -> takeMVar (m :: MVar ()))
-  putStrLn
-    ( case r of
-        Left BlockedOnDeadMVar -> "deadlock detected"
-        Left e -> "other: " ++ show e
-        Right () -> "no deadlock"
-    )
-
   -- threadDelay waits at least as long as asked
   t0 <- getClockTime
   threadDelay 200000

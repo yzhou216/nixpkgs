@@ -1,0 +1,14 @@
+([3,2,1],"cba")
+[1,"two",Just 'c']
+[1,2,3]
+hello world
+5050
+["positive","non-positive","missing"]
+Add (Num 5) (Num 2)
+(Maybe Char,[Int],Int -> Bool)
+(5,[Num 2,Num 3])
+([10,11,13,16,20],25)
+25.0
+[1004,1006,1008]
+yes <default>
+(3,'A',5.0)

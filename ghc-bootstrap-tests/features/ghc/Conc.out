@@ -1,0 +1,9 @@
+1000
+10100
+[1,2,3]
+caught: thread killed
+custom
+deadlock detected
+True
+yielded
+True

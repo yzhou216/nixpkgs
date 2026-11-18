@@ -10,6 +10,7 @@
   python3Minimal,
   ghc-bootstrap-src,
   mhs,
+  mhsRuntime,
   cpphs,
   happy,
 }:
@@ -41,7 +42,9 @@ let
     done
   '';
 
-  # genprimopcode compiled by MicroHs, with its Parsec import served by a shim
+  # genprimopcode compiled by MicroHs, with its Parsec import served by a shim.
+  # The C goes through a file of a fixed name, since `mhs -o` with a binary
+  # compiles a temporary file whose random name stays in the symbol table.
   genprimopcode =
     runCommandCC "ghc-6.2.2-genprimopcode"
       {
@@ -55,7 +58,9 @@ let
         tar xjf ${src} --strip-components=4 ghc-6.2.2/ghc/utils/genprimopcode/Main.hs
         patch -s Main.hs ${files}/tools/genprimopcode-Main.hs.patch
         cp ${files}/shims/Parsec.hs Parsec.hs
-        mhs -XCPP -i. -i${files}/shims-h98 Main -ogenprimopcode
+        mhs -XCPP -i. -i${files}/shims-h98 Main -ogenprimopcode.c
+        cc -w -O1 -I${mhsRuntime} -I${mhsRuntime}/unix \
+          ${mhsRuntime}/main.c ${mhsRuntime}/eval.c genprimopcode.c -lm -o genprimopcode
         install -Dm755 genprimopcode $out/bin/genprimopcode
       '';
 
@@ -104,7 +109,13 @@ let
       runHook postBuild
     '';
 
-    installPhase = "cp -a . $out";
+    # config.log records the random names of gcc's temporary files
+    installPhase = ''
+      runHook preInstall
+      rm config.log
+      cp -a . $out
+      runHook postInstall
+    '';
 
     dontFixup = true;
   };

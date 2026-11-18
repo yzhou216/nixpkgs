@@ -36,10 +36,17 @@ stdenv.mkDerivation {
     done
 
     # glibc has had execvpe since 2.11, with a declaration that clashes with
-    # the ones in libraries/unix and hslibs/posix
+    # the ones in libraries/unix and hslibs/posix.  The libraries' own
+    # execvpe goes; pPrPr_disableITimers, in the same file, stays for
+    # System.Posix.Process, which calls it before exec.
     sed -i '/^extern int execvpe(char \*name, char \*\*argv, char \*\*envp);$/d' libraries/unix/include/HsUnix.h
     ! grep -q execvpe libraries/unix/include/HsUnix.h
-    echo '/* execvpe: glibc provides it */' > libraries/unix/cbits/execvpe.c
+    sed -i \
+      -e '/^int$/{N;s/^int\nexecvpe(char \*name, char \*\*argv, char \*\*envp)$/execvpe(char *name, char **argv, char **envp)/}' \
+      -e '/^execvpe(char \*name, char \*\*argv, char \*\*envp)$/,/^}$/d' \
+      libraries/unix/cbits/execvpe.c
+    ! grep -q 'execvpe(' libraries/unix/cbits/execvpe.c
+    grep -q '^void pPrPr_disableITimers (void)$' libraries/unix/cbits/execvpe.c
     sed -i '/^extern int  execvpe(char \*, char \*\*, char \*\*);$/d' hslibs/posix/cbits/HsPosix.h
     ! grep -q execvpe hslibs/posix/cbits/HsPosix.h
 
@@ -155,6 +162,9 @@ stdenv.mkDerivation {
     # later break
     cp ${ghc-bootstrap-src}/common/test/GmpZero.hs t/GmpZero.hs
     (cd t && $out/bin/ghc -v0 -O --make GmpZero.hs -o gz && ./gz > gz.txt && printf "(2400000,0)\n" | diff - gz.txt)
+    # System.Posix.Process links against libraries/unix/cbits
+    printf 'import System.Posix.Process\nmain = forkProcess (return ()) >>= getProcessStatus True False >>= print\n' > t/Fork.hs
+    (cd t && $out/bin/ghc -v0 -package unix --make Fork.hs -o fork && [ "$(./fork)" = "Just (Exited ExitSuccess)" ])
     runHook postInstallCheck
   '';
 

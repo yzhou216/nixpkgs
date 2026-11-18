@@ -8,6 +8,7 @@
   python3Minimal,
   ghc-bootstrap-src,
   mhs,
+  mhsRuntime,
   cpphs,
   tree,
   rts,
@@ -25,7 +26,8 @@ let
   '';
 
   # GHC 6.2.2's hsc2hs compiled by MicroHs.  Main.hs includes
-  # ../../includes/config.h, hence the tarball layout.
+  # ../../includes/config.h, hence the tarball layout.  The C goes through a
+  # file of a fixed name, as for genprimopcode in tree.nix.
   hsc2hs =
     runCommandCC "ghc-6.2.2-hsc2hs"
       {
@@ -41,7 +43,9 @@ let
         ln -s ${inc} ghc/includes
         cd ghc/utils/hsc2hs
         mhs -XCPP -D__GLASGOW_HASKELL__=622 -i. -i${files}/hsc2hs/shims \
-          -i${files}/shims-h98 Main -ohsc2hs
+          -i${files}/shims-h98 Main -ohsc2hs.c
+        cc -w -O1 -I${mhsRuntime} -I${mhsRuntime}/unix \
+          ${mhsRuntime}/main.c ${mhsRuntime}/eval.c hsc2hs.c -lm -o hsc2hs
         install -Dm755 hsc2hs $out/bin/hsc2hs
         install -Dm644 template-hsc.h $out/share/template-hsc.h
       '';

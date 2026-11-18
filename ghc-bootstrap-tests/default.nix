@@ -105,6 +105,10 @@ in
     inherit inst1 inst2;
     compare01 = compare "ghc-6.2.2-inst-vs-inst1" ghc inst1;
     compare12 = compare "ghc-6.2.2-inst1-vs-inst2" inst1 inst2;
+    explain01 = runCommand "ghc-6.2.2-inst-vs-inst1-explained" { nativeBuildInputs = [ pkgs.binutils ]; } ''
+      mkdir $out
+      bash ${./explain.sh} ${ghc} ${inst1} | tee $out/report.txt
+    '';
   };
 
   downstream = {

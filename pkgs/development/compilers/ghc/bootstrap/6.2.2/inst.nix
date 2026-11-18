@@ -8,6 +8,10 @@
 # chain's happy is 1.19.5, so the happy on the path is a wrapper that also
 # applies the fix-ups for GHC 6.2.2.  The shipped generated sources are kept,
 # since there is no alex for Lexer.x.
+#
+# The installed runtime system also gets GHC 6.4's fix for the compacting
+# collector on x86-64 (rts-compact-x86_64.patch), which the chain itself
+# never runs.
 {
   lib,
   stdenv,
@@ -30,7 +34,7 @@ stdenv.mkDerivation {
 
   postPatch = ''
     patchShebangs .
-    for p in ${files}/rts/patches/*.patch; do
+    for p in ${files}/rts/patches/*.patch ${./rts-compact-x86_64.patch}; do
       msg=$(patch -p1 -N -i $p 2>&1) || { echo "$msg"; echo "FAILED: $p"; exit 1; }
       case $msg in *fuzz*|*offset*) echo "$msg"; echo "INEXACT: $p"; exit 1 ;; esac
     done
@@ -165,6 +169,9 @@ stdenv.mkDerivation {
     # System.Posix.Process links against libraries/unix/cbits
     printf 'import System.Posix.Process\nmain = forkProcess (return ()) >>= getProcessStatus True False >>= print\n' > t/Fork.hs
     (cd t && $out/bin/ghc -v0 -package unix --make Fork.hs -o fork && [ "$(./fork)" = "Just (Exited ExitSuccess)" ])
+    # The compacting collector on every major collection (rts-compact-x86_64.patch)
+    printf 'main = let xs = [1 .. 300000 :: Int] in print (length xs, sum xs)\n' > t/Compact.hs
+    (cd t && $out/bin/ghc -v0 --make Compact.hs -o compact && [ "$(./compact +RTS -c -K64m -RTS)" = "(300000,45000150000)" ])
     runHook postInstallCheck
   '';
 

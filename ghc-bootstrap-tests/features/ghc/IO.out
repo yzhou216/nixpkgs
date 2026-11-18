@@ -1,0 +1,16 @@
+(["a b","c"],"IO")
+("linux","x86_64")
+(2,"HELLO WORLD")
+line one
+line two
+line three
+["line one","line two","line three"]
+(256,250,251,False,True)
+(1288895,20000100000)
+[".","..","y"]
+(True,True,False)
+(ExitFailure 7,ExitSuccess)
+(Just 500,Nothing,Nothing)
+(True,True)
+(True,1970,True)
+True

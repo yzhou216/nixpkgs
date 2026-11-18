@@ -1,0 +1,6 @@
+(True,True)
+("from child",10,Just (Exited (ExitFailure 9)))
+(5,True,False)
+True
+USR1
+Just "bar"

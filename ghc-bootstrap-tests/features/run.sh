@@ -326,9 +326,10 @@ t_optc_O2() {
 	for p in Integers Arrays; do
 		cp "$src/h98/$p.hs" .
 		for v in a:-O b:-optc-O2 c:-optc-O2,-optc-fno-strict-aliasing; do
-			mkdir -p "${v%%:*}"
+			# A directory per program: --make compares times to the second
+			mkdir -p "$p-${v%%:*}.o"
 			# shellcheck disable=SC2046
-			"$G/ghc" -v0 -O $(echo "${v#*:}" | tr , " ") -odir "${v%%:*}" -hidir "${v%%:*}" --make "$p.hs" -o "$p-${v%%:*}"
+			"$G/ghc" -v0 -O $(echo "${v#*:}" | tr , " ") -odir "$p-${v%%:*}.o" -hidir "$p-${v%%:*}.o" --make "$p.hs" -o "$p-${v%%:*}"
 			"./$p-${v%%:*}" +RTS -K256m -RTS > "$p-${v%%:*}.txt" 2>&1 || echo "exit $?" >> "$p-${v%%:*}.txt"
 		done
 		diff -u "$p-a.txt" "$p-b.txt" || rc=1

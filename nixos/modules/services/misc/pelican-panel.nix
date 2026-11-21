@@ -7,9 +7,6 @@
 let
   cfg = config.services.pelican-panel;
 
-  inherit (cfg) package;
-  inherit (package.passthru) php;
-
   inherit (lib)
     mkOption
     mkEnableOption
@@ -20,15 +17,16 @@ let
     mkIf
     mkMerge
     optional
-    optionalString
     pipe
     isString
     match
+    optionalAttrs
+    getExe
     ;
 
   artisan = pkgs.writeShellScriptBin "pelican-artisan" ''
-    cd /var/lib/pelican/www
-    exec ${pkgs.sudo}/bin/sudo -u pelican ${php}/bin/php artisan "$@"
+    cd ${cfg.stateDir}/www
+    exec ${getExe pkgs.sudo} -u pelican ${getExe cfg.phpPackage} artisan "$@"
   '';
 
   autoConfig = {
@@ -37,11 +35,13 @@ let
     APP_INSTALLED = true;
     APP_URL = cfg.domain;
 
+    PANEL_DASHBOARD_UPDATE_ENABLED = false;
+
     DB_DATABASE = "pelican";
     DB_USERNAME = "pelican";
-    DB_CONNECTION = "mariadb";
-    DB_HOST = "localhost";
-    DB_SOCKET = "/run/mysqld/mysqld.sock";
+    DB_CONNECTION = cfg.database.type;
+    DB_HOST = if (cfg.database.type == "pgsql") then "/var/run/postgresql" else "localhost";
+    DB_SOCKET = if (cfg.database.type == "mariadb") then "/run/mysqld/mysqld.sock" else "";
 
     REDIS_SCHEME = "unix";
     REDIS_PATH = config.services.redis.servers.pelican.unixSocket;
@@ -76,15 +76,9 @@ let
   setupScript = pkgs.writeShellScript "pelican-setup" ''
     set -euo pipefail
 
-    STATE="/var/lib/pelican"
+    STATE="${cfg.stateDir}"
     WWW="$STATE/www"
-    STORE="${package}"
-
-    # Create persistent state directories
-    mkdir -p \
-      $STATE/storage/{app/public,framework/{cache/data,sessions,views},logs/install} \
-      $STATE/plugins \
-      $STATE/bootstrap-cache
+    STORE="${cfg.package}"
 
     # Rebuild the working webroot when the panel package changes
     if [ "$(cat $WWW/.nix-store-path 2>/dev/null || true)" != "$STORE" ]; then
@@ -107,13 +101,33 @@ let
     chmod -R o+rX "$WWW/public"
     chown -R pelican:pelican "$STATE"
 
-    ${artisan}/bin/pelican-artisan migrate --force
-    ${artisan}/bin/pelican-artisan filament:optimize
+    ${getExe artisan} migrate --force
+    ${getExe artisan} filament:optimize
   '';
 in
 {
   options.services.pelican-panel = {
     enable = mkEnableOption "Pelican Panel";
+
+    database = {
+      type = mkOption {
+        type = types.enum [
+          "mariadb"
+          "pgsql"
+        ];
+        default = "mariadb";
+        description = "Database used by pelican panel.";
+      };
+      createLocally = mkOption {
+        type = types.bool;
+        default = true;
+        description = ''
+          If set to `true` the database gets created locally.
+          If set to `false`, please set the environment variables according to your needs.
+          See more [here](https://github.com/pelican/panel/blob/main/config/database.php).
+        '';
+      };
+    };
 
     webserver = mkOption {
       type = types.enum [
@@ -126,6 +140,13 @@ in
     };
 
     package = mkPackageOption pkgs "pelican-panel" { };
+
+    phpPackage = mkOption {
+      type = types.package;
+      default = cfg.package.passthru.php;
+      defaultText = lib.literalExpression "config.services.pelican-panel.package.passthru.php";
+      description = "The php package to use.";
+    };
 
     openFirewall = mkEnableOption "firewall rules for Pelican";
 
@@ -155,6 +176,40 @@ in
       example = lib.literalExpression ":\${toString config.pelican-panel.port}";
     };
 
+    stateDir = mkOption {
+      type = types.path;
+      default = "/var/lib/pelican";
+      description = "The state directory for Pelican Panel.";
+    };
+
+    user = lib.mkOption {
+      default = "pelican";
+      type = types.str;
+      description = ''
+        User account under which the Pelican Panel runs.
+
+        ::: {.note}
+        If left as the default value this user will automatically be created
+        on system activation, otherwise the sysadmin is responsible for
+        ensuring the user exists before the Pelican Panel service starts.
+        :::
+      '';
+    };
+
+    group = lib.mkOption {
+      default = "pelican";
+      type = types.str;
+      description = ''
+        Group under which the Pelican Panel runs.
+
+        ::: {.note}
+        If left as the default value this group will automatically be created
+        on system activation, otherwise the sysadmin is responsible for
+        ensuring the group exists before the Pelican Panel service starts.
+        :::
+      '';
+    };
+
     environment = mkOption {
       type = types.attrsOf (
         types.oneOf [
@@ -179,19 +234,38 @@ in
         assertion = (cfg.domain == null || match "https?://.*" cfg.domain != null);
         message = "`services.pelican-panel.domain` must be `null` or a valid URL";
       }
+      {
+        assertion =
+          !(
+            cfg.database.type == "pgsql"
+            && (mergedConfig.DB_USERNAME != mergedConfig.DB_DATABASE)
+            && cfg.database.createLocally
+          );
+        message = "`services.pelican-panel.environment.DB_USERNAME` must match `services.pelican-panel.environment.DB_DATABASE` when using postgresql locally";
+      }
+      {
+        assertion =
+          !(
+            cfg.database.type == "pgsql" && (mergedConfig.DB_USERNAME != cfg.user) && cfg.database.createLocally
+          );
+        message = "`services.pelican-panel.environment.DB_USERNAME` must match `services.pelican-panel.user` when using postgresql locally";
+      }
     ];
 
-    users = {
-      users.pelican = {
+    users.users = optionalAttrs (cfg.user == "pelican") {
+      pelican = {
         isSystemUser = true;
-        group = "pelican";
-        home = "/var/lib/pelican";
+        inherit (cfg) group;
+        home = cfg.stateDir;
       };
-      groups.pelican = { };
+    };
+
+    users.groups = optionalAttrs (cfg.group == "pelican") {
+      pelican = { };
     };
 
     services = {
-      mysql = {
+      mysql = mkIf (cfg.database.type == "mariadb" && cfg.database.createLocally) {
         enable = true;
         package = pkgs.mariadb;
         ensureDatabases = [ mergedConfig.DB_DATABASE ];
@@ -203,15 +277,24 @@ in
         ];
       };
 
+      postgresql = mkIf (cfg.database.type == "pgsql" && cfg.database.createLocally) {
+        enable = true;
+        ensureDatabases = [ mergedConfig.DB_DATABASE ];
+        ensureUsers = [
+          {
+            name = mergedConfig.DB_USERNAME;
+            ensureDBOwnership = true;
+          }
+        ];
+      };
+
       redis.servers.pelican = {
         enable = true;
         group = "pelican";
       };
 
       phpfpm.pools.pelican = {
-        phpPackage = php;
-        user = "pelican";
-        group = "pelican";
+        inherit (cfg) phpPackage user group;
 
         settings = mkMerge [
           {
@@ -220,7 +303,7 @@ in
             "pm.start_servers" = 2;
             "pm.min_spare_servers" = 2;
             "pm.max_spare_servers" = 5;
-            "chdir" = "/var/lib/pelican/www";
+            "chdir" = "${cfg.stateDir}/www";
             "catch_workers_output" = "yes";
             "decorate_workers_output" = "no";
             "env[LOG_CHANNEL]" = "stderr";
@@ -245,7 +328,7 @@ in
         enable = true;
 
         virtualHosts."${cfg.caddy.domain}".extraConfig = ''
-          root * /var/lib/pelican/www/public
+          root * ${cfg.stateDir}/www/public
           encode gzip
           file_server
           php_fastcgi unix//run/phpfpm/pelican.sock
@@ -253,80 +336,103 @@ in
       };
     };
 
-    systemd = {
-      services = {
-        phpfpm-pelican = {
-          after = [ "pelican-setup.service" ];
-          requires = [ "pelican-setup.service" ];
+    systemd =
+      let
+        dbService = if (cfg.database.type == "mariadb") then "mysql.service" else "postgresql.service";
+      in
+      {
+        services = {
+          phpfpm-pelican = {
+            after = [ "pelican-setup.service" ];
+            requires = [ "pelican-setup.service" ];
+          };
+
+          caddy = mkIf (cfg.webserver == "caddy") {
+            after = [ "pelican-setup.service" ];
+            requires = [ "pelican-setup.service" ];
+          };
+
+          pelican-setup = {
+            description = "Pelican Panel Setup";
+            wantedBy = [ "multi-user.target" ];
+            after = [
+              "redis-pelican.service"
+            ]
+            ++ optional cfg.database.createLocally dbService;
+            requires = [
+              "redis-pelican.service"
+            ]
+            ++ optional cfg.database.createLocally dbService;
+            before = [
+              "phpfpm-pelican.service"
+              "pelican-queue.service"
+            ]
+            ++ optional (cfg.webserver == "caddy") "caddy.service";
+
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              ExecStart = setupScript;
+            };
+          };
+
+          pelican-queue = {
+            description = "Pelican Panel Queue Worker";
+            after = [ "pelican-setup.service" ];
+            requires = [ "pelican-setup.service" ];
+            wantedBy = [ "multi-user.target" ];
+
+            serviceConfig = {
+              User = cfg.user;
+              Group = cfg.group;
+              WorkingDirectory = "${cfg.stateDir}/www";
+              ExecStart = "${getExe cfg.phpPackage} artisan queue:work --tries=3";
+              Restart = "on-failure";
+              RestartSec = "5s";
+            };
+          };
+
+          pelican-scheduler = {
+            description = "Pelican Panel Scheduler";
+            after = [ "pelican-setup.service" ];
+
+            serviceConfig = {
+              Type = "oneshot";
+              User = cfg.user;
+              Group = cfg.group;
+              WorkingDirectory = "${cfg.stateDir}/www";
+              ExecStart = "${getExe cfg.phpPackage} artisan schedule:run";
+            };
+          };
         };
 
-        caddy = mkIf (cfg.webserver == "caddy") {
-          after = [ "pelican-setup.service" ];
-          requires = [ "pelican-setup.service" ];
+        timers.pelican-scheduler = {
+          wantedBy = [ "timers.target" ];
+          timerConfig = {
+            OnCalendar = "*-*-* *:*:12";
+            Persistent = true;
+          };
         };
 
-        pelican-setup = {
-          description = "Pelican Panel Setup";
-          wantedBy = [ "multi-user.target" ];
-          after = [
-            "mysql.service"
-            "redis-pelican.service"
+        # Create persistent state directories
+        tmpfiles.settings."10-pelican-panel" =
+          let
+            stateDirList =
+              list:
+              lib.attrsets.genAttrs' list (
+                dir: lib.nameValuePair (cfg.stateDir + "/" + dir) { d = { inherit (cfg) user group; }; }
+              );
+          in
+          stateDirList [
+            "plugins"
+            "bootstrap-cache"
+            "storage/app/public"
+            "storage/framework/cache/data"
+            "storage/framework/sessions"
+            "storage/framework/views"
+            "storage/logs/install"
           ];
-          requires = [
-            "mysql.service"
-            "redis-pelican.service"
-          ];
-          before = [
-            "phpfpm-pelican.service"
-            "pelican-queue.service"
-          ]
-          ++ optional (cfg.webserver == "caddy") "caddy.service";
-
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-            ExecStart = setupScript;
-          };
-        };
-
-        pelican-queue = {
-          description = "Pelican Panel Queue Worker";
-          after = [ "pelican-setup.service" ];
-          requires = [ "pelican-setup.service" ];
-          wantedBy = [ "multi-user.target" ];
-
-          serviceConfig = {
-            User = "pelican";
-            Group = "pelican";
-            WorkingDirectory = "/var/lib/pelican/www";
-            ExecStart = "${php}/bin/php artisan queue:work --tries=3";
-            Restart = "on-failure";
-            RestartSec = "5s";
-          };
-        };
-
-        pelican-scheduler = {
-          description = "Pelican Panel Scheduler";
-          after = [ "pelican-setup.service" ];
-
-          serviceConfig = {
-            Type = "oneshot";
-            User = "pelican";
-            Group = "pelican";
-            WorkingDirectory = "/var/lib/pelican/www";
-            ExecStart = "${php}/bin/php artisan schedule:run";
-          };
-        };
       };
-
-      timers.pelican-scheduler = {
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = "*-*-* *:*:12";
-          Persistent = true;
-        };
-      };
-    };
 
     networking.firewall = mkIf cfg.openFirewall {
       allowedTCPPorts = [ cfg.port ];

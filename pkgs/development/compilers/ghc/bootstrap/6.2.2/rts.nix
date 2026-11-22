@@ -1,9 +1,10 @@
-# GHC 6.2.2's runtime system, unregisterised x86-64, compiled with gcc alone:
-# every C file of ghc/rts except the excluded ones, the hand-written .hc files
-# and the generated AutoApply.hc, with the flags GHC's Makefiles would pass.
+# GHC 6.2.2's runtime system, unregisterised, compiled with gcc alone: every C
+# file of ghc/rts except the excluded ones, the hand-written .hc files and the
+# generated AutoApply.hc, with the flags GHC's Makefiles would pass.
 # -std=gnu89 for the 2004 C, and -fno-pie because the chain was verified
 # non-PIE.
 {
+  lib,
   stdenv,
   runCommandCC,
   ghc-bootstrap-src,
@@ -14,6 +15,9 @@
 
 let
   files = "${ghc-bootstrap-src}/ghc622";
+
+  # The heap address of the runtime patches on aarch64 too
+  platformPatches = lib.optional stdenv.hostPlatform.isAarch64 ./rts-heap-base-aarch64.patch;
 
   # genapply compiled by MicroHs; the tarball does not ship its output
   autoApply =
@@ -50,7 +54,7 @@ stdenv.mkDerivation {
   patchPhase = ''
     runHook prePatch
 
-    for p in ${files}/rts/patches/*.patch; do
+    for p in ${files}/rts/patches/*.patch${lib.concatMapStrings (p: " ${p}") platformPatches}; do
       msg=$(patch -p1 -N -i "$p" 2>&1) || { echo "$msg"; echo "FAILED: $p"; exit 1; }
       case "$msg" in *fuzz*|*offset*) echo "$msg"; echo "INEXACT: $p"; exit 1 ;; esac
     done

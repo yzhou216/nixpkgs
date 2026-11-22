@@ -1,0 +1,41 @@
+An aarch64 Linux entry in configure's platform table, which predates AArch64
+and otherwise stops with "Unrecognised platform".  It is the x86_64-*-linux*
+entry with the architecture changed.  configure is patched after configure.ac,
+so that make does not try to regenerate it.
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -233,6 +233,15 @@
+         HostVendor_CPP='unknown'
+         HostOS_CPP='linux'
+ 	;;
++aarch64-*-linux*)
++        HostPlatform=aarch64-unknown-linux
++        TargetPlatform=aarch64-unknown-linux
++        BuildPlatform=aarch64-unknown-linux
++        HostPlatform_CPP='aarch64_unknown_linux'
++        HostArch_CPP='aarch64'
++        HostVendor_CPP='unknown'
++        HostOS_CPP='linux'
++        ;;
+ m68k-*-linux*)
+         HostPlatform=m68k-unknown-linux # hack again
+         TargetPlatform=m68k-unknown-linux                    
+--- a/configure
++++ b/configure
+@@ -1634,6 +1634,15 @@
+         HostVendor_CPP='unknown'
+         HostOS_CPP='linux'
+ 	;;
++aarch64-*-linux*)
++        HostPlatform=aarch64-unknown-linux
++        TargetPlatform=aarch64-unknown-linux
++        BuildPlatform=aarch64-unknown-linux
++        HostPlatform_CPP='aarch64_unknown_linux'
++        HostArch_CPP='aarch64'
++        HostVendor_CPP='unknown'
++        HostOS_CPP='linux'
++        ;;
+ m68k-*-linux*)
+         HostPlatform=m68k-unknown-linux # hack again
+         TargetPlatform=m68k-unknown-linux

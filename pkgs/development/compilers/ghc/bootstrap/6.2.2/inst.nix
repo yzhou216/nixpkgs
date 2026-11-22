@@ -10,8 +10,8 @@
 # since there is no alex for Lexer.x.
 #
 # The installed runtime system also gets GHC 6.4's fix for the compacting
-# collector on x86-64 (rts-compact-x86_64.patch), which the chain itself
-# never runs.
+# collector on 64-bit platforms (rts-compact-x86_64.patch), which the chain
+# itself never runs.
 {
   lib,
   stdenv,
@@ -25,6 +25,14 @@
 
 let
   files = "${ghc-bootstrap-src}/ghc622";
+  arch = stdenv.hostPlatform.parsed.cpu.name;
+  platform = "${arch}-unknown-linux";
+
+  # 6.2.2 predates AArch64: its configure entry and the runtime's heap address
+  platformPatches = lib.optionals stdenv.hostPlatform.isAarch64 [
+    ./configure-aarch64-linux.patch
+    ./rts-heap-base-aarch64.patch
+  ];
 in
 stdenv.mkDerivation {
   pname = "ghc";
@@ -34,7 +42,9 @@ stdenv.mkDerivation {
 
   postPatch = ''
     patchShebangs .
-    for p in ${files}/rts/patches/*.patch ${./rts-compact-x86_64.patch}; do
+    for p in ${files}/rts/patches/*.patch ${./rts-compact-x86_64.patch}${
+      lib.concatMapStrings (p: " ${p}") platformPatches
+    }; do
       msg=$(patch -p1 -N -i "$p" 2>&1) || { echo "$msg"; echo "FAILED: $p"; exit 1; }
       case "$msg" in *fuzz*|*offset*) echo "$msg"; echo "INEXACT: $p"; exit 1 ;; esac
     done
@@ -117,10 +127,10 @@ stdenv.mkDerivation {
     runHook preConfigure
 
     ./configure --prefix="$out" --with-ghc=${boot}/bin/ghc --with-gcc=${stdenv.cc}/bin/gcc \
-      --host=x86_64-unknown-linux --build=x86_64-unknown-linux --target=x86_64-unknown-linux
+      --host=${platform} --build=${platform} --target=${platform}
     grep -q 'with-ghc=${boot}/bin/ghc' config.log
     grep -q '^WhatGccIsCalled[[:space:]]*=[[:space:]]*${stdenv.cc}/bin/gcc$' mk/config.mk
-    grep -q '^HostArch_CPP[[:space:]]*=[[:space:]]*x86_64' mk/config.mk
+    grep -q '^HostArch_CPP[[:space:]]*=[[:space:]]*${arch}' mk/config.mk
     grep -Eq '^HAPPY[[:space:]]*=[[:space:]]*'"$NIX_BUILD_TOP"'/bin/happy$' mk/config.mk
     gcc -O -w -o gen-htypes ${files}/tools/gen-htypes.c
     ./gen-htypes >> mk/config.h
@@ -191,7 +201,10 @@ stdenv.mkDerivation {
     license = lib.licenses.bsd3;
     maintainers = with lib.maintainers; [ yiyu ];
     mainProgram = "ghc";
-    platforms = [ "x86_64-linux" ];
+    platforms = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
     # Hugs does not build with musl
     badPlatforms = lib.systems.inspect.patterns.isMusl;
   };

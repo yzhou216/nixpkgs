@@ -1,7 +1,9 @@
 # GHC 6.2.2's source tree in the shape MicroHs compiles: the tarball with the
-# patch series applied, configured for an unregisterised x86-64 build, with
-# the parsers and primop tables regenerated and config.h completed.
+# patch series applied, configured for an unregisterised build on the host
+# platform, with the parsers and primop tables regenerated and config.h
+# completed.
 {
+  lib,
   stdenv,
   runCommand,
   runCommandCC,
@@ -17,6 +19,11 @@
 
 let
   files = "${ghc-bootstrap-src}/ghc622";
+  arch = stdenv.hostPlatform.parsed.cpu.name;
+  platform = "${arch}-unknown-linux";
+
+  # 6.2.2's configure predates AArch64
+  platformPatches = lib.optional stdenv.hostPlatform.isAarch64 ./configure-aarch64-linux.patch;
 
   src = fetchurl {
     url = "https://downloads.haskell.org/~ghc/6.2.2/ghc-6.2.2-src.tar.bz2";
@@ -78,7 +85,7 @@ let
     patchPhase = ''
       runHook prePatch
 
-      for p in ${files}/patches/*.patch; do
+      for p in ${files}/patches/*.patch${lib.concatMapStrings (p: " ${p}") platformPatches}; do
         msg=$(patch -p1 -N -i "$p" 2>&1) || { echo "$msg"; echo "FAILED: $p"; exit 1; }
         case "$msg" in *fuzz*|*offset*) echo "$msg"; echo "INEXACT: $p"; exit 1 ;; esac
       done
@@ -90,10 +97,10 @@ let
       runHook preConfigure
 
       sh ./configure --enable-hc-boot --enable-hc-boot-unregisterised \
-        --host=x86_64-unknown-linux --build=x86_64-unknown-linux --target=x86_64-unknown-linux
-      grep -q '^HostArch_CPP[[:space:]]*=[[:space:]]*x86_64' mk/config.mk
+        --host=${platform} --build=${platform} --target=${platform}
+      grep -q '^HostArch_CPP[[:space:]]*=[[:space:]]*${arch}' mk/config.mk
       make -C ghc/includes config.h
-      grep -q '^#define x86_64_TARGET_ARCH' ghc/includes/config.h
+      grep -q '^#define ${arch}_TARGET_ARCH' ghc/includes/config.h
 
       runHook postConfigure
     '';

@@ -22,8 +22,10 @@ let
   arch = stdenv.hostPlatform.parsed.cpu.name;
   platform = "${arch}-unknown-linux";
 
-  # 6.2.2's configure predates AArch64
-  platformPatches = lib.optional stdenv.hostPlatform.isAarch64 ./configure-aarch64-linux.patch;
+  # 6.2.2's configure predates AArch64 and RISC-V
+  platformPatches = lib.optional (
+    stdenv.hostPlatform.isAarch64 || stdenv.hostPlatform.isRiscV64
+  ) ./configure-aarch64-riscv64.patch;
 
   src = fetchurl {
     url = "https://downloads.haskell.org/~ghc/6.2.2/ghc-6.2.2-src.tar.bz2";

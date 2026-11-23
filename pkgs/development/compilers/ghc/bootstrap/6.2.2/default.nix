@@ -1,7 +1,7 @@
 # GHC 6.2.2, the first GHC with an x86-64 port (unregisterised, via C).  On
-# aarch64 Linux, which 6.2.2 predates, its configure gets a platform entry and
-# its runtime the heap address it has on x86-64; the unregisterised build is
-# otherwise the same.
+# aarch64 and riscv64 Linux, which 6.2.2 predates, its configure gets platform
+# entries and its runtime the heap address it has on x86-64; the unregisterised
+# build is otherwise the same.
 #
 # Stage 1 is the compiler proper compiled by MicroHs.  It runs on the MicroHs
 # runtime, about twenty times slower than a native compiler, so it compiles

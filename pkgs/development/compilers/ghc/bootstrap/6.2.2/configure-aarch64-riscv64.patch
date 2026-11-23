@@ -1,11 +1,11 @@
-An aarch64 Linux entry in configure's platform table, which predates AArch64
-and otherwise stops with "Unrecognised platform".  It is the x86_64-*-linux*
-entry with the architecture changed.  configure is patched after configure.ac,
-so that make does not try to regenerate it.
+aarch64 and riscv64 Linux entries in configure's platform table, which
+predates both and otherwise stops with "Unrecognised platform".  They are the
+x86_64-*-linux* entry with the architecture changed.  configure is patched
+after configure.ac, so that make does not try to regenerate it.
 
 --- a/configure.ac
 +++ b/configure.ac
-@@ -233,6 +233,15 @@
+@@ -233,6 +233,24 @@
          HostVendor_CPP='unknown'
          HostOS_CPP='linux'
  	;;
@@ -18,12 +18,21 @@ so that make does not try to regenerate it.
 +        HostVendor_CPP='unknown'
 +        HostOS_CPP='linux'
 +        ;;
++riscv64-*-linux*)
++        HostPlatform=riscv64-unknown-linux
++        TargetPlatform=riscv64-unknown-linux
++        BuildPlatform=riscv64-unknown-linux
++        HostPlatform_CPP='riscv64_unknown_linux'
++        HostArch_CPP='riscv64'
++        HostVendor_CPP='unknown'
++        HostOS_CPP='linux'
++        ;;
  m68k-*-linux*)
          HostPlatform=m68k-unknown-linux # hack again
          TargetPlatform=m68k-unknown-linux                    
 --- a/configure
 +++ b/configure
-@@ -1634,6 +1634,15 @@
+@@ -1634,6 +1634,24 @@
          HostVendor_CPP='unknown'
          HostOS_CPP='linux'
  	;;
@@ -33,6 +42,15 @@ so that make does not try to regenerate it.
 +        BuildPlatform=aarch64-unknown-linux
 +        HostPlatform_CPP='aarch64_unknown_linux'
 +        HostArch_CPP='aarch64'
++        HostVendor_CPP='unknown'
++        HostOS_CPP='linux'
++        ;;
++riscv64-*-linux*)
++        HostPlatform=riscv64-unknown-linux
++        TargetPlatform=riscv64-unknown-linux
++        BuildPlatform=riscv64-unknown-linux
++        HostPlatform_CPP='riscv64_unknown_linux'
++        HostArch_CPP='riscv64'
 +        HostVendor_CPP='unknown'
 +        HostOS_CPP='linux'
 +        ;;

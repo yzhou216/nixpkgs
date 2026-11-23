@@ -28,10 +28,11 @@ let
   arch = stdenv.hostPlatform.parsed.cpu.name;
   platform = "${arch}-unknown-linux";
 
-  # 6.2.2 predates AArch64: its configure entry and the runtime's heap address
-  platformPatches = lib.optionals stdenv.hostPlatform.isAarch64 [
-    ./configure-aarch64-linux.patch
-    ./rts-heap-base-aarch64.patch
+  # 6.2.2 predates AArch64 and RISC-V: its configure entries and the runtime's
+  # heap address
+  platformPatches = lib.optionals (stdenv.hostPlatform.isAarch64 || stdenv.hostPlatform.isRiscV64) [
+    ./configure-aarch64-riscv64.patch
+    ./rts-heap-base-aarch64-riscv64.patch
   ];
 in
 stdenv.mkDerivation {
@@ -204,6 +205,7 @@ stdenv.mkDerivation {
     platforms = [
       "x86_64-linux"
       "aarch64-linux"
+      "riscv64-linux"
     ];
     # Hugs does not build with musl
     badPlatforms = lib.systems.inspect.patterns.isMusl;

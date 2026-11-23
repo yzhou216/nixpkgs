@@ -16,8 +16,10 @@
 let
   files = "${ghc-bootstrap-src}/ghc622";
 
-  # The heap address of the runtime patches on aarch64 too
-  platformPatches = lib.optional stdenv.hostPlatform.isAarch64 ./rts-heap-base-aarch64.patch;
+  # The heap address of the runtime patches on aarch64 and riscv64 too
+  platformPatches = lib.optional (
+    stdenv.hostPlatform.isAarch64 || stdenv.hostPlatform.isRiscV64
+  ) ./rts-heap-base-aarch64-riscv64.patch;
 
   # genapply compiled by MicroHs; the tarball does not ship its output
   autoApply =

@@ -1,0 +1,25 @@
+The fixed heap address of ghc-bootstrap's rts/patches/0003-mblock-map-window.patch
+for aarch64 and riscv64 as well.  Without it the heap comes from an unhinted
+mmap, outside the window the mblock map covers, and getMBlocks fails at once.
+
+The window, 0x500000000 to 0x1500000000, lies between the C heap and the mmap
+area on both.  A non-PIE aarch64 Linux process has the x86-64 layout: the
+executable at 0x400000, the C heap after it and the mmap area at the top of
+the address space.  A non-PIE riscv64 process has its executable at 0x10000,
+and with the 39-bit virtual addresses of most current hardware, 256 GB of
+address space.  Its mmap area starts near the top, or, with an unlimited stack
+as in the chain's builds, at a third of it (0x1555556000), still above the
+window.
+
+--- a/ghc/rts/MBlock.h
++++ b/ghc/rts/MBlock.h
+@@ -23,7 +23,8 @@
+ #error I have no idea where to begin the heap on a non-64-bit osf3 machine.
+ #endif
+ 
+-#elif defined(x86_64_TARGET_ARCH) && SIZEOF_VOID_P == 8
++#elif (defined(x86_64_TARGET_ARCH) || defined(aarch64_TARGET_ARCH) \
++       || defined(riscv64_TARGET_ARCH)) && SIZEOF_VOID_P == 8
+ /* Ask for the heap from a fixed address, as 6.4 does on x86-64: above the
+  * executable and the C heap (a non-PIE binary sits at 0x400000 and brk
+  * grows from its end) and below the mmap area (0x7f...).  With HEAP_BASE 0

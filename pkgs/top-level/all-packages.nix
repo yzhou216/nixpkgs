@@ -1011,8 +1011,6 @@ with pkgs;
 
   inherit (callPackages ../development/libraries/sdbus-cpp { }) sdbus-cpp sdbus-cpp_2;
 
-  sdkmanager = with python3Packages; toPythonApplication sdkmanager;
-
   shaperglot = with python3Packages; toPythonApplication shaperglot;
 
   ufolint = with python3Packages; toPythonApplication ufolint;
@@ -2104,6 +2102,8 @@ with pkgs;
 
   lean = lean4;
 
+  logseq = logseq-og;
+
   logstash7 = callPackage ../tools/misc/logstash/7.x.nix {
     # https://www.elastic.co/support/matrix#logstash-and-jvm
     jre = jdk11_headless;
@@ -2114,8 +2114,6 @@ with pkgs;
     jre = jdk11_headless;
   };
   logstash = logstash7;
-
-  lagrange-tui = lagrange.override { enableTUI = true; };
 
   matrix-synapse-plugins = recurseIntoAttrs matrix-synapse-unwrapped.plugins;
 
@@ -7163,21 +7161,6 @@ with pkgs;
   };
 
   kmod = callPackage ../os-specific/linux/kmod { };
-
-  lvm2 = callPackage ../os-specific/linux/lvm2/2_03.nix {
-    # break the cyclic dependency:
-    # util-linux (non-minimal) depends (optionally, but on by default) on systemd,
-    # systemd (optionally, but on by default) on cryptsetup and cryptsetup depends on lvm2
-    util-linux = util-linuxMinimal;
-  };
-
-  lvm2_dmeventd = lvm2.override {
-    enableDmeventd = true;
-    enableCmdlib = true;
-  };
-  lvm2_vdo = lvm2_dmeventd.override {
-    enableVDO = true;
-  };
 
   mdadm = mdadm4;
 
